@@ -1,4 +1,0 @@
-#!/bin/sh
-
-cd /opt/snmp-fuzzer/
-perl snmpfuzz.pl "$@"
