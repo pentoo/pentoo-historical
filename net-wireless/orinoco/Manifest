@@ -1,4 +1,0 @@
-MD5 912a35a3cc7ea5041b7a5894cdeae378 orinoco-0.15_rc3-r2.ebuild 2951
-MD5 7c8b7df86c967166eb696662418f8e6a files/digest-orinoco-0.15_rc3-r2 66
-MD5 05e38fad13b920f1e776939a0ecf0e09 files/orinoco-0.15rc3-memleak.patch 1044
-MD5 ccefe4fa99c27ef5a6bf02eaba0b4c27 files/orinoco-0.15rc3-force_monitor.patch 466
