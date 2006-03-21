@@ -1,0 +1,4 @@
+MD5 c3da4667165a5bc9bf993fc51fd05b49 files/README.txt 1244
+MD5 d41d8cd98f00b204e9800998ecf8427e files/digest-ntp-fingerprint-0.1 0
+MD5 9289a86bca91757877925ce6506dee9f files/ntp-fingerprint.pl 3930
+MD5 30c5f1331174022f2441f5f9e3d36995 ntp-fingerprint-0.1.ebuild 336
