@@ -43,15 +43,7 @@ src_install() {
 	dobin "${S}"/Sources/AutoScan/src/AutoScan_Network
 	dobin "${S}"/Sources/AutoScan_Agent/src/AutoScan_Agent
 
-	dodir /usr/share/apps/AutoScan
-	insinto /usr/share/apps/AutoScan
-	doins "${S}"/Data/apps/AutoScan/*
-
-	dodir /usr/share/pixmaps/AutoScan
-	insinto /usr/share/pixmaps/AutoScan
-	doins "${S}"/Data/pixmaps/AutoScan/*
-
-	dodir /usr/share/doc/"${MY_P}"
-	docinto /usr/share/doc/"${MY_P}"
-	dodoc "${S}"/Data/doc/AutoScan/*
+	dodir /usr/share/
+	insinto /usr/share/
+	doins -r "${S}"/Data/*
 }
