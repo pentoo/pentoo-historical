@@ -1,0 +1,5 @@
+MD5 fe33c5886d4aa6877f8c8a717790357c ChangeLog 9633
+MD5 c5800b90593d3826c5cef81cca46526a files/digest-hostap-driver-0.4.7 71
+MD5 9f2903c2d445441df34d0d92ef34172e files/hostap-driver-0.4.7.patch 19481
+MD5 c90aa7c5bf607038b02f6d0ded783e34 hostap-driver-0.4.7.ebuild 2923
+MD5 5f6ec5c50fa3a91a429fec8670cf241b metadata.xml 722
