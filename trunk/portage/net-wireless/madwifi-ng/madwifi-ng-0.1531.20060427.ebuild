@@ -7,7 +7,7 @@ inherit linux-mod
 MY_P=${PN}-r${PV:2:4}-${PV:7:8}
 S=${WORKDIR}/${MY_P}
 
-DESCRIPTION="Next Generation driver for Atheros based IEEE 802.11a/b/g wireless LAN cards"
+DESCRIPTION="Next Generation driver for Atheros based IEEE 802.11a/b/g wireless LAN cards with injection patch"
 HOMEPAGE="http://www.madwifi.org/"
 SRC_URI="http://snapshots.madwifi.org/madwifi-ng/${MY_P}.tar.gz"
 

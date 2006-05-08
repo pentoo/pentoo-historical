@@ -4,7 +4,7 @@
 
 inherit toolchain-funcs eutils linux-mod
 
-DESCRIPTION="Driver for Intersil Prism2/2.5/3 based IEEE 802.11b wireless LAN products"
+DESCRIPTION="Driver for Intersil Prism2/2.5/3 based IEEE 802.11b wireless LAN products with injection patch"
 HOMEPAGE="http://hostap.epitest.fi"
 SRC_URI="http://hostap.epitest.fi/releases/${P}.tar.gz"
 LICENSE="GPL-2"

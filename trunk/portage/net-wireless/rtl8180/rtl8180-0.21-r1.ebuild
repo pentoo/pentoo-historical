@@ -4,7 +4,7 @@
 
 inherit linux-mod eutils
 
-DESCRIPTION="Driver for the rtl8180 wireless chipset with injectoin patch"
+DESCRIPTION="Driver for the rtl8180 wireless chipset with injection patch"
 HOMEPAGE="http://rtl8180-sa2400.sourceforge.net"
 SRC_URI="mirror://sourceforge/rtl8180-sa2400/${P}.tar.gz"
 LICENSE="GPL-2"

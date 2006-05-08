@@ -8,7 +8,7 @@ MY_PN=${PN/-modules/}
 MY_P=${MY_PN}-${PV}
 S=${WORKDIR}/${MY_P}
 
-DESCRIPTION="Kernel modules for Prism2/2.5/3 based 802.11b wireless LAN products"
+DESCRIPTION="Kernel modules for Prism2/2.5/3 based 802.11b wireless LAN products with injection"
 HOMEPAGE="http://linux-wlan.org"
 SRC_URI="ftp://ftp.linux-wlan.org/pub/linux-wlan-ng/${MY_P}.tar.bz2"
 
