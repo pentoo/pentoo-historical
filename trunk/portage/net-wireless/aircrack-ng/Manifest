@@ -1,5 +1,4 @@
 MD5 262a61e85af3de1a4557cc3878efdcc7 ChangeLog 3592
-MD5 28f873cef141498112d55cb61416db66 aircrack-ng-0.4.4.ebuild 687
-MD5 6efea6f57775277413846ea1ef8dbb71 files/digest-aircrack-ng-0.3 67
-MD5 9719c23561b9687243460bd8285cb1da files/digest-aircrack-ng-0.4.4 69
+MD5 28f873cef141498112d55cb61416db66 aircrack-ng-0.5.ebuild 687
+MD5 ebb7e8c7cf3528e8d38d3ff6fb1ee247 files/digest-aircrack-ng-0.5 67
 MD5 30ce62b2f7c51e6a3882a314a996de7f metadata.xml 704
