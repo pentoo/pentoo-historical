@@ -1,0 +1,573 @@
+# ChangeLog for Gentoo Linux Installer
+# Copyright 2004 Gentoo Technologies, Inc.
+# $Header: /var/cvsroot/gentoo/src/installer/src/fe/gtk/ChangeLog,v 1.225 2006/05/04 04:07:46 agaffney Exp $
+
+  8 Apr 2006; Andrew Gaffney <agaffney@gentoo.org>
+  src/fe/gtk/RunInstall.py, src/fe/gtk/URIBrowser.py:
+  remove extra print statements
+
+*GLI-gtkfe-0.3 (11 Feb 2006)
+
+  2 May 2006; Andrew Gaffney <agaffney@gentoo.org>
+  added splashscreen
+
+  10 Feb 2006; Andrew Gaffney <agaffney@gentoo.org>
+  check for partitions of 'unknown' type and warn user
+
+  6 Feb 2006; Andrew Gaffney <agaffney@gentoo.org>
+  KEYMAP and CONSOLEFONT default to blank in OtherSettings.py
+
+  5 Feb 2006; John N. Laliberte <allanonjl@gentoo.org>
+  OtherSettings.py: Replacement for rc.conf screen.
+  
+  4 Feb 2006; Andrew Gaffney <agaffney@gentoo.org>
+  initial working help
+  help text for Welcome
+  add TextBufferMarkup.py
+
+  30 Jan 2006; Andrew Gaffney <agaffney@gentoo.org>
+  if user doesn't add any interfaces for post-install, confirm
+
+  13 Jan 2006; Andrew Gaffney <agaffney@gentoo.org>
+  add warning to ExtraPackages about fetch-restricted and interactive ebuilds
+
+  7 Jan 2006; John N. Laliberte <allanonjl@gentoo.org>
+  ExtraPackages.py: Fix bug where leaving and going back to a screen causes
+  package to be listed twice.  add support for detecting GRP packages from
+  grppkgs.txt on the livecd only if the grp checkbox is checked on the stage
+  screen.  Add new property called 'DisplayName' to Package object for grp
+  support.
+  
+  7 Jan 2006; Andrew Gaffney <agaffney@gentoo.org>
+  warn user when choosing the GRP option and not Dynamic
+  load extra kernel args on Bootloader.py
+
+  5 Jan 2006; John N. Laliberte <allanonjl@gentoo.org>
+  Users.py: disable password fields if loading from profile, fix issue where
+  if uid is blank, get error when loading from profile.  fix issue where
+  password box is disabled after modifying and accepting changes for a user
+  loaded from a profile. re-enable switching notebook page when selecting user
+  from list.  Move buttons to upper right.
+  
+  4 Jan 2006; John N. Laliberte <allanonjl@gentoo.org>
+  Timezone.py: fix loading of timezones from installprofile
+  due to race condition.
+  
+  2 Jan 2006; Andrew Gaffney <agaffney@gentoo.org>
+  fix to hopefully auto-scroll properly
+  scroll to bottom of output tab on failure
+
+  19 Dec 2005; Andrew Gaffney <agaffney@gentoo.org>
+  add install_mode support to Misc tab of CC screen
+
+  11 Dec 2005; Andrew Gaffney <agaffney@gentoo.org>
+  change call to .get_active_text()
+  set arch properly in CF
+
+  4 Dec 2005; Andrew Gaffney <agaffney@gentoo.org>
+  added StartupServices screen
+  fixed some typos introduced by the CC-to-IP networking code
+  only add interface to IP if type is 'dhcp' or 'static'
+  StartupServices screen now works
+  move StartupServices after ExtraPackages
+  code cleanup for StartupServices
+  Bootloader screen allows for selection of boot_device if bootloader in MBR
+  Bootloader screen allows user to specify extra kernel args
+  bootsplash option on Kernel screen
+  rewrote Kernel.py to be more modular and added hardened- and grsec-sources
+
+  3 Dec 2005; Andrew Gaffney <agaffney@gentoo.org>
+  added CC networking pre-loading to Networking screen
+
+  1 Dec 2005; Andrew Gaffney <agaffney@gentoo.org>
+  added DHCP options to CC screen
+
+  28 Nov 2005; Andrew Gaffney <agaffney@gentoo.org>
+  rename Client Config screen to Pre-install Config
+  list currently loaded modules on the right side of the client config screen
+  add scrollbar to module list
+  check 'Network already setup' if gentoo.org can be pinged
+  clean up loaded module list
+
+  27 Nov 2005; Andrew Gaffney <agaffney@gentoo.org>
+  wrap text in log and output view
+  add vertical scrollbars
+  scroll with scrollbars instead of textbuffer iter crap
+  scrollbars suck...autoscrolling the old way
+  cleanup (still commented) autoscroll code with vadjustment
+
+  26 Nov 2005; Andrew Gaffney <agaffney@gentoo.org>
+  move partition debug button to top row so it's always visible
+  add bit about installer version to failure message
+  spread out filesystem types in key
+
+  25 Nov 2005; Andrew Gaffney <agaffney@gentoo.org>
+  show mountpoint in partition summary on main screen
+  allow partition size less than 1/<width of slider>*<drive size MB>
+  fix unalloc->part size
+  don't allow MB sizes out of bounds to be entered
+  don't let part_size less than min-size be entered
+
+  21 Nov 2005; Andrew Gaffney <agaffney@gentoo.org>
+  new paragraph on welcome screen
+  help button launches firefox to view handbook
+  
+  19 Nov 2005; John N. Laliberte <allanonjl@gentoo.org>
+  ExtraPackages.py: use new method get_install_package_list() from
+  installprofile.
+  
+  6 Nov 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Everybody loves Hypnotoad..err...Futurebar!
+
+*GLI-gtkfe-0.2 (27 Oct 2005)
+
+  25 Oct 2005; Andrew Gaffney <agaffney@gentoo.org>
+  disable Dynamic option if systempkgs.txt not present
+
+  24 Oct 2005; Andrew Gaffney <agaffney@gentoo.org>
+  add Verbose option to ClientConfig
+
+  22 Oct 2005; Andrew Gaffney <agaffney@gentoo.org>
+  add tab for tailing the log file
+
+  7 Oct 2005; Andrew Gaffney <agaffney@gentoo.org>
+  snapshot URI entry is disabled when entering the screen if not snapshot
+
+  5 Oct 2005; Andrew Gaffney <agaffney@gentoo.org>
+  fix all calls to get_active_text() in URIBrowser.py
+
+  22 Sep 2005; Andrew Gaffney <agaffney@gentoo.org>
+  move 'Recommended layout' button up to top
+  add 'Clear partitions' button
+
+  20 Sep 2005; Andrew Gaffney <agaffney@gentoo.org>
+  add 'network is already setup and running' checkbox on ClientConfig screen
+  remove debugging print statements from PartProperties.py
+
+  14 Sep 2005; Andrew Gaffney <agaffney@gentoo.org>
+  browse button is disabled along with URI entry field
+
+  13 Sep 2005; Andrew Gaffney <agaffney@gentoo.org>
+  FileBrowser is now URIBrowser
+  change URIBrowser to take gtk.Entry object as an argument
+  add URIBrowser to PortageTree.py
+
+  5 Sep 2005; Andrew Gaffney <agaffney@gentoo.org>
+  file list is refreshed on "Refresh" or set host from mirror list
+  ftp support in URI browser
+  hide TreeView column header
+
+  4 Sep 2005; Andrew Gaffney <agaffney@gentoo.org>
+  add FileBrowser.py and modify Stage.py to use it.
+  add mirror list browsing
+
+  3 Sep 2005; Andrew Gaffney <agaffney@gentoo.org>
+  sub-progress bar
+  change 'etc_files' to 'self.etc_files' in RcDotConf
+  set subprogress bar text to "Working..." after each pulse
+  change pulse rate to 0.03
+
+  1 Sep 2005; Preston Cody <codeman@gentoo.org>
+  hack to fix gtkfe to write rc.conf in the etc_files structure.
+  do the same fix for make.conf
+
+  21 Aug 2005; Andrew Gaffney <agaffney@gentoo.org>
+  begin readying for gettext stuff
+  make OK button in PartProperties default
+  fix missing 'self'
+  add GPL header to all files
+  changed GNOME to gnome in ExtraPackages
+  automatically call CC.start_failure_cleanup() on failure
+
+  21 Aug 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Overhaul of ExtraPackages.py.  Now fully integrated into the backend.
+
+  20 Aug 2005; Andrew Gaffney <agaffney@gentoo.org>
+  add ability to create reiserfs, xfs, and jfs
+  fixed timezone loading
+
+  17 Aug 2005; Andrew Gaffney <agaffney@gentoo.org>
+  change finish to Install on InstallSummary.py
+  disable USE selection if GRP install
+
+  16 Aug 2005; Andrew Gaffney <agaffney@gentoo.org>
+  add validate_uri() checks to Stage.py and PortageTree.py
+  CD snapshot URI automaticaly filled in for PortageTree.py
+  force sync method to "snapshot" and snapshot URI on CD for dynamic-stage3
+
+  13 Aug 2005; Andrew Gaffney <agaffney@gentoo.org>
+  add check for 0MB partition
+
+  10 Aug 2005; Andrew Gaffney <agaffney@gentoo.org>
+  set kernel_build_method to "genkernel" as default
+
+*GLI-gtkfe-0.1 (03 Aug 2005)
+
+  3 Aug 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Determine HPaned handle-width dynamically in order to work properly on all
+  GTK themes.
+
+  30 Jul 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Reduce spacing on Stage screen.
+  Don't prompt about blank stage tarball URI if dynamic stage3
+  Disable chost_combo if stage > 1
+
+  24 Jul 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Add support for dynamic stage3 to Stage.py
+  Add proxy and kernel module fields to CC screen.
+  CC screen pulls values from self.controller.client_profile.
+  CC screen saves values to self.controller.client_profile.
+
+  23 Jun 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Add --debug flag for gtkfe.py. Add fields to Advanced screen of Client
+  Config screen.
+
+  22 Jun 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Actually commit ClientConfig screen with "working" pre-install net setup.
+
+  20 Jun 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Add new screen for ClientConfig (nothing in it yet).
+
+  14 Jun 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Users.py: bugfix to not check if uid is an int if its not set.
+
+  13 Jun 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Add check for blank stage tarball URI and ask user if they want to continue.
+  Remove '/usr/share/zoneinfo/' part from timezone.
+
+  12 Jun 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Networking.py: complete overhaul.  added in gui support ( no backend support
+  yet ) for wireless, added in hardware identification for ethernet devices,
+  added a new tab that will hold proxy and other networking information.
+  Timezone.py: changed error if timezone is bad.
+  RcDotConf.py: stopped printing KeyError in loading phase.
+  
+  9 Jun 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Change from .1 and .9 to constants.
+
+  7 Jun 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Minor changes as suggested by pychecker.
+
+  2 Jun 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Fix text running off the side of the window on all screens.
+
+  31 May 2005; John N. Laliberte <allanonjl@gentoo.org>
+  timezone_map_gui: Small fix to prevent race condition on area_expose. 
+
+  31 May 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Cause install to *actually* fail on a failure. Added more detail to the error
+  message. Add back error message on partition load error.
+
+  28 May 2005; John N. Laliberte <allanonjl@gentoo.org>
+  timezone_map_gui.py: small update to fix refresh on area expose.
+
+  28 May 2005; John N. Laliberte <allanonjl@gentoo.org>
+  recommit of Timezone.py due to removal of gnomecanvas dep in
+  timezone_map_gui.py.
+  
+  27 May 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Typo fix, WARNING instead of WARN
+
+  24 May 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Changes for IP using GLISD directly.
+
+  16 May 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Added code to deactivate() in Partitioning.py to make sure there is a
+  partition with the mountpoint /.
+  
+  15 May 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Removed dependency on gnomecanvas for timezone_map_gui.py by re-implementing
+  anything needed in pure gtk.
+  
+  13 May 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Changed Welcome screen message and disabled setting of root password.
+
+  8 May 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Complete overhaul of Timezone.py.  Now has a very gui selector that was
+  ripped out of a redhat timezone configuration utility. Has been integrated
+  into the backend.
+  
+  4 May 2005; Andrew Gaffney <agaffney@gentoo.org>
+  More idiot-proofing: mountpoint/opts fields disables for swap and mountopts
+  defaults to 'defaults' if blank and a mountpoint is specified
+
+  2 May 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Readded resizing support.
+
+  1 May 2005; Andrew Gaffney <agaffney@gentoo.org>
+  PartProperties gets cur_size parameter. PartProperties allows sliding bar
+  when a partition is resizeable. Additional manual size entry validation code.
+
+  30 Apr 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Add 'Format' to PartProperties. Remove craptastic split partitioning screen
+  stuff.
+
+  29 Apr 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Split 'custom' sync option into 'none' and 'snapshot'.
+
+  16 Apr 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Integrated RcDotConf into the backend.
+  
+  16 Apr 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Complete overhaul of RcDotConf.
+  
+  10 Apr 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Added check to ensure uid is an int and not a str.
+  Changed named of root password button in gui, added
+  a seperate reset button for root password.  Fixed
+  warning about reparenting a widget.  Added popup
+  error message if root passwords do not match.  Changed
+  behavior so click on an item automatically selects
+  it for editing, getting rid of the need for a button.
+  
+  09 Apr 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Major overhaul of partitioning code for overhauled GLIStorageDevice.
+
+  03 Apr 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Fixed 2 bugs in Users.py.
+  
+  02 Apr 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Removed reiserfs from the supported filesystems
+
+  02 Apr 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Users.py- put in password field for user adding, 
+  loading from saved config file implemented.
+  Networking.py, Timezone.py, fixed tab spacings.
+  
+  30 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Cleanup deactivate() in Users
+
+  30 Mar 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Users.py is now half integrated into the backend (saving only).
+  
+  29 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Added code to detect when the output logfile is moved and temporarily
+  disabled the done/error dialogs.
+
+  29 Mar 2005; John N. Laliberte <allanonjl@gentoo.org>
+  Complete overhaul of Users.py.  UI is smart, but not yet integrated
+  into the backend.
+
+  28 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Added install complete/error message boxes and a TextView for displaying
+  output. Change /tmp/install.log back to /var/log/install.log
+
+  26 Mar 2005; Preston Cody <codeman@gentoo.org>
+  removed /usr/local/zoneinfo from gtkfe b/c it's already being added on the BE.
+  
+  26 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Blank entry won't get added with Update in Networking.py
+
+  25 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  gentoo-sources is default option in Kernel.py. Changed all gtk.TRUE/FALSE
+  to True/False
+
+  23 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Added livecd-kernel option to Kernel.py.
+
+  21 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Reenabled 'emerge sync' option. Removed get_random_salt() function and
+  replaced call to crypt.crypt() with GLIUtility.hash_password()
+
+  19 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Temporarily disabled 'emerge sync' option in PortageTree due to python
+  threading bug. Removed fifo code.
+
+  16 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  PartitioningMain calls deactivate() in active notebook page in its
+  deactivate(). PartitioningMain's deactivate() returns a value. Subtract
+  1 from end value.
+
+  7 Mar 2005; John Laliberte <allanonl@bu.edu>
+  Added a custom package bar where you can fill in custom packages to emerge
+  (space seperated list)
+
+  6 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Fix for swapped broadcast and netmask in Networking.py. Put empty try/except
+  block around line to set snapshot URI in PortageTree.py. Loading an install
+  profile uses a temporary GLIInstallProfile object to parse and then assigns
+  it to the main object so the master object doesn't get left in an
+  inconsistent state after a failed profile load.
+
+  5 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Entry fields and slider in PartProperties.py now sync with each other.
+  Sliding the slider will update the entry fields and changing an entry
+  field will update the slider and the other entry field. Added help label
+  below slider and above entry fields.
+
+  1 Mar 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Quick fix to empty the fifo
+
+  17 Feb 2005; John Laliberte <allanonl@bu.edu>
+  ExtraPackages.py - Added a lot of UI reaction details.  It now
+  reacts in a reasonable way that users will expect. Added support
+  for each section to have "default" packages selected when you
+  select the category.
+
+  16 Feb 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Added PartitioningMain which has a gtk.Notebook for Partitioning and
+  PartitioningUgly (will be renamed). PartitioningMain calls activate()
+  in child screens. Ugly screen is auto-selected if partition tables
+  can't be read
+
+  06 Feb 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Added GRP checkbox in Stage.py
+
+  01 Feb 2005; John Laliberte <allanonl@bu.edu>
+  ExtraPackages.py - Added class Details.  Large portions updated so
+  that there is now a tree structure of packages associated with each
+  section and category. Many visual changes to the screen.
+
+  31 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Changed vertical spacing for install steps. Removed "Install" activation
+  if profile is loaded. Bottom buttons are dynamically generated. Cleaned up
+  unneeded code from Partitioning.py
+
+  30 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Deleting and recreating swap doesn't cause nastiness anymore. Switched
+  to dynamically creating color key blocks. Made "whole disk" display taller
+  to begin with. Fixed primary/logical checking in PartProperties.py
+
+  29 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Shell for partition properties dialog. Added "working" Ok and Cancel
+  buttons to PartProperties.py. Began moving code from Partitioning.py
+  to PartProperties.py. Lots more code moved. All editing functionality
+  moved to PartProperties.py
+
+  27 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  add len(sys.argv) check so gtkfe.py can be run without -p. Readded
+  development-sources and gentoo-dev-sources to Kernel.py
+
+  26 Jan 2005; John Laliberte <allanonl@bu.edu>
+  ExtraPackages.py - major overhaul of the screen.  Uses objects for the
+  'Section' and 'Category'.
+
+  24 Jan 2005; John Laliberte <allanonl@bu.edu>
+  Networking.py - fixed the bug where if no device was entered, it would
+  raise an exception.  also fixed the bug for if you had only a dhcp device.
+  Left justified the labels on the entry boxen.
+
+  22 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Fixed bug where end sector was set 1 too high causing the last partition
+  to be 1 sector past the end of the drive. Added --pretend flag to gtkfe.py
+  that gets passed to GLIClientController
+
+  19 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Added "Portage snapshot URI" field to PortageTree.py
+
+  17 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Added blurb about me being lazy to Welcome. Turned off pretend mode for
+  gtkfe (no more training wheels!). Added mount point/opts fields to
+  Partitioning.py. "fixed" invalid IP address problem in Networking.py
+
+  17 Jan 2005; John Laliberte <allanonl@bu.edu>
+  Networking.py - changed from combobox to comboentrybox.  Redid some of the
+  logic used to make the user experience better.
+  Widgets.py - added an errorbox2 that has okay and cancel.
+
+  16 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  RunInstall.py called poll_notifications() in gtk idle loop and progress
+  bar/status display work. Take ~5 fscking hours to figure out that pygtk
+  is fscking retarted and locks its thread so python won't switch to
+  another thread :(
+
+  15 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  USE flag editor in MakeDotConf.py. Fix double spacing issue for USE flags.
+  USE flag editor now generated proper + and - USE line. CFLAGS ComboBoxes
+  and Entry in MakeDotConf. CFLAGS is set in InstallProfile. MakeDotConf does
+  CHOST, ACCEPT_KEYWORDS, MAKEOPTS, and FEATURES. New screen/code to actually
+  run the install.
+
+  15 Jan 2005; John Laliberte <allanonl@bu.edu>
+  Networking.py - added support for a custom ethernet device.
+  Fixed a lot of little bugs having to do with user interaction,
+  and added support for loading from the .xml file.
+  Networking.py - added support for hostname and dnsdomainname.
+
+  14 Jan 2005; John Laliberte <allanonl@bu.edu>
+  Timezone.py - fixed bug where after selecting a timezone, it would jump
+  to the parent of the selection.
+  Networking.py - fixed bug where some fields would be available if device
+  was selected and was dhcp.  also integrated into backend ( one way only
+  so far, only will save, not load settings yet ).  Added error box to
+  ask the user if they want to replace settings or cancel if the device
+  is already listed.
+  
+  14 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Added description to the top of NetworkMounts and changed the spacing
+  of the description on Partitioning. In NetworkMounts, activate() now
+  disables all buttons except 'New'. NetworkMounts now does field
+  validation. Welcome.py code cleanups. Created Template.py based on
+  Welcome.py. Rewrote Stage.py from scratch. Rewrote PortageTree.py.
+  Added set_size_request() calls in PortageTree and Stage for alignment.
+  Rewrote Kernel.py. Rewrote Daemons.py. Added sysklogd to loggers section
+  of Daemons.py. Rewrote Bootloader.py
+
+  13 Jan 2005; John Laliberte <allanonl@bu.edu>
+  Networking.py - Complete rework of the screen using (as a
+  template ) agaffney's network mounts screen. This screen still
+  needs to be "integrated" into the backend, but will be completed
+  within the next few days. At some point the dropdown needs to be
+  changed to an entry combobox.
+
+  09 Jan 2005; John Laliberte <allanonl@bu.edu>
+  Timezone.py - Updated so it now is integrated with the backend.
+  When you select and item in the tree that is not a node,
+  ( you need to press enter or double-click ) it will set your timezone.
+
+  05 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  Change all the math in Partitioning.py to work with sectors instead of
+  cylinders.
+
+  04 Jan 2005; Andrew Gaffney <agaffney@gentoo.org>
+  A few tweaks to make it "work" with the GLIStorageDevice changes.
+
+  21 Dec 2004; John Laliberte <allanonl@bu.edu>
+  Daemons.py, Bootloader.py, Kernel.py, Stage.py, PortageTree.py, 
+  MakeDotConf.py, RcDotConf.py now selects/loads the appropriate 
+  options if a profile is loaded.  They are selected when each screen 
+  is activated.
+  In Timezone.py,Users.py
+  Removed deprecation warning caused by gtk.OptionMenu() in Widgets.py.
+  Removed some old debug values that were unnecessary.
+  Integrated the Stage tarball URI, it nows loads from a profile and checks
+  to make sure its a valid value by changing the background to pink.
+  Created a test profile, "test_installprofile.xml" that selects different
+  options illustrating the changes.
+  Stage.py: Now doesn't change screens if the URI is invalid.
+  Timezone.py: Changed the entire layout.  Made a recursive function to
+  populate the treeview with the timezones from /usr/share/zoneinfo.
+  
+  20 Dec 2004; Andrew Gaffney <agaffney@gentoo.org>
+  Partition screen "complete" with idiot-proofed goodness! Minor modification
+  for info display when creating logical partition. Slider color changes to
+  match selected filesystem when creating new partition.
+
+  19 Dec 2004; Andrew Gaffney <agaffney@gentoo.org>
+  Exit button works. Load button works. Save button works. Minor fixes to
+  NetworkMounts due to switch to ComboBox for Type field. Old resize slider
+  is now "new partition" slider. Partition screen adds/removes partitions.
+
+  18 Dec 2004; Andrew Gaffney <agaffney@gentoo.org>
+  Added Load/Save buttons and images (don't do anything yet). Reordered
+  fields in NetworkMounts and added button next to Export ComboBox.
+
+  12 Dec 2004; Andrew Gaffney <agaffney@gentoo.org>
+  Completed rough working NetworkMounts screen: adds/removes/updates entries
+  and saves to/reads from install profile. Moved some duplicated code into
+  [enable|disable]_all_fields() functions. "fixed" the problem with the GTK
+  assertion when calling set_text_column(0).
+
+  12 Dec 2004; John Laliberte <allanonl@bu.edu>
+  Networking.py updated to check ips while you type, as well as disabling
+  the dropdown if any of the ip's are faulty.  This version turns the
+  background of the gtk.Entry to "pink" until a valid ip address is found.
+  Timezone.py updated to include the function generate_timezones which had
+  previously been put in GLIUtility. Networking.py code has been
+  overhauled/cleaned up to reflect the growing complexity of the panel.
+  
+  11 Dec 2004; Andrew Gaffney <agaffney@gentoo.org>
+  Initial ChangeLog commit. Added set_size_request() call in gtkfe.py so the
+  width of the left frame doesn't shift. Incorporated screen updates from
+  John Laliberte <allanonl@bu.edu> (AllanonJL in #gentoo-installer). Added
+  functionality to NetworkMounts.py to list NFS exports on a particular host.

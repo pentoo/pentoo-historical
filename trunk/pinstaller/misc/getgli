@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -z $1 ]
+then
+  DATE=`wget -O - http://dev.gentoo.org/~agaffney/gli/ 2>/dev/null | grep -e 'installer-' | sed -e 's:^.\+>installer-::' -e 's:\.tar\.bz2.\+$::'`
+else
+  DATE=$1
+fi
+
+wget http://dev.gentoo.org/~agaffney/gli/snapshots/installer-${DATE}.tar.bz2
+tar -xjf installer-${DATE}.tar.bz2

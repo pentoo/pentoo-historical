@@ -1,0 +1,14 @@
+To run this program, you need:
+
+>=dev-python/pygtk-2.4 (stable in tree)
+sys-apps/parted (1.6.15 is stable, 1.6.20 is ~x86)
+dev-python/pyparted (1.6.6 is stable, 1.6.9 is ~x86)
+
+When running this program, you need to do the following:
+
+export PYTHONPATH="$PYTHONPATH:../.."
+
+You only need to do this once when you open up a new shell, xterm, etc. You
+can then run this program normally. Because of the code that reads the existing
+partition table, gtkfe.py must be run as root. This isn't an issue during an
+install but can be a real pain when coding/testing. I'll try to fix this.

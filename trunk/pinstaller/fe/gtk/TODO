@@ -1,0 +1,13 @@
+GTK Frontend TODO
+=================
+
+add distcc parameter and configuration options.
+PRELOAD NETWORK DEVICES so people don't forget to click save.
+HELP SCREENS
+
+rewrite users screen (DONE)
+custom kernel and kernel bootsplash (yes/no) options (DONE)
+disable mountpoint and mountopts fields if fstype == "linux-swap" (DONE)
+label size slider in partitioning (DONE)
+error handling for invalid portage snapshot URI (DONE)
+add back resizing support (DONE)
