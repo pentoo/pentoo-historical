@@ -251,27 +251,6 @@ class GLIPortage(object):
 	def emerge(self, packages, add_to_world=True):
 		if isinstance(packages, str):
 			packages = packages.split()
-		self._cc.addNotification("progress", (0, "Calculating dependencies for " + " ".join(packages)))
-		pkglist = self.get_deps(packages)
-		if self._debug: self._logger.log("install_packages(): pkglist is " + str(pkglist))
-		for i, pkg in enumerate(pkglist):
-			if not pkg: continue
-			if self._debug: self._logger.log("install_packages(): processing package " + pkg)
-			self._cc.addNotification("progress", (float(i) / len(pkglist), "Emerging " + pkg + " (" + str(i+1) + "/" + str(len(pkglist)) + ")"))
-			if not self._grp_install or not self.get_best_version_vdb("=" + pkg):
-				status = GLIUtility.spawn("emerge -1 =" + pkg, display_on_tty8=True, chroot=self._chroot_dir, logfile=self._compile_logfile, append_log=True)
-#				status = self._emerge("=" + pkg)
-				if not GLIUtility.exitsuccess(status):
-					raise GLIException("EmergePackageError", "fatal", "emerge", "Could not emerge " + pkg + "!")
-			else:
-#				try:
-				self.copy_pkg_to_chroot(pkg)
-#				except:
-#					raise GLIException("EmergePackageError", "fatal", "emerge", "Could not emerge " + pkg + "!")
-			self._cc.addNotification("progress", (float(i+1) / len(pkglist), "Done emerging " + pkg + " (" + str(i+1) + "/" + str(len(pkglist)) + ")"))
-		if add_to_world:
-			for package in packages:
-				self.add_pkg_to_world(package)
 
 
 def usage(progname):
