@@ -47,15 +47,15 @@ class InstallProfile:
 		# Configuration information - profile data
 		# All variables must be declared here with a default value to ensure
 		# the XML will correctly serialize.
-		self._cron_daemon_pkg = "vixie-cron"
-		self._logging_daemon_pkg = "syslog-ng"
+		self._cron_daemon_pkg = ""
+		self._logging_daemon_pkg = ""
 		self._boot_device = ""
 		self._boot_loader_mbr = True
-		self._boot_loader_pkg = ""
+		self._boot_loader_pkg = "grub"
 		self._kernel_modules = []
 		self._kernel_config_uri = ""
 		self._kernel_build_method = "genkernel"
-		self._bootloader_kernel_args = ""
+		self._bootloader_kernel_args = "acpi=force dopcmcia vga=788 nodhcp"
 		self._kernel_initrd = True
 		self._kernel_bootsplash = False
 		self._kernel_source_pkg = "livecd-kernel"
@@ -64,10 +64,10 @@ class InstallProfile:
 		self._time_zone = "UTC"
 		self._stage_tarball_uri = ""
 		self._install_stage = 3
-		self._portage_tree_sync_type = "sync"
+		self._portage_tree_sync_type = "snapshot"
 		self._portage_tree_snapshot_uri = ""
 		self._domainname = "localdomain"
-		self._hostname = "localhost"
+		self._hostname = "pentoo"
 		self._http_proxy = ""
 		self._ftp_proxy = ""
 		self._rsync_proxy = ""
