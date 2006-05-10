@@ -245,8 +245,8 @@ class ArchitectureTemplate:
 		if not os.path.isdir(self._chroot_dir):
 			if self._debug: self._logger.log("DEBUG: making the chroot dir:"+self._chroot_dir)
 			os.makedirs(self._chroot_dir)
-		if self._install_profile.get_install_stage() == 3 and self._install_profile.get_dynamic_stage3():
-			# stage3 generation code here
+
+		# stage3 generation code here
 		dircd= [ "dev", "proc", "tmp", "mnt", "sys" ]
 		dirlive = [ "bin", "boot", "etc", "home", "lib", "opt", "root", "sbin", "usr" , "var" ]
 		
@@ -257,8 +257,8 @@ class ArchitectureTemplate:
 		for i in range(len(dircd)) :
 			self.notify_frontend("progress", (float(i+10) / (16), "Copying " + dircd[i]))
 			GLIUtility.spawn("cp -a /mnt/livecd/" + dircd[i] + " " + self._chroot_dir + "/" )
-		GLIUtility.spawn("mv " + self._chroot_dir + " " + "/etc/init.d/halt.sh.orig" + self._chroot_dir + "/etc/init.d/halt.sh")
-		GLIUtility.spawn("mv " + self._chroot_dir + " " + "/etc/init.d/fstab.orig" + self._chroot_dir + "/etc/init.d/fstab")
+		GLIUtility.spawn("mv " + "/etc/init.d/halt.sh.orig" + self._chroot_dir + "/etc/init.d/halt.sh")
+		GLIUtility.spawn("mv " + "/etc/init.d/fstab.orig" + self._chroot_dir + "/etc/init.d/fstab")
 		GLIUtility.spawn("cp -a /etc/inittab.orig " + self._chroot_dir + "/etc/inittab")
 		GLIUtility.spawn("cp -a /mnt/cdrom/isolinux/pentoo* " + self._chroot_dir + "/boot/")
 		GLIUtility.spawn("echo '' > " + self._chroot_dir + "/etc/conf.d/local.start")
