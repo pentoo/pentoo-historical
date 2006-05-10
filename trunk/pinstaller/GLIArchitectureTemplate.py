@@ -247,65 +247,36 @@ class ArchitectureTemplate:
 			os.makedirs(self._chroot_dir)
 		if self._install_profile.get_install_stage() == 3 and self._install_profile.get_dynamic_stage3():
 			# stage3 generation code here
-			if not GLIUtility.is_file("/usr/livecd/systempkgs.txt"):
-				raise GLIException("CreateStage3Error", "fatal", "unpack_stage_tarball", "Required file /usr/livecd/systempkgs.txt does not exist")
-			try:
-				syspkgs = open("/usr/livecd/systempkgs.txt", "r")
-				systempkgs = syspkgs.readlines()
-				syspkgs.close()
-			except:
-				raise GLIException("CreateStage3Error", "fatal", "unpack_stage_tarball", "Could not open /usr/livecd/systempkgs.txt")
+		dircd= [ "dev", "proc", "tmp", "mnt", "sys" ]
+		dirlive = [ "bin", "boot", "etc", "home", "lib", "opt", "root", "sbin", "usr" , "var" ]
+		
+		for i in range(len(dirlive)) :
+			self.notify_frontend("progress", (float(i) / (16), "Copying " + dirlive[i]))
+			GLIUtility.spawn("cp -a /" + dirlive[i] + " " + self._chroot_dir + "/" )
+		self.notify_frontend("progress", (float(15) / (16), "Finishing"))
+		for i in range(len(dircd)) :
+			self.notify_frontend("progress", (float(i+10) / (16), "Copying " + dircd[i]))
+			GLIUtility.spawn("cp -a /mnt/livecd/" + dircd[i] + " " + self._chroot_dir + "/" )
+		GLIUtility.spawn("mv " + self._chroot_dir + " " + "/etc/init.d/halt.sh.orig" + self._chroot_dir + "/etc/init.d/halt.sh")
+		GLIUtility.spawn("mv " + self._chroot_dir + " " + "/etc/init.d/fstab.orig" + self._chroot_dir + "/etc/init.d/fstab")
+		GLIUtility.spawn("cp -a /etc/inittab.orig " + self._chroot_dir + "/etc/inittab")
+		GLIUtility.spawn("cp -a /mnt/cdrom/isolinux/pentoo* " + self._chroot_dir + "/boot/")
+		GLIUtility.spawn("echo '' > " + self._chroot_dir + "/etc/conf.d/local.start")
+		GLIUtility.spawn("echo '' > " + self._chroot_dir + "/etc/conf.d/local.stop")
+		chrootscript = r"""
+		#!/bin/bash
+		env-update
+		source /etc/profile
+		"""
+		dirlive.__len__()
+		script = open(self._chroot_dir + "/tmp/extrastuff.sh", "w")
+		script.write(chrootscript)
+		script.close()
+		GLIUtility.spawn("chmod 755 /tmp/extrastuff.sh && /tmp/extrastuff.sh", chroot=self._chroot_dir, display_on_tty8=True, logfile=self._compile_logfile, append_log=True)
+		GLIUtility.spawn("rm -rf /var/tmp/portage/* /etc/make.conf /tmp/*", chroot=self._chroot_dir)
+		self.notify_frontend("progress", (1, "Done"))
+		self._logger.log("Filesystem was copied successfully")
 
-			# Pre-create /lib (and possible /lib32 and /lib64)
-			if os.path.islink("/lib") and os.readlink("/lib") == "lib64":
-				if self._debug: self._logger.log("DEBUG: unpack_stage_tarball(): precreating /lib64 dir and /lib -> /lib64 symlink because glibc/portage sucks")
-				if not GLIUtility.exitsuccess(GLIUtility.spawn("mkdir " + self._chroot_dir + "/lib64 && ln -s lib64 " + self._chroot_dir + "/lib")):
-					raise GLIException("CreateStage3Error", "fatal", "unpack_stage_tarball", "Could not precreate /lib64 dir and /lib -> /lib64 symlink")
-
-			syspkglen = len(systempkgs)
-			for i, pkg in enumerate(systempkgs):
-				pkg = pkg.strip()
-				self.notify_frontend("progress", (float(i) / (syspkglen+1), "Copying " + pkg + " (" + str(i+1) + "/" + str(syspkglen) + ")"))
-				self._portage.copy_pkg_to_chroot(pkg, True, ignore_missing=True)
-			self.notify_frontend("progress", (float(syspkglen) / (syspkglen+1), "Finishing"))
-			GLIUtility.spawn("cp /etc/make.conf " + self._chroot_dir + "/etc/make.conf")
-			GLIUtility.spawn("ln -s `readlink /etc/make.profile` " + self._chroot_dir + "/etc/make.profile")
-			GLIUtility.spawn("cp -f /etc/inittab.old " + self._chroot_dir + "/etc/inittab")
-
-			# Nasty, nasty, nasty hack because vapier is a tool
-			for tmpfile in ("/etc/passwd", "/etc/group", "/etc/shadow"):
-				GLIUtility.spawn("grep -ve '^gentoo' " + tmpfile + " > " + self._chroot_dir + tmpfile)
-
-			chrootscript = r"""
-			#!/bin/bash
-
-			source /etc/make.conf
-			export LDPATH="/usr/lib/gcc-lib/${CHOST}/$(cd /usr/lib/gcc-lib/${CHOST} && ls -1 | head -n 1)"
-
-			ldconfig $LDPATH
-			gcc-config 1
-			env-update
-			source /etc/profile
-			modules-update
-			[ -f /usr/bin/binutils-config ] && binutils-config 1
-			source /etc/profile
-			#mount -t proc none /proc
-			#cd /dev
-			#/sbin/MAKEDEV generic-i386
-			#umount /proc
-			[ -f /lib/udev-state/devices.tar.bz2 ] && tar -C /dev -xjf /lib/udev-state/devices.tar.bz2
-			"""
-			script = open(self._chroot_dir + "/tmp/extrastuff.sh", "w")
-			script.write(chrootscript)
-			script.close()
-			GLIUtility.spawn("chmod 755 /tmp/extrastuff.sh && /tmp/extrastuff.sh", chroot=self._chroot_dir, display_on_tty8=True, logfile=self._compile_logfile, append_log=True)
-			GLIUtility.spawn("rm -rf /var/tmp/portage/* /usr/portage /tmp/*", chroot=self._chroot_dir)
-			self.notify_frontend("progress", (1, "Done"))
-			self._logger.log("Stage3 was generated successfully")
-		else:
-			self._logger.log("Fetching and unpacking tarball: "+self._install_profile.get_stage_tarball_uri())
-			GLIUtility.fetch_and_unpack_tarball(self._install_profile.get_stage_tarball_uri(), self._chroot_dir, temp_directory=self._chroot_dir, keep_permissions=True, cc=self._cc)
-			self._logger.log(self._install_profile.get_stage_tarball_uri()+" was fetched and unpacked.")
 
 	##
 	# Prepares the Chroot environment by copying /etc/resolv.conf and mounting proc and dev
