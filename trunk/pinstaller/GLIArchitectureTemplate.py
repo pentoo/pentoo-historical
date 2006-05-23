@@ -273,7 +273,7 @@ class ArchitectureTemplate:
 		script.write(chrootscript)
 		script.close()
 		GLIUtility.spawn("chmod 755 /tmp/extrastuff.sh && /tmp/extrastuff.sh", chroot=self._chroot_dir, display_on_tty8=True, logfile=self._compile_logfile, append_log=True)
-		GLIUtility.spawn("rm -rf /var/tmp/portage/* /etc/make.conf /tmp/*", chroot=self._chroot_dir)
+		GLIUtility.spawn("rm -rf /var/tmp/portage/*", chroot=self._chroot_dir)
 		self.notify_frontend("progress", (1, "Done"))
 		self._logger.log("Filesystem was copied successfully")
 
@@ -451,39 +451,6 @@ class ArchitectureTemplate:
 		# Get make.conf options
 		make_conf = self._install_profile.get_make_conf()
 		
-		# For each configuration option...
-		filename = self._chroot_dir + "/etc/make.conf"
-#		self._edit_config(filename, {"COMMENT": "GLI additions ===>"})
-		for key in make_conf.keys():
-			# Add/Edit it into make.conf
-			self._edit_config(filename, {key: make_conf[key]})
-#		self._edit_config(filename, {"COMMENT": "<=== End GLI additions"})
-
-		self._logger.log("Make.conf configured")
-		# now make any directories that emerge needs, otherwise it will fail
-		# this must take place before ANY calls to emerge.
-		# otherwise emerge will fail (for PORTAGE_TMPDIR anyway)
-		# defaults first
-		# this really should use portageq or something.
-		PKGDIR = '/usr/portage/packages'
-		PORTAGE_TMPDIR = '/var/tmp'
-		PORT_LOGDIR = None
-		PORTDIR_OVERLAY = None
-		# now other stuff
-		if 'PKGDIR' in make_conf: PKGDIR = make_conf['PKGDIR']
-		if 'PORTAGE_TMPDIR' in make_conf: PORTAGE_TMPDIR = make_conf['PORTAGE_TMPDIR']
-		if 'PORT_LOGDIR' in make_conf: PORT_LOGDIR = make_conf['PORT_LOGDIR']
-		if 'PORTDIR_OVERLAY' in make_conf: PORTDIR_OVERLAY = make_conf['PORTDIR_OVERLAY']
-		if self._debug: self._logger.log("DEBUG: making PKGDIR if necessary: "+PKGDIR)
-		GLIUtility.spawn("mkdir -p " + self._chroot_dir + PKGDIR, logfile=self._compile_logfile, append_log=True)
-		if self._debug: self._logger.log("DEBUG: making PORTAGE_TMPDIR if necessary: "+PORTAGE_TMPDIR)
-		GLIUtility.spawn("mkdir -p " + self._chroot_dir + PORTAGE_TMPDIR, logfile=self._compile_logfile, append_log=True)
-		if PORT_LOGDIR != None: 
-			if self._debug: self._logger.log("DEBUG: making PORT_LOGDIR if necessary: "+PORT_LOGDIR)
-			GLIUtility.spawn("mkdir -p " + self._chroot_dir + PORT_LOGDIR, logfile=self._compile_logfile, append_log=True)
-		if PORTDIR_OVERLAY != None: 
-			if self._debug: self._logger.log("DEBUG: making PORTDIR_OVERLAY if necessary "+PORTDIR_OVERLAY)
-			GLIUtility.spawn("mkdir -p " + self._chroot_dir + PORTDIR_OVERLAY, logfile=self._compile_logfile, append_log=True)
 
 	##
 	# This will get/update the portage tree.  If you want to snapshot or mount /usr/portage use "custom".
