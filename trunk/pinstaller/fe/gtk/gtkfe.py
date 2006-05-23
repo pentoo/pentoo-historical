@@ -39,7 +39,7 @@ class Installer:
                   { 'text': _('Network Mounts'), 'module': __import__("NetworkMounts") },
 #                  { 'text': _('Stage'), 'module': __import__("Stage") },
                   { 'text': _('Portage tree'), 'module': __import__("PortageTree") },
-                  { 'text': _('make.conf'), 'module': __import__("MakeDotConf") },
+#                  { 'text': _('make.conf'), 'module': __import__("MakeDotConf") },
 #                  { 'text': _('Kernel'), 'module': __import__("Kernel") },
                   { 'text': _('Bootloader'), 'module': __import__("Bootloader") },
                   { 'text': _('Timezone'), 'module': __import__("Timezone") },
