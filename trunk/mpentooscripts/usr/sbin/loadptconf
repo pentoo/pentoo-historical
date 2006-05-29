@@ -1,0 +1,141 @@
+#!/bin/sh
+# Version 1.1
+# Load some stuff on a usb stick to avoid losing configs and updates when exiting pentoo
+# Copyright 2005 Michael Zanetta grimmlin@pentoo.ch
+
+BACK_UP="\033[1K\033[0G"
+NORMAL="\033[0m"
+WARN="\033[33;1m"
+BAD="\033[31;1m"
+BOLD="\033[1m"
+GOOD="\033[32;1m"
+
+PENTOODIR="/mnt/usbstick/pentoo/"
+
+DOROOT=0
+DONESSUS=0
+DOETC=0
+DOFP=0
+DOTREE=0
+EXIT=0
+
+source /sbin/functions.sh
+
+try() {
+        local errstr
+        local retval=0
+
+        if [ -c /dev/null ]; then
+                errstr="$((eval $*) 2>&1 >/dev/null)"
+        else
+                errstr="$((eval $*) 2>&1)"
+        fi
+        retval=$?
+        if [ "${retval}" -ne 0 ]
+        then
+                splash "critical" &
+
+                echo -e "${ENDCOL}${NORMAL}[${BAD} oops ${NORMAL}]"
+                echo
+                eerror "The \"${1}\" command failed with error:"
+                echo
+                echo "${errstr#*: }"
+                echo
+        fi
+
+        return ${retval}
+}
+
+domount() {
+	mount -o loop "${PENTOODIR}"$1.img /$1
+}
+
+parse_opt() {
+        case "$1" in
+                *\=*)
+                        echo "$1" | cut -f2 -d=
+                ;;
+        esac
+}
+
+CMDLINE="`cat /proc/cmdline`"
+# Scan CMDLINE for any specified stick= arguments
+for x in ${CMDLINE}
+do
+        case "${x}" in
+                stick\=*)
+                        DEVDIR=`parse_opt "${x}"`
+                ;;
+        esac
+done
+
+if [ -z "${DEVDIR}" ]; then
+        DEVDIR="/dev/sda1"
+fi
+
+dostuff() {
+	if [ -e "${PENTOODIR}".pentoorc ]; then
+		# Pentoo config file exist, sourcing it and linking the files...
+		SOFTWARE=`cat "${PENTOODIR}".pentoorc`
+		for x in ${SOFTWARE}
+		do
+	        	case "${x}" in
+	                	root)
+        	        	        DOROOT=1
+				;;
+        		        ExploitTree)
+                		        DOTREE=1
+	                	;;
+        		        nessus)
+                		        DONESSUS=1
+	                	;;
+        	        	etc)
+                	        	DOETC=1
+		                ;;
+        		        fingerprints)
+                	        	DOFP=1
+		                ;;
+        		esac
+		done
+		if [ "${DOROOT}" -eq '1' ]; then
+			ebegin "  Mounting /root from usbstick"
+			try domount root
+			eend $?
+		fi
+		if [ "${DOETC}" -eq '1' ]; then
+			ebegin "  Mounting /etc from usbstick"
+			try domount etc
+			eend $?
+		fi
+                if [ "${DOTREE}" -eq '1' ]; then
+			ebegin "  Linking Exploit Tree to usbstick"
+			rm -rf /opt/pentoo/ExploitTree*
+			ln -sf "${PENTOODIR}"ExploitTree/ /opt/pentoo/ExploitTree
+			ln -sf "${PENTOODIR}"ExploitTree.pl /opt/pentoo/ExploitTree.pl
+			eend $?
+                fi
+		if [ "${DOFP}" -eq '1' ]; then
+			ebegin "  Linking FingerPrints DB to usbstick"
+			rm -rf /var/lib/fingerprints
+			ln -sf "${PENTOODIR}"fingerprints/ /var/lib/fingerprints
+			eend $?
+		fi
+		if [ "${DONESSUS}" -eq '1' ]; then
+			ebegin "  Linking nessus's plugins to usbstick"
+			rm -rf /usr/lib/nessus/
+			ln -sf "${PENTOODIR}"nessus/ /usr/lib/nessus/
+			eend $?
+		fi
+	else
+		umount /mnt/usbstick
+	fi
+}
+if [ -e /mnt/cdrom/pentoo/.pentoorc ];
+then
+	PENTOODIR="/mnt/cdrom/pentoo/"
+	dostuff
+else
+	if mount "${DEVDIR}" /mnt/usbstick/ &>/dev/null ; then
+		dostuff
+	fi
+fi

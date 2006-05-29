@@ -1,0 +1,47 @@
+#!/bin/sh
+
+if [ ! -e /var/db/pkg/net-wireless ] ; then
+	eerror "You must have the moduledb-2006.0 module loaded"
+	eerror "for building modules with portage !!!"
+	exit 1
+fi
+
+source /sbin/functions.sh
+mkdir -p /modules/
+
+TMPDIR="/tmp/rootfs-$$"
+# MONITORTMP="$TMPFILE-monitor"
+
+# PKG=$1
+
+DEPS=`emerge -pv $1`
+PKG=`emerge -pv $1 | grep -e ".*/.*" | sed -e 's/.*] //g' -e 's/ .*//g'`
+
+einfo "Here are the dependencies :"
+emerge -pv $1
+
+read -p "Proceed with the merging? [y]/n " ASK
+
+if [ "${ASK}" == "n" ]; then
+	exit 0
+fi
+
+einfo "Preparing to merge all required packages"
+for x in $PKG
+do
+	emerge -b ="${x}"
+	mkdir -p "${TMPDIR}"
+	tar -jxf /usr/portage/packages/"${x}".tbz2 -C "${TMPDIR}"
+	mkdir -p "${TMPDIR}"/var/db/pkg/"${x}"
+	cp -a /var/db/pkg/"${x}"/* "${TMPDIR}"/var/db/pkg/"${x}"/
+	MOFILE=`echo $x | sed -e 's/.*\///g'`
+	einfo "Building module for $MOFILE"
+	mksquashfs "${TMPDIR}" /modules/"${MOFILE}".mo
+	einfo "Module now available in /modules/$MOFILE.mo"
+	rm -rf "${TMPDIR}"
+done
+
+einfo "Finished creating modules."
+einfo "You can now copy your modules from /modules/*.mo to"
+einfo "your usb stick or whatever your modules support is."
+

@@ -1,0 +1,27 @@
+[1;31;40m                                                              .
+[1;31;40m                                                             d$b
+[1;31;40m    .d$$b.  .d$$b.     .d$$$$$$b.   .cd$$b.     .d$$b.   d$$$$$$$$$$$b  .d$$b.      .d$$b.
+[1;31;40m   d$$$$$$$b$$$$$$b   .$$$$$$$$$$ d$$$'`$$$.   d$$$$$$$b Q$$$$$$$P$$$P.$$$$$$$b.  .$$$$$$$b.
+[1;31;40m  d$$$PQ$$$$$$PQ$$$b  $$$$(  )$$$d$$$$bd$$P"  d$$$PQ$$$$b.   $$$$.   .$$$P' `$$$ .$$$P' `$$$
+[1;31;40m d$$$P   Q$$$$P Q$$$b.$$$$$$$$$$P Q$$$$$$$b  d$$$P   Q$$$$b  $$$$b   $$$$b..d$$$ $$$$b..d$$$
+[1;31;40m Q$$$     Q$$P   $$$$d$$$$$$$$$P'  "$$$$$$$$ Q$$$     Q$$$$  $$$$$   `Q$$$$$$$P  `Q$$$$$$$P
+[1;31;40m  ""       ""     "".$$$$P'          `"""""   ""        ""   Q$$$P     "Q$$$P"     "Q$$$P"
+[1;31;40m                    d$Q$$'                                    """
+[1;31;40m                    "Q$$P     
+[0;37;40m
+
+
+Welcome to Mini-Pentoo on Gentoo linux...
+
+First type ifconfig -a to see if your network card has been detected.
+You can type net-setup eth0 to setup your network interface. 
+
+If you have X/Display problems, try to edit the /root/xorg.conf and replace the Driver under 
+Device with vesa
+
+Section "Device"
+        Identifier  "Card0"
+        Driver      "vesa"
+        BoardName   "Unknown vendor|Generic radeonfb device"
+EndSection
+

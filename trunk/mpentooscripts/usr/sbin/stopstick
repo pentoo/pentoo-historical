@@ -1,0 +1,60 @@
+#!/bin/sh
+# Script to umount the usbstick
+
+PENTOODIR="/mnt/usbstick/pentoo/"
+
+DOROOT=0
+DONESSUS=0
+DOETC=0
+DOFP=0
+EXIT=0
+
+doumount() {
+	sync
+	umount -f /$1 &>/dev/null
+}
+
+parse_opt() {
+        case "$1" in
+                *\=*)
+                        echo "$1" | cut -f2 -d=
+                ;;
+        esac
+}
+
+dostuff() {
+	# Pentoo config file exist, sourcing it and linking the files...
+	SOFTWARE=`cat ${PENTOODIR}.pentoorc`
+	for x in ${SOFTWARE}
+	do
+        	case "${x}" in
+                	root)
+       	        	        DOROOT=1
+			;;
+       	        	etc)
+               	        	DOETC=1
+	                ;;
+       		esac
+	done
+	if [ "${DOROOT}" -eq '1' ]; then
+		echo "   Unmounting /root from usbstick..."
+		doumount root
+	fi
+	if [ "${DOETC}" -eq '1' ]; then
+		echo "   Unmounting /etc from usbstick..."
+		doumount etc
+	fi
+
+	# Job done, exiting
+}
+
+if [ -e /mnt/cdrom/pentoo/.pentoorc ]; then
+	PENTOODIR="/mnt/cdrom/pentoo/"
+fi
+
+if [ -e "${PENTOODIR}".pentoorc ]; then
+	dostuff
+fi
+
+
+rm -rf /tmp/soft

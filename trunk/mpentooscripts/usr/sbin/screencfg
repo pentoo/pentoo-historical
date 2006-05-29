@@ -1,0 +1,118 @@
+#!/bin/sh
+#
+# A very basic and ugly script for configuring Xorg config file and gnome res
+# (c) 2005 Michael Zanetta grimmlin@pentoo.ch
+#
+
+# define a default screen res
+SCREEN_RES=1024x768
+
+parse_opt() {
+	case "$1" in
+		*\=*)
+			echo "$1" | cut -f2 -d=
+		;;
+	esac
+}
+
+if [ -e /etc/sysconfig/xserver ]; then
+	. /etc/sysconfig/xserver
+else
+	exit 1
+fi
+
+if [ -e /etc/sysconfig/keyboard ]; then
+	. /etc/sysconfig/keyboard
+else
+	#default keytable
+	KEYTABLE="fr_CH"
+fi
+
+if [ -e /etc/sysconfig/mouse ]; then
+	. /etc/sysconfig/mouse
+fi
+
+CMDLINE=`cat /proc/cmdline`
+# Scan CMDLINE for screen resolution
+for x in ${CMDLINE}
+do
+	case "${x}" in
+		screen\=*)
+			SCREEN_RES=`parse_opt "${x}"`
+		;;
+	esac
+done
+
+MONITOR=`/usr/sbin/ddcxinfo-knoppix -monitor`
+MODES=`/usr/sbin/ddcxinfo-knoppix -modes -firstmode $SCREEN_RES`
+
+# xorg config file for X...
+
+echo 'Section "Screen"
+	Identifier "Screen0"
+	Device     "Card0"
+	Monitor    "Monitor0"
+	SubSection "Display"
+		Viewport   0 0
+		Depth     1
+		'$MODES'
+	EndSubSection
+	SubSection "Display"
+		Viewport   0 0
+		Depth     4
+		'$MODES'
+	EndSubSection
+	SubSection "Display"
+		Viewport   0 0
+		Depth     8
+		'$MODES'
+	EndSubSection
+	SubSection "Display"
+		Viewport   0 0
+		Depth     15
+		'$MODES'
+	EndSubSection
+	SubSection "Display"
+		Viewport   0 0
+		Depth     16
+		'$MODES'
+	EndSubSection
+	SubSection "Display"
+		Viewport   0 0
+		Depth     24
+		'$MODES'
+	EndSubSection
+	SubSection "Display"
+		Viewport   0 0
+		Depth     32
+		'$MODES'
+	EndSubSection
+EndSection
+
+Section "Device"
+        Identifier  "Card0"
+        Driver      "'$XMODULE'"
+        BoardName   "'$XDESC'"
+EndSection
+
+Section "InputDevice"
+        Identifier  "Keyboard0"
+        Driver      "kbd"
+        Option      "XkbModel" "pc101"
+        Option      "XkbLayout" "'$KEYTABLE'"
+EndSection
+
+Section "InputDevice"
+        Identifier  "Mouse0"
+        Driver      "mouse"
+        Option      "Protocol" "Auto"
+        Option      "Device" "'$DEVICE'"
+        Option      "ZAxisMapping" "4 5"
+EndSection
+
+' >> /root/xorg.conf
+
+echo "$MONITOR" >> /root/xorg.conf
+
+# Modifying the gnome's screen config...
+

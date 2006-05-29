@@ -1,0 +1,88 @@
+#!/bin/sh
+# Scripts that read /proc/partitions and attempt to generate fstab accordingly...
+# Copyright Michael Zanetta grimmlin@pentoo.ch
+
+###################################
+# Warning !!! Ugly code ahead !!! #
+###################################
+
+SWAP=1
+
+CMDLINE=`cat /proc/cmdline`
+# Scan CMDLINE for noswap parameter
+for x in ${CMDLINE}
+do
+        case "${x}" in
+                noswap)
+                        SWAP=0
+                ;;
+		nodisk)
+			exit 1
+		;;
+        esac
+done
+
+
+PART_I=`cat /proc/partitions | grep -o "hd[a-z]..\?"`
+PART_S=`cat /proc/partitions | grep -o "sd[a-z]..\?"`
+
+detect() {
+	TYPE=`disktype /dev/$1 | egrep -o "(ReiserFS|Ext.|swap|NTFS|FAT)"`
+}
+
+for x in ${PART_I}
+do
+	detect ${x}
+	case $TYPE in
+		*[Rr][Ee][Ii][Ss][Ee][Rr]*)
+			DEVICE="/dev/$x" MOUNTPOINT="/mnt/$x" FSTYPE="reiserfs" OPTS="noauto";;
+		*[Ee][Xx][Tt]3*)
+			DEVICE="/dev/$x" MOUNTPOINT="/mnt/$x" FSTYPE="ext3" OPTS="noauto";;
+		*[Ee][Xx][Tt]2*)
+			DEVICE="/dev/$x" MOUNTPOINT="/mnt/$x" FSTYPE="ext2" OPTS="noauto";;
+		*[Ff][Aa][Tt]*)
+			DEVICE="/dev/$x" MOUNTPOINT="/mnt/$x" FSTYPE="vfat" OPTS="noauto";;
+		*[Nn][Tt][Ff][Ss]*)
+			DEVICE="/dev/$x" MOUNTPOINT="/mnt/$x" FSTYPE="ntfs" OPTS="ro,noauto";;
+		swap*)
+			if [ $SWAP -eq 1 ]; then
+				swapon /dev/$x
+			fi
+			DEVICE="" MOUNTPOINT="" FSTYPE="" OPTS="";;
+		*)
+			DEVICE="" MOUNTPOINT="" FSTYPE="" OPTS="";;
+	esac
+	if [ ! -z ${FSTYPE} ]; then 
+		mkdir /mnt/$x
+		echo "$DEVICE $MOUNTPOINT $FSTYPE $OPTS" >> /etc/fstab
+	fi
+done
+
+for x in ${PART_S}
+do
+	detect ${x}
+	case $TYPE in
+		*[Rr][Ee][Ii][Ss][Ee][Rr]*)
+			DEVICE="/dev/$x" MOUNTPOINT="/mnt/$x" FSTYPE="reiserfs" OPTS="noauto";;
+		*[Ee][Xx][Tt]3*)
+			DEVICE="/dev/$x" MOUNTPOINT="/mnt/$x" FSTYPE="ext3" OPTS="noauto";;
+		*[Ee][Xx][Tt]2*)
+			DEVICE="/dev/$x" MOUNTPOINT="/mnt/$x" FSTYPE="ext2" OPTS="noauto";;
+		*[Ff][Aa][Tt]*)
+			DEVICE="/dev/$x" MOUNTPOINT="/mnt/$x" FSTYPE="vfat" OPTS="noauto";;
+		*[Nn][Tt][Ff][Ss]*)
+			DEVICE="/dev/$x" MOUNTPOINT="/mnt/$x" FSTYPE="ntfs" OPTS="ro,noauto";;
+		swap*)
+			if [ $SWAP -eq 1 ]; then
+				swapon /dev/$x
+			fi
+			DEVICE="" MOUNTPOINT="" FSTYPE="" OPTS="";;
+		*)
+			DEVICE="" MOUNTPOINT="" FSTYPE="" OPTS="";;
+	esac
+	if [ ! -z ${FSTYPE} ]; then 
+		mkdir /mnt/$x
+		echo "$DEVICE $MOUNTPOINT $FSTYPE $OPTS" >> /etc/fstab
+	fi
+done
+

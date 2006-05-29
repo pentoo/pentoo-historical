@@ -1,0 +1,10 @@
+# /etc/conf.d/local.stop:
+# $Header: /home/cvsroot/gentoo-src/rc-scripts/etc/conf.d/local.stop,v 1.4 2002/11/18 19:39:22 azarah Exp $
+
+# This is a good place to unload any misc.
+# programs you started above.
+# For example, if you are using OSS and have
+# "/usr/local/bin/soundon" above, put
+# "/usr/local/bin/soundoff" here.
+
+stopstick

@@ -1,0 +1,72 @@
+#!/bin/sh
+# kbdconfig - A very light-weight text-based keyboard configuration tool.
+# (C) Klaus Knopper Jun 2001
+# Re-vamped for Pentoo by Michael Zanetta grimmlin@pentoo.ch
+
+KEYTABLE="fr_CH"
+DEFAULT="fr_CH"
+
+parse_opt() {
+        case "$1" in
+                *\=*)
+                        echo "$1" | cut -f2 -d=
+                ;;
+        esac
+}
+
+CMDLINE=`cat /proc/cmdline`
+# Scan CMDLINE for noswap parameter
+for x in ${CMDLINE}
+do
+        case "${x}" in
+                kbd\=*)
+                        KEYTABLE=`parse_opt "${x}"`
+			echo "KEYTABLE=\"$KEYTABLE\"" >>/etc/sysconfig/keyboard
+			echo "KEYTABLE=\"$KEYTABLE\"" >>/etc/sysconfig/knoppix
+			loadkeys "$KEYTABLE"
+			sed -i -e 's\fr_CH\'$KEYTABLE'\g' /etc/conf.d/keymaps
+			exit 0
+                ;;
+        esac
+done
+ 
+PATH="/bin:/sbin:/usr/bin:/usr/sbin"
+export PATH
+
+XDIALOG_HIGH_DIALOG_COMPAT=1
+export XDIALOG_HIGH_DIALOG_COMPAT
+  
+TMP="/tmp/kbdconfig.tmp"
+   
+bailout(){
+   rm -f "$TMP"
+   exit $1
+}
+
+DIALOG="dialog"
+[ -n "$DISPLAY" ] && [ -x /usr/bin/Xdialog ] && DIALOG="Xdialog"
+
+trap bailout 2 15
+    
+rm -f "$TMP"
+
+[ -f /etc/sysconfig/i18n ] && . /etc/sysconfig/i18n
+[ -f /etc/sysconfig/keyboard ] && . /etc/sysconfig/keyboard
+
+TITLE="Please choose keyboard"
+
+DEFAULT="fr_CH fr_CH.map.gz"
+KEYMAPS=`cat /usr/sbin/keymapList`
+
+dialog --clear --timeout 10 --title "$TITLE" --menu "Default: ${KEYTABLE:-none}" 22 70 15 $DEFAULT $KEYMAPS 2>"$TMP"
+
+KEYTABLE="`cat $TMP`"
+if [ -n "$KEYTABLE" ]; then
+	echo "KEYTABLE=\"$KEYTABLE\"" >>/etc/sysconfig/keyboard
+	echo "KEYTABLE=\"$KEYTABLE\"" >>/etc/sysconfig/knoppix
+	loadkeys "$KEYTABLE"
+fi
+
+sed -i -e 's\fr_CH\'$KEYTABLE'\g' /etc/conf.d/keymaps
+
+bailout 0

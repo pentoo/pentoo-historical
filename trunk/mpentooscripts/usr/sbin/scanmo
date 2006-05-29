@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for SCRIPT in `ls /etc/moscript/`
+do
+	sh ${SCRIPT}
+done

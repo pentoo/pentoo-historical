@@ -1,0 +1,11 @@
+# /etc/conf.d/local.start:
+# $Header: /home/cvsroot/gentoo-src/rc-scripts/etc/conf.d/local.start,v 1.4 2002/11/18 19:39:22 azarah Exp $
+
+# This is a good place to load any misc.
+# programs on startup ( 1>&2 )
+
+kbdconfig
+screencfg
+scandisks
+doptconf
+scanmo

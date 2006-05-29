@@ -1,0 +1,232 @@
+#!/bin/sh
+# Version 1.1
+# Store some stuff on a usb stick to avoid losing configs and updates when exiting pentoo
+# Copyright 2005 Michael Zanetta grimmlin@pentoo.ch
+
+BACK_UP="\033[1K\033[0G"
+NORMAL="\033[0m"
+WARN="\033[33;1m"
+BAD="\033[31;1m"
+BOLD="\033[1m"
+GOOD="\033[32;1m"
+
+PENTOODIR="/mnt/usbstick/pentoo/"
+
+DOROOT=0
+DONESSUS=0
+DOETC=0
+DOFP=0
+DOTREE=0
+EXIT=0
+
+source /sbin/functions.sh
+
+
+doe2fs() {
+	dd if=/dev/zero of="${PENTOODIR}"$1.img bs=1M count=$2
+	mke2fs -q -F -m 0 "${PENTOODIR}"$1.img
+}
+
+docpdir() {
+	mkdir -p /mnt/$1
+	mount -o loop "${PENTOODIR}"$1.img /mnt/$1
+	cd /mnt/
+	cp -a /$1 ./
+	umount /mnt/$1
+	rm -rf /mnt/$1
+}
+
+domount() {
+	mount -o loop "${PENTOODIR}"$1.img /$1
+}
+
+parse_opt() {
+        case "$1" in
+                *\=*)
+                        echo "$1" | cut -f2 -d=
+                ;;
+        esac
+}
+
+dostuff() {
+	if [ ! -e "${PENTOODIR}".pentoorc ]; then
+	# Put the menus to ask the user
+
+
+
+: ${DIALOG=dialog}
+
+$DIALOG --timeout 20 --title "USB STICK FOUND" \
+        --yesno "I just found a usb stick plugged in. \
+The Pentoo LiveCD allows you to put some stuff on a usb stick. \
+This stuff includes :  /etc/ /root/ nessus_plugins ExploitTree \
+and fingerprints databases. \n\n\
+Is that your stick : ${DETECTED} ? \n\n\
+Please be sure to backup files on stick before doing this... \n\n\
+Do you want to copy some software to your key ?" 0 0
+
+case $? in
+  0)
+    EXIT="0";;
+  1)
+    EXIT="1";;
+  255)
+    EXIT="1";;
+esac
+
+
+	if [ "${EXIT}" -eq "0" ]; then
+
+tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/soft$$
+
+trap "rm -f $tempfile" 0 1 2 5 15
+
+$DIALOG --item-help --backtitle "Pentoo Linux - Sticky USB Configurator" \
+	--title "Software Checklist" \
+        --checklist "You can select what software should be stored. \n\n\
+NOTE: /etc and /root are stored in ext2 FS file. Export \n\
+reports directly to /mnt/usbstick to read them in other OSes\n\
+WARNING: This script don't check for necessary space so \n\
+be sure of the space left on the device... \n\n\
+Press SPACE to toggle an option on/off. \n\n\
+  Which of the following should be stored ?" 20 61 4 \
+        "root"         "Copy root to usb stick 10 MB"           ON  "This will store your configs and preferences" \
+        "etc"   "Backup system settings 15 MB"         ON  "This will store the system configs" \
+        "ExploitTree"   "Backup the Exploit Tree ~20 MB"         ON  "Allows you to keep SecurityForest's ExploitTree stored" \
+        "nessus"       "Nessus's plugins ~65 MB unregistered"              off "You will be able to update and keep the plugins" 2> $tempfile
+
+
+retval=$?
+
+choice=`cat $tempfile`
+case $retval in
+  0)
+    echo "'$choice' chosen.";;
+  1)
+    EXIT=1;;
+  255)
+    EXIT=1;;
+esac
+
+
+		cut -f1-10 -d'"' --output-delimiter=' ' $tempfile > /tmp/soft
+		SOFTWARE=`cat /tmp/soft`
+		for x in ${SOFTWARE}
+		do
+		        case "${x}" in
+	        	        root)
+        	        	        DOROOT=1
+		                ;;
+        		        ExploitTree)
+					DOTREE=1
+				;;
+        		        nessus)
+                		        DONESSUS=1
+	                	;;
+        	        	etc)
+                		        DOETC=1
+		                ;;
+        		        fingerprints)
+                		        DOFP=1
+		                ;;
+        		esac
+		done
+
+	# this ends for Exit=0
+	fi
+
+	if [ "${EXIT}" -eq "0" ]; then
+		mkdir -p "${PENTOODIR}"
+		if [ "${DOROOT}" -eq '1' ]; then
+			ebegin "   Copying /root to usbstick"
+			doe2fs root 10 &>/dev/null
+			docpdir root
+			domount root
+			sed -i -e '/screencfg/d' /etc/conf.d/local.start
+			eend $?
+		fi
+		if [ "${DOETC}" -eq '1' ]; then
+			ebegin "   Copying /etc to usbstick"
+			doe2fs etc 15 &>/dev/null
+			docpdir etc
+			domount etc
+			sed -i -e '/mnt\/etc/d' /etc/mtab
+			sed -i -e '/kbdconfig/d' -e '/doptconf/d' /etc/conf.d/local.start
+			eend $?
+		fi
+		if [ "${DOTREE}" -eq '1' ]; then
+			ebegin "   Copying Exploit Tree to usbstick"
+			mkdir -p "${PENTOODIR}"ExploitTree/
+			cp -a /opt/pentoo/ExploitTree* "${PENTOODIR}"
+			rm -rf /opt/pentoo/ExploitTree*
+			ln -sf "${PENTOODIR}"ExploitTree/ /opt/pentoo/ExploitTree
+			ln -sf "${PENTOODIR}"ExploitTree.pl /opt/pentoo/ExploitTree.pl
+			eend $?
+		fi
+		if [ "${DOFP}" -eq '1' ]; then
+			ebegin "   Copying FingerPrints DB to usbstick"
+			mkdir -p "${PENTOODIR}"fingerprints/
+			cp -a /var/lib/fingerprints "${PENTOODIR}"
+			rm -rf /var/lib/fingerprints
+			ln -sf "${PENTOODIR}"fingerprints/ /var/lib/fingerprints
+			eend $?
+		fi
+		if [ "${DONESSUS}" -eq '1' ]; then
+			ebegin "   Copying nessus's plugins to usbstick"
+			echo "   This can take quite long on usb1 devices"
+			mkdir -p "${PENTOODIR}"nessus/
+			cp -a /usr/lib/nessus/ "${PENTOODIR}"
+			rm -rf /usr/lib/nessus/
+			ln -sf "${PENTOODIR}"nessus/ /usr/lib/nessus/
+			eend $?
+		fi
+
+		# Creating a "user profile" to store software options put on the stick
+		mkdir -p "${PENTOODIR}"
+		touch "${PENTOODIR}".pentoorc
+		echo $SOFTWARE > "${PENTOODIR}".pentoorc
+
+	# Syncing it to flush the drive
+	echo -e "   Syncing disk, this can take some time..."
+	mount -o remount /mnt/usbstick/
+
+	fi
+	fi
+}
+
+CMDLINE="`cat /proc/cmdline`"
+# Scan CMDLINE for any specified stick= arguments
+for x in ${CMDLINE}
+do
+	case "${x}" in
+		stick\=*)
+			DEVDIR=`parse_opt "${x}"`
+		;;
+	esac
+done
+
+if [ -z "${DEVDIR}" ]; then
+	DEVDIR="/dev/sda1"
+fi
+
+
+# First, look at the size to prompt user
+
+DETECTED=`disktype "${DEVDIR}" | grep -e Volume -e system | sed -e 's/^  //' -e 's/(.*//'`
+
+# Check if if it's booted from usb stick
+
+ISRW=`mount | grep /mnt/cdrom | grep rw`
+
+if [ -n "${ISRW}" ];
+then
+	PENTOODIR="/mnt/cdrom/pentoo/"
+	dostuff
+	exit 0
+else
+	if mount "${DEVDIR}" /mnt/usbstick/ &>/dev/null ; then
+		dostuff
+	fi
+fi
+
+rm -rf /tmp/soft

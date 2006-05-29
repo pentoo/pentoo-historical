@@ -1,0 +1,6 @@
+LIST=`find ./ -type f | sed -e 's:^.::g'`
+for file in ${LIST}
+do
+	cp -a /mnt/fs/${file} ./${file}
+done
+

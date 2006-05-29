@@ -1,0 +1,6 @@
+/dev/ROOT / tmpfs rw 0 0
+proc /proc proc rw 0 0
+sysfs /sys sysfs rw 0 0
+udev /dev tmpfs rw,nosuid 0 0
+devpts /dev/pts devpts rw 0 0
+usbfs /proc/bus/usb usbfs rw,devmode=0664,devgid=85 0 0
