@@ -1,16 +1,9 @@
 #!/bin/sh
 
-if [ ! -e /var/db/pkg/net-wireless ] ; then
-	eerror "You must have the moduledb-2006.0 module loaded"
-	eerror "for building modules with portage !!!"
-	exit 1
-fi
-
 source /sbin/functions.sh
 mkdir -p /modules/
 
 TMPDIR="/tmp/rootfs-$$"
-# MONITORTMP="$TMPFILE-monitor"
 
 # PKG=$1
 
