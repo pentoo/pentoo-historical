@@ -1,15 +1,14 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /root/portage/net-analyzer/smtpmap/smtpmap-0.8_beta.ebuild,v 1.1.1.1 2006/02/27 20:03:41 grimmlin Exp $
+# $Header: $
 
 inherit eutils
-DESCRIPTION="Smtpmap is a very complete and weel done fingerprinter for SMTP, FTP and POP3 fingerprinter"
-HOMEPAGE="http://plasmahh.hopto.org/down_tool"
-SRC_URI="http://plasmahh.hopto.org/${PN}-0.8-beta.tar.bz2"
+MY_P=${P/_beta/-BETA}
+DESCRIPTION="Smtpmap is a very complete and well done fingerprinter for SMTP, FTP and POP3 fingerprinter"
+HOMEPAGE="http://www.projectiwear.org/~plasmahh/software.html"
+SRC_URI="http://www.projectiwear.org/~plasmahh/${MY_P}.tar.bz2"
 
-MY_P=${PN}-0.8.234-BETA
-
-LICENSE="GPL"
+LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86"
 
@@ -18,6 +17,7 @@ DEPEND=""
 S=${WORKDIR}/${MY_P}
 
 src_compile(){
+	epatch ${FILESDIR}/gcc-3.4.patch
 	./configure
 #	It has is own configuration script... maybe some sed here after needs to be done
 	emake || die "make failed"
