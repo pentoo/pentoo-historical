@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
+inherit ruby
+
 MY_P="${PN/metasploit/framework}-${PV/_/-}-1"
 S="${WORKDIR}/${MY_P}"
 DESCRIPTION="The Metasploit Framework is an advanced open-source platform for developing, testing, and using vulnerability exploit code."
@@ -18,25 +20,33 @@ RDEPEND="dev-lang/ruby
 	 dev-ruby/ruby-zlib"
 pkg_nofetch() {
 	# Fetch restricted due to license acceptation
+	einfo ${RUBY}
 	einfo "Please download the framework from:"
 	einfo ${SRC_URI}
 	einfo "and move it to ${DISTDIR}"
 }
 
 src_install() {
-	dodir /usr/lib/
+	local siteruby
+
+#	dodir /usr/lib/
 	dodir /usr/bin/
 
 	# should be as simple as copying everything into the target...
-	cp -pPR ${S} ${D}usr/lib/metasploit || die
+#	cp -pPR ${S} ${D}usr/lib/metasploit || die
 
 	# and creating symlinks in the /usr/bin dir
-	cd ${D}/usr/bin
-	ln -s ../lib/metasploit/msf* ./ || die
-	chown -R root:0 ${D}
 
 	newinitd ${FILESDIR}/msfweb.initd msfweb || die "newinitd failed"
 	newconfd ${FILESDIR}/msfweb.confd msfweb || die "newconfd failed"
+
+	siteruby=$(${RUBY} -r rbconfig -e 'print Config::CONFIG["sitedir"]')
+	insinto ${siteruby}
+#	cd ${S}
+	doins -r * | die "doins failed"
+	cd ${D}/usr/bin
+	ln -s ${siteruby}/msf* ./ || die
+	chown -R root:0 ${D}
 }
 
 pkg_postinst() {
