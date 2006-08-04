@@ -1,0 +1,137 @@
+diff -Naur framework-3.0-beta-1.orig/msfcli framework-3.0-beta-1/msfcli
+--- framework-3.0-beta-1.orig/msfcli	2006-07-31 17:31:58.000000000 +0200
++++ framework-3.0-beta-1/msfcli	2006-08-03 14:11:59.000000000 +0200
+@@ -5,8 +5,8 @@
+ # or web-based interface.
+ #
+ 
+-msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+-$:.unshift(File.join(File.dirname(msfbase), 'lib'))
++msfbase = "/usr/lib/metasploit/"
++$:.unshift(File.join((msfbase), 'lib'))
+ 
+ require 'rex'
+ require 'msf/ui'
+diff -Naur framework-3.0-beta-1.orig/msfconsole framework-3.0-beta-1/msfconsole
+--- framework-3.0-beta-1.orig/msfconsole	2006-07-31 17:24:44.000000000 +0200
++++ framework-3.0-beta-1/msfconsole	2006-08-03 14:12:24.000000000 +0200
+@@ -4,8 +4,8 @@
+ # framework.
+ #
+ 
+-msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+-$:.unshift(File.join(File.dirname(msfbase), 'lib'))
++msfbase = "/usr/lib/metasploit/"
++$:.unshift(File.join((msfbase), 'lib'))
+ 
+ require 'rex'
+ require 'msf/ui'
+diff -Naur framework-3.0-beta-1.orig/msfd framework-3.0-beta-1/msfd
+--- framework-3.0-beta-1.orig/msfd	2006-07-31 17:31:52.000000000 +0200
++++ framework-3.0-beta-1/msfd	2006-08-03 14:12:41.000000000 +0200
+@@ -6,8 +6,8 @@
+ # possible for sessions to to be shared from a single vantage point.
+ #
+ 
+-msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+-$:.unshift(File.join(File.dirname(msfbase), 'lib'))
++msfbase = "/usr/lib/metasploit/"
++$:.unshift(File.join((msfbase), 'lib'))
+ 
+ require 'msf/base'
+ require 'msf/ui'
+diff -Naur framework-3.0-beta-1.orig/msfencode framework-3.0-beta-1/msfencode
+--- framework-3.0-beta-1.orig/msfencode	2006-07-31 17:31:48.000000000 +0200
++++ framework-3.0-beta-1/msfencode	2006-08-03 14:12:50.000000000 +0200
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env ruby
+ 
+-msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+-$:.unshift(File.join(File.dirname(msfbase), 'lib'))
++msfbase = "/usr/lib/metasploit/"
++$:.unshift(File.join((msfbase), 'lib'))
+ 
+ require 'rex'
+ require 'msf/ui'
+diff -Naur framework-3.0-beta-1.orig/msflicense framework-3.0-beta-1/msflicense
+--- framework-3.0-beta-1.orig/msflicense	2006-07-31 17:31:45.000000000 +0200
++++ framework-3.0-beta-1/msflicense	2006-08-03 14:13:29.000000000 +0200
+@@ -3,8 +3,8 @@
+ # This script lists each module by its licensing terms
+ #
+ 
+-msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+-$:.unshift(File.join(File.dirname(msfbase), 'lib'))
++msfbase = "/usr/lib/metasploit/"
++$:.unshift(File.join((msfbase), 'lib'))
+ 
+ require 'rex'
+ require 'msf/ui'
+diff -Naur framework-3.0-beta-1.orig/msfopcode framework-3.0-beta-1/msfopcode
+--- framework-3.0-beta-1.orig/msfopcode	2006-07-31 17:31:38.000000000 +0200
++++ framework-3.0-beta-1/msfopcode	2006-08-03 14:13:36.000000000 +0200
+@@ -5,8 +5,8 @@
+ # and to display information about modules.
+ #
+ 
+-msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+-$:.unshift(File.join(File.dirname(msfbase), 'lib'))
++msfbase = "/usr/lib/metasploit/"
++$:.unshift(File.join((msfbase), 'lib'))
+ 
+ require 'rex'
+ require 'rex/ui'
+diff -Naur framework-3.0-beta-1.orig/msfpayload framework-3.0-beta-1/msfpayload
+--- framework-3.0-beta-1.orig/msfpayload	2006-07-31 17:31:32.000000000 +0200
++++ framework-3.0-beta-1/msfpayload	2006-08-03 14:13:42.000000000 +0200
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env ruby
+ 
+-msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+-$:.unshift(File.join(File.dirname(msfbase), 'lib'))
++msfbase = "/usr/lib/metasploit/"
++$:.unshift(File.join((msfbase), 'lib'))
+ 
+ require 'rex'
+ require 'msf/ui'
+diff -Naur framework-3.0-beta-1.orig/msfpescan framework-3.0-beta-1/msfpescan
+--- framework-3.0-beta-1.orig/msfpescan	2006-07-31 17:31:26.000000000 +0200
++++ framework-3.0-beta-1/msfpescan	2006-08-03 14:13:48.000000000 +0200
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env ruby
+ 
+-msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+-$:.unshift(File.join(File.dirname(msfbase), 'lib'))
++msfbase = "/usr/lib/metasploit/"
++$:.unshift(File.join((msfbase), 'lib'))
+ 
+ require 'rex/peparsey'
+ require 'rex/pescan'
+diff -Naur framework-3.0-beta-1.orig/msfweb framework-3.0-beta-1/msfweb
+--- framework-3.0-beta-1.orig/msfweb	2006-07-31 17:31:19.000000000 +0200
++++ framework-3.0-beta-1/msfweb	2006-08-03 14:13:57.000000000 +0200
+@@ -4,8 +4,8 @@
+ # framework that can be shared.
+ #
+ 
+-msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+-$:.unshift(File.join(File.dirname(msfbase), 'lib'))
++msfbase = "/usr/lib/metasploit/"
++$:.unshift(File.join((msfbase), 'lib'))
+ 
+ 
+ require 'rex'
+diff -Naur framework-3.0-beta-1.orig/msfwx framework-3.0-beta-1/msfwx
+--- framework-3.0-beta-1.orig/msfwx	2006-07-31 17:31:20.000000000 +0200
++++ framework-3.0-beta-1/msfwx	2006-08-03 14:14:05.000000000 +0200
+@@ -3,8 +3,8 @@
+ # This is a basic user interface using the Wx GUI library
+ #
+ 
+-msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+-$:.unshift(File.join(File.dirname(msfbase), 'lib'))
++msfbase = "/usr/lib/metasploit/"
++$:.unshift(File.join((msfbase), 'lib'))
+ 
+ 
+ require 'rex'
