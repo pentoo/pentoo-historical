@@ -1,0 +1,17 @@
+sys-block/gparted fat jfs ntfs reiser4 reiserfs xfs
+sys-devel/gcc gtk
+sys-apps/iproute2 -minimal
+sys-libs/libkudzu -minimal livecd python
+net-wireless/linux-wlan-ng-modules pci pcmcia plx usb
+net-wireless/linux-wlan-ng pcmcia
+net-wireless/acx pcmcia
+net-wireless/atmel-firmware pcmcia usb
+www-client/links -X -directfb -fbcon gpm -javascript -jpeg -png
+media-sound/xmms esd -mad
+net-wireless/hostap-driver pcmcia
+net-wireless/wpa_supplicant readline
+sys-fs/captive -gtk
+media-sound/sox -encode -ogg -mad
+net-wireless/ipw2200 radiotap
+dev-lang/perl -minimal
+net-wireless/prism54 pcmcia
