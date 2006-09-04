@@ -15,3 +15,4 @@ media-sound/sox -encode -ogg -mad
 net-wireless/ipw2200 radiotap
 dev-lang/perl -minimal
 net-wireless/prism54 pcmcia
+dev-perl/gtk-perl gnome
