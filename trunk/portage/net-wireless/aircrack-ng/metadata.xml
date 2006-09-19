@@ -8,13 +8,11 @@
 </maintainer>
 <maintainer>
   <email>crypto@gentoo.org</email>
-    <name>Crypto herd.</name>
+    <name>Crypto herd</name>
 </maintainer>
 <longdescription>
-aircrack is a 802.11 WEP key cracker. It implements the so-called Fluhrer - Mantin - Shamir (FMS) attack, along with some 
-new attacks by a talented hacker named KoreK. When enough encrypted packets have been gathered, aircrack can almost 
-instantly recover the WEP key.
-
-(from http://www.cr0.net:8040/code/network/aircrack)
+aircrack is a set of tools for auditing wireless networks.
+aircrack-ng is the next generation of aircrack with lots of new features.
+(from http://www.aircrack-ng.org)
 </longdescription>
 </pkgmetadata>
