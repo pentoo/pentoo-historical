@@ -1,10 +1,10 @@
 subarch: x86
-version_stamp: 2006.1
+version_stamp: 2006.2
 target: livecd-stage2
 rel_type: default
-profile: default-linux/x86/2006.0
-snapshot: 2006.1
-source_subpath: default/livecd-stage1-x86-2006.1
+profile: default-linux/x86/2006.1
+snapshot: 2006.2
+source_subpath: default/livecd-stage1-x86-2006.2
 portage_confdir: /root/catalyst-pentoo/x86/portage
 portage_overlay: /usr/local/portage
 
@@ -29,7 +29,7 @@ portage_overlay: /usr/local/portage
 livecd/fstype: squashfs
 livecd/fsops: -root-owned
 livecd/cdtar: /usr/lib/catalyst/livecd/cdtar/isolinux-3.09-memtest86+-cdtar.tar.bz2
-livecd/iso: /tmp/pentoo-2006.1.iso
+livecd/iso: /tmp/pentoo-2006.2.iso
 
 # A fsscript is simply a shell script that is copied into the chroot of the CD
 # after the kernel(s) and any external modules have been compiled and is 
@@ -191,7 +191,7 @@ livecd/rcadd: autoconfig coldplug
 # This option sets the volume ID of the CD created.
 # example:
 # livecd/volid: Gentoo Linux 2005.0 X86
-livecd/volid: Pentoo 2006.1C
+livecd/volid: Pentoo 2006.2C
 
 # This option is only used when creating a GameCD.  This specifies the file that
 # contains the definitions for GAME_NAME and GAME_EXECUTABLE, which are used by

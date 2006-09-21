@@ -1,10 +1,10 @@
 subarch: x86
-version_stamp: 2006.1
+version_stamp: 2006.2
 target: livecd-stage1
 rel_type: default
-profile: default-linux/x86/2006.0
-snapshot: 2006.1
-source_subpath: default/stage3-x86-2006.1
+profile: default-linux/x86/2006.1
+snapshot: 2006.2
+source_subpath: default/stage3-x86-2006.2
 portage_confdir: /root/catalyst-pentoo/x86/portage
 portage_overlay: /usr/local/portage
 
