@@ -112,3 +112,5 @@ net-wireless/madwifi-ng ~x86
 =sys-libs/db-4.3.27 ~x86
 dev-libs/nspr ~x86
 net-wireless/btscanner ~x86
+x11-libs/cairo ~x86
+dev-ruby/wxruby ~x86

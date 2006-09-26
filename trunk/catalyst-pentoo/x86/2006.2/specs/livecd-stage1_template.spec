@@ -4,7 +4,7 @@ target: livecd-stage1
 rel_type: default
 profile: default-linux/x86/2006.1
 snapshot: 2006.2
-source_subpath: default/stage3-x86-2006.2
+source_subpath: default/stage3-i686-2006.2
 portage_confdir: /root/catalyst-pentoo/x86/portage
 portage_overlay: /usr/local/portage
 
@@ -16,7 +16,7 @@ portage_overlay: /usr/local/portage
 # pkgcache_path: /tmp/packages
 # pkgcache_path:
 
-livecd/use: -gnome -nls gtk fbcon opengl -gnome -kde -eds gtk2 cairo -pam gpm dvdr oss mmx sse sse2 -quicktime -qt -cups -spell
+livecd/use: -gnome -nls gtk fbcon opengl -kde -eds gtk2 cairo -pam gpm dvdr oss mmx sse sse2 -quicktime -qt -cups -spell
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
