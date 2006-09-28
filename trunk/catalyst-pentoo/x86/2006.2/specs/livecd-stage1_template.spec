@@ -16,7 +16,7 @@ portage_overlay: /usr/local/portage
 # pkgcache_path: /tmp/packages
 # pkgcache_path:
 
-livecd/use: -gnome -nls gtk fbcon opengl -kde -eds gtk2 cairo -pam gpm dvdr oss mmx sse sse2 -quicktime -qt -cups -spell
+livecd/use: X livecd -gnome -nls gtk fbcon opengl -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime -qt -cups -spell
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
