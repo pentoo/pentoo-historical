@@ -46,17 +46,13 @@ dev-db/edb
 dev-libs/eet
 dev-libs/embryo
 dev-libs/engrave
-dev-libs/glib
 dev-libs/libxslt
 dev-libs/openobex
 dev-perl/gtk-perl
-dev-perl/XML-Parser
-dev-perl/XML-Simple
 dev-python/pygtk
 dev-util/dialog
 dev-util/e_utils
 dev-util/subversion
-gnome-base/orbit
 media-gfx/entice
 media-gfx/scrot
 media-libs/edje
@@ -129,6 +125,7 @@ sys-boot/syslinux
 sys-devel/gettext
 sys-fs/jfsutils
 sys-fs/reiserfsprogs
+sys-fs/reiser4progs
 sys-fs/squashfs-tools
 sys-fs/udev
 sys-libs/gpm
