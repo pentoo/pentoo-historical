@@ -1,4 +1,4 @@
-subarch: x86
+subarch: i686
 version_stamp: 2006.2
 target: livecd-stage1
 rel_type: default
@@ -71,7 +71,7 @@ net-analyzer/ettercap
 net-analyzer/hping
 net-analyzer/ike-scan
 net-analyzer/macchanger
-net-analyzer/metasploit
+=net-analyzer/metasploit-2.6
 net-analyzer/nbtscan
 net-analyzer/nessus
 net-analyzer/netcat
