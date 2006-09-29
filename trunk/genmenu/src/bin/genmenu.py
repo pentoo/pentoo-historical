@@ -28,6 +28,14 @@ def settermenv():
     file.newlines
     file.close()
 
+def makemenuentry(eapfile, category):
+    file = os.path.join(EAPDIR, eapfile)
+    if os._exists(EAPDIR):
+        print "youpi"
+        return 0
+    else:
+        return 1
+
 def main():
     """
     This program is used to generate the menu in enlightenment for the pentoo livecd
@@ -39,7 +47,10 @@ def main():
     for y in range(db.__len__()):
         if pkginstalled.__contains__(db[y][0]):
             # calls makemenuentry file.eap, menu category
-            makemenuentry(db[y][1],db[y][2])
+            try:
+                makemenuentry(db[y][1],db[y][2])
+            except:
+                print >> sys.stderr, "Can't find " + db[y][1] + " in " + EAPDIR
         else:
             notthere.append(db[y][0])
     
