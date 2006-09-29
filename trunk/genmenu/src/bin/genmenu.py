@@ -10,8 +10,7 @@ EAPDIR = '/usr/share/genmenu/e17/all'
 ENVDIR = '/etc/env.d/'
 
 def listpackages(pkgdir):
-    """Return the names of the subfolders in a given folder
-    (prefixed with the given folder name)."""
+    """List packages installed as in the portage database directory (usually /var/db/pkg)"""
     packages = []
     categories = os.listdir(pkgdir)
     for category in categories:
@@ -24,6 +23,10 @@ def listpackages(pkgdir):
         
 def settermenv():
     """This function creates the apropriate environment variable for the $E17TERM"""
+    file = open(ENVDIR + "99pentoo-terms" , "w")
+    file.write("E17TERM=\"" + options.e17term + "\"")
+    file.newlines
+    file.close()
 
 def main():
     """
