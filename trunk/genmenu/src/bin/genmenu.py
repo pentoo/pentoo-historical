@@ -2,7 +2,7 @@
 
 import sys,os,re
 
-db=[["net-analyzer/nmap", "nmap.eap", "Scanners"], ["net-analyzer/nessus", "nessus.eap", "Scanners"], ["net-analyzer/xprobe", "xprobe.eap", "Fingerprinters"], ["net-irc/xchat", "xchat.eap", "Internet"]]
+db=[["net-analyzer/nmap", "nmap.eap", "Scanners"], ["net-analyzer/nessus", "nessus.eap toto.eap", "Scanners"], ["net-analyzer/xprobe", "xprobe.eap", "Fingerprinters"], ["net-irc/xchat", "xchat.eap", "Internet"]]
 
 #PORTDIR="/var/db/pkg/"
 PORTDIR = 'c:/Pentoo/test/portage'
@@ -28,9 +28,10 @@ def settermenv():
     file.newlines
     file.close()
 
-def makemenuentry(eapfile, category):
+def makemenuentry(eapfile="" , category="" ):
+    test=""
     file = os.path.join(EAPDIR, eapfile)
-    if os._exists(EAPDIR):
+    if os._exists(file):
         print "youpi"
         return 0
     else:
@@ -47,12 +48,15 @@ def main():
     for y in range(db.__len__()):
         if pkginstalled.__contains__(db[y][0]):
             # calls makemenuentry file.eap, menu category
-            try:
-                makemenuentry(db[y][1],db[y][2])
-            except:
-                print >> sys.stderr, "Can't find " + db[y][1] + " in " + EAPDIR
+            for singleentry in db[y][1].split(" "):
+                print singleentry
+                try:
+                    makemenuentry(singleentry,db[y][2])
+                except:
+                    print >> sys.stderr, "Can't find " + singleentry + " in " + EAPDIR
         else:
             notthere.append(db[y][0])
+                
     
     
 if __name__ == "__main__":
