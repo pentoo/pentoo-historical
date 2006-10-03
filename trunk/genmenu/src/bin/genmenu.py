@@ -28,8 +28,7 @@ def settermenv():
     file.newlines
     file.close()
 
-def makemenuentry(eapfile="" , category="" ):
-    test=""
+def make_menu_entry(eapfile="" , category="" ):
     file = os.path.join(EAPDIR, eapfile)
     if os._exists(file):
         print "youpi"
@@ -48,12 +47,12 @@ def main():
     for y in range(db.__len__()):
         if pkginstalled.__contains__(db[y][0]):
             # calls makemenuentry file.eap, menu category
-            for singleentry in db[y][1].split(" "):
-                print singleentry
+            for single_entry in db[y][1].split(" "):
+                print single_entry
                 try:
-                    makemenuentry(singleentry,db[y][2])
+                    make_menu_entry(single_entry,db[y][2])
                 except:
-                    print >> sys.stderr, "Can't find " + singleentry + " in " + EAPDIR
+                    print >> sys.stderr, "Can't find " + single_entry + " in " + EAPDIR
         else:
             notthere.append(db[y][0])
                 
