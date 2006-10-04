@@ -1,54 +1,48 @@
-["net-analyzer/absinthe", "absinthe.eap", "database"]
+["net-analyzer/absinthe", "absinthe.eap", "Database"]
 ["net-analyzer/aimsniff", "aimsniff.eap", "Analyzer"]
 ["net-analyzer/amap", "amap.eap", "fingerprinter"]
 ["net-analyzer/arpwatch", "arpwatch.eap", "Analyzer"]
-["net-analyzer/authforce", authforce.eap", "cracker-bruter"]
-["net-analyzer/autoscan", "autoscan.eap", "scanners"]
-["net-analyzer/bmon", "bmon.eap", "analyzer"]
-["net-analyzer/cheops-ng", "cheops-ng.eap" "scanners"]
+["net-analyzer/authforce", authforce.eap", "Cracker-Bruter"]
+["net-analyzer/autoscan", "autoscan.eap", "Scanners"]
+["net-analyzer/bmon", "bmon.eap", "Analyzer"]
+["net-analyzer/cheops-ng", "cheops-ng.eap" "Scanners"]
 ["net-analyzer/dnsa", "dnsa.eap", "Analyzer"]
 ["net-analyzer/dnsenum", "dnsenum.eap", "Analyzer"]
 ["net-analyzer/driftnet", "driftnet.eap", "Analyzer"]
-["net-analyzer/"dsniff", "MITM"]", "dsniff.eap", "MITM"]
+["net-analyzer/dsniff", "dsniff.eap", "MITM"]
 ["net-analyzer/ethereal", "ethereal.eap", "Analyzer"]
 ["net-analyzer/ettercap", "ettercap.eap", "MITM"]
-["net-analyzer/firewalk", "firewalk.eap", "scanners"]
-["net-analyzer/fragroute", fragroute.eap
+["net-analyzer/firewalk", "firewalk.eap", "Scanners"]
+["net-analyzer/fragroute", "fragroute.eap", "Forging-Spoofing"]
 ["net-analyzer/ftester", ftester.eap
-["net-analyzer/gnome-nettool", "gnome-nettool.eap", "analyzer"]
+["net-analyzer/gnome-nettool", "gnome-nettool.eap", "Analyzer"]
 ["net-analyzer/gspoof", "gspoof.eap", "Forging-Spoofing"]
 ["net-analyzer/honeyd", "honeyd.eap", "Misc"]
 ["net-analyzer/hping", "hping.eap", "Forging-Spoofing"]
 ["net-analyzer/hunt", "hunt.eap", "Forging-Spoofing"]
 ["net-analyzer/hydra", "hydra.eap", "Cracker-Bruter"]
-["net-analyzer/ike-scan", "ike-scan.eap", "scanners"]
+["net-analyzer/ike-scan", "ike-scan.eap", "Scanners"]
 ["net-analyzer/isic", "isic.eap", "Forging-Spoofing"]
-["net-analyzer/libnasl", libnasl.eap
-["net-analyzer/macchanger", macchanger.eap
+["net-analyzer/macchanger", "macchanger.eap", "Misc"]
 ["net-analyzer/mbrowse", "mbrowse.eap", "Analyzer"]
-["net-analyzer/metacoretex-ng", "metacoretex-ng.eap", "database"]
-["net-analyzer/metasploit", metasploit.eap
-["net-analyzer/nbtscan", "nbtscan.eap", "scanners"]
-["net-analyzer/nessus", "nessus.eap", "scanners"]
-["net-analyzer/nessus-core", nessus-core.eap
-["net-analyzer/nessus-libraries", nessus-libraries.eap
-["net-analyzer/nessus-plugins", nessus-plugins.eap
+["net-analyzer/metacoretex-ng", "metacoretex-ng.eap", "Database"]
+["net-analyzer/metasploit", "metasploit.eap", "Exploits"]
+["net-analyzer/nbtscan", "nbtscan.eap", "Scanners"]
+["net-analyzer/nessus", "nessus.eap", "Scanners"]
 ["net-analyzer/net-snmp", net-snmp.eap
 ["net-analyzer/netcat", netcat.eap
 ["net-analyzer/netdude", "netdude.eap", "Analyzer"]
 ["net-analyzer/netwag", "netwag.eap", "Forging-Spoofing"]
-["net-analyzer/netwox", netwox.eap
-["net-analyzer/ngrep", ngrep.eap
-["net-analyzer/nikto", "nikto.eap", "scanners"]
-["net-analyzer/nmap", "nmap.eap", "scanners"]
-["net-analyzer/nmbscan", "nmbscan.eap", "scanners"]
+["net-analyzer/nikto", "nikto.eap", "Scanners"]
+["net-analyzer/nmap", "nmap.eap", "Scanners"]
+["net-analyzer/nmbscan", "nmbscan.eap", "Scanners"]
 ["net-analyzer/ntop", "ntop.eap", "Analyzer"]
-["net-analyzer/ntp-fingerprint", ntp-fingerprint.eap
+["net-analyzer/ntp-fingerprint", "ntp-fingerprint.eap", "fingerprinters"]
 ["net-analyzer/p0f", p0f.eap
 ["net-analyzer/packit", "packit.eap", "Forging-Spoofing"]
 ["net-analyzer/paketto", paketto.eap
 ["net-analyzer/rain", "rain.eap", "Forging-Spoofing"]
-["net-analyzer/sara", "sara.eap", "scanners"]
+["net-analyzer/sara", "sara.eap", "Scanners"]
 ["net-analyzer/scanssh", scanssh.eap
 ["net-analyzer/siphon", siphon.eap
 ["net-analyzer/smtpmap", smtpmap.eap
@@ -61,7 +55,7 @@
 ["net-analyzer/tcptraceroute", tcptraceroute.eap
 ["net-analyzer/thcrut", thcrut.eap
 ["net-analyzer/traceroute", traceroute.eap
-["net-analyzer/upnpscan", "upnpscan.eap", "scanners"]
+["net-analyzer/upnpscan", "upnpscan.eap", "Scanners"]
 ["net-analyzer/xprobe", xprobe.eap
 ["net-analyzer/yersinia", "yersinia.eap", "Exploit"]
 ["net-analyzer/zodiac", "zodiac.eap", "Analyzer"]
@@ -108,7 +102,7 @@
 ["net-proxy/privoxy", privoxy.eap
 ["net-proxy/tsocks", tsocks.eap
 ["net-proxy/webscarab", "webscarab.eap", "Proxy"]
-["net-wireless/aircrack-ng", "aircrack-ng.eap", "Wireless"]
+["net-wireless/aircrack-ng", "aircrack-ng.eap", "Wireless/Aircrack-Suite"]
 ["net-wireless/airsnort", "airsnort.eap", "Wireless"]
 ["net-wireless/airtraf", airtraf.eap
 ["net-wireless/btscanner", btscanner.eap
