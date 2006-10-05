@@ -6,12 +6,7 @@ AUX airodump-ng-0.6.1-rtap.patch 451 RMD160 4e778d6f81d714414af08be8930bdc0d273a
 MD5 f738fe30bd74ef2c15bac6b6bd59e466 files/airodump-ng-0.6.1-rtap.patch 451
 RMD160 4e778d6f81d714414af08be8930bdc0d273a0f6e files/airodump-ng-0.6.1-rtap.patch 451
 SHA256 cae3ddc0f6b93162c84915b4f1fe5b37e3dc524e176c8f73491099e518893c0c files/airodump-ng-0.6.1-rtap.patch 451
-DIST aircrack-ng-0.5.tar.gz 131156
 DIST aircrack-ng-0.6.1.tar.gz 137425 RMD160 14a747a4db5e46e894365ca3172ff67d2f3783cc SHA1 43d0c2c256806e0ffcfe1b6fa49eda2075e51947 SHA256 2a3899771c00f051d7727359f8ee6eda5029e7d144804e29f8c6743bb5558211
-EBUILD aircrack-ng-0.5.ebuild 687 RMD160 17ba3e4ec9d6bade56f379e848250f14abaf570b SHA1 b86f9251d09ba51f6247f2c9a80d3419869c9f50 SHA256 885267324067d79e3900b1b9364b30d0ef9b01c01126755b082b3200af7e4927
-MD5 28f873cef141498112d55cb61416db66 aircrack-ng-0.5.ebuild 687
-RMD160 17ba3e4ec9d6bade56f379e848250f14abaf570b aircrack-ng-0.5.ebuild 687
-SHA256 885267324067d79e3900b1b9364b30d0ef9b01c01126755b082b3200af7e4927 aircrack-ng-0.5.ebuild 687
 EBUILD aircrack-ng-0.6.1.ebuild 1029 RMD160 aa3a550ed75a0b068fecb56591a1cf3ca9da9d16 SHA1 f008bd0a10ce1bef49f70e39e4b9f19c5866de75 SHA256 ce7b82a3286e5ed38fce4d52d6db6f9dc0a084650bc665aba33cad9e02b418ec
 MD5 be43b026752e3918fa53aadab440c391 aircrack-ng-0.6.1.ebuild 1029
 RMD160 aa3a550ed75a0b068fecb56591a1cf3ca9da9d16 aircrack-ng-0.6.1.ebuild 1029
@@ -24,9 +19,6 @@ MISC metadata.xml 545 RMD160 74b28f94434b9af081b71806679b128b42cb8068 SHA1 b9b41
 MD5 fa1e307730dae389bd54c27130c69ec5 metadata.xml 545
 RMD160 74b28f94434b9af081b71806679b128b42cb8068 metadata.xml 545
 SHA256 af8903a9f2e95968febae6760b251c2145e3a26569f71ff64266ae2b4fcbbb2a metadata.xml 545
-MD5 ebb7e8c7cf3528e8d38d3ff6fb1ee247 files/digest-aircrack-ng-0.5 67
-RMD160 a1a4350b55e8189b74918901285eae2e00254da5 files/digest-aircrack-ng-0.5 67
-SHA256 abadd9f0a4f2330ebd6234c693f319eb1b575d9ea5e30c875e2d376fd8ea58b7 files/digest-aircrack-ng-0.5 67
 MD5 561edd8a9e9583421b2e761028770817 files/digest-aircrack-ng-0.6.1 253
 RMD160 f8c17df61520eae955040cbe863f584b37dbd08e files/digest-aircrack-ng-0.6.1 253
 SHA256 064bd517ee0b90a1a0d576b7dccccc64886137501ed33cc6a92d4b1cc6d37d3d files/digest-aircrack-ng-0.6.1 253
