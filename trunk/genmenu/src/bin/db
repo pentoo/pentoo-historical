@@ -1,6 +1,6 @@
 ["net-analyzer/absinthe", "absinthe.eap", "Database"]
 ["net-analyzer/aimsniff", "aimsniff.eap", "Analyzer"]
-["net-analyzer/amap", "amap.eap", "fingerprinter"]
+["net-analyzer/amap", "amap.eap", "Fingerprint"]
 ["net-analyzer/arpwatch", "arpwatch.eap", "Analyzer"]
 ["net-analyzer/authforce", authforce.eap", "Cracker-Bruter"]
 ["net-analyzer/autoscan", "autoscan.eap", "Scanners"]
@@ -37,7 +37,7 @@
 ["net-analyzer/nmap", "nmap.eap", "Scanners"]
 ["net-analyzer/nmbscan", "nmbscan.eap", "Scanners"]
 ["net-analyzer/ntop", "ntop.eap", "Analyzer"]
-["net-analyzer/ntp-fingerprint", "ntp-fingerprint.eap", "fingerprinters"]
+["net-analyzer/ntp-fingerprint", "ntp-fingerprint.eap", "Fingerprint"]
 ["net-analyzer/p0f", p0f.eap
 ["net-analyzer/packit", "packit.eap", "Forging-Spoofing"]
 ["net-analyzer/paketto", paketto.eap
@@ -48,10 +48,9 @@
 ["net-analyzer/smtpmap", smtpmap.eap
 ["net-analyzer/snmpenum", "snmpenum.eap", "Analyzer"]
 ["net-analyzer/snort", snort.eap
-["net-analyzer/sqlat", sq"lat.eap", "Analyzer"]
-["net-analyzer/sqlbf", sqlbf.eap
-["net-analyzer/sqlinject", sqlinject.eap
-["net-analyzer/tcpdump", tcpdump.eap
+["net-analyzer/sqlat", "sqlat.eap", "Database"]
+["net-analyzer/sqlbf", "sqlbf.eap", "Database"]
+["net-analyzer/sqlinject", "sqlinject.eap", "Database"]
 ["net-analyzer/tcptraceroute", tcptraceroute.eap
 ["net-analyzer/thcrut", thcrut.eap
 ["net-analyzer/traceroute", traceroute.eap
