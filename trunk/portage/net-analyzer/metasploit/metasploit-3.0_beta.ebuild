@@ -11,7 +11,7 @@ HOMEPAGE="http://www.metasploit.org/"
 SRC_URI="${MY_P}.tar.gz"
 
 LICENSE="MSF-1.1"
-SLOT="0"
+SLOT="3"
 KEYWORDS="~amd64 ~ppc ~x86"
 RESTRICT="fetch"
 IUSE="gtk"
@@ -35,15 +35,18 @@ src_install() {
         dodir /usr/bin/
 
         # should be as simple as copying everything into the target...
-        cp -pPR ${S} ${D}usr/lib/metasploit || die
+        cp -pPR ${S} ${D}usr/lib/metasploit${SLOT} || die
 
         # and creating symlinks in the /usr/bin dir
         cd ${D}/usr/bin
-        ln -s ../lib/metasploit/msf* ./ || die
+	for file in `ls ../lib/metasploit3/msf* | grep -o msf.*`
+	do
+        	ln -s ../lib/metasploit3/${file} ./${file}${SLOT} || die
+	done
         chown -R root:0 ${D}
 
-        newinitd ${FILESDIR}/msfweb.initd msfweb || die "newinitd failed"
-        newconfd ${FILESDIR}/msfweb.confd msfweb || die "newconfd failed"
+        newinitd ${FILESDIR}/msfweb.initd msfweb${SLOT} || die "newinitd failed"
+        newconfd ${FILESDIR}/msfweb.confd msfweb${SLOT} || die "newconfd failed"
 }
 
 #pkg_postinst() {

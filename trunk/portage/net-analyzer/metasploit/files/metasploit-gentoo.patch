@@ -7,7 +7,7 @@ diff -Naur framework-3.0-beta-1.orig/msfcli framework-3.0-beta-1/msfcli
  
 -msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 -$:.unshift(File.join(File.dirname(msfbase), 'lib'))
-+msfbase = "/usr/lib/metasploit/"
++msfbase = "/usr/lib/metasploit3/"
 +$:.unshift(File.join((msfbase), 'lib'))
  
  require 'rex'
@@ -21,7 +21,7 @@ diff -Naur framework-3.0-beta-1.orig/msfconsole framework-3.0-beta-1/msfconsole
  
 -msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 -$:.unshift(File.join(File.dirname(msfbase), 'lib'))
-+msfbase = "/usr/lib/metasploit/"
++msfbase = "/usr/lib/metasploit3/"
 +$:.unshift(File.join((msfbase), 'lib'))
  
  require 'rex'
@@ -35,7 +35,7 @@ diff -Naur framework-3.0-beta-1.orig/msfd framework-3.0-beta-1/msfd
  
 -msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 -$:.unshift(File.join(File.dirname(msfbase), 'lib'))
-+msfbase = "/usr/lib/metasploit/"
++msfbase = "/usr/lib/metasploit3/"
 +$:.unshift(File.join((msfbase), 'lib'))
  
  require 'msf/base'
@@ -48,7 +48,7 @@ diff -Naur framework-3.0-beta-1.orig/msfencode framework-3.0-beta-1/msfencode
  
 -msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 -$:.unshift(File.join(File.dirname(msfbase), 'lib'))
-+msfbase = "/usr/lib/metasploit/"
++msfbase = "/usr/lib/metasploit3/"
 +$:.unshift(File.join((msfbase), 'lib'))
  
  require 'rex'
@@ -62,7 +62,7 @@ diff -Naur framework-3.0-beta-1.orig/msflicense framework-3.0-beta-1/msflicense
  
 -msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 -$:.unshift(File.join(File.dirname(msfbase), 'lib'))
-+msfbase = "/usr/lib/metasploit/"
++msfbase = "/usr/lib/metasploit3/"
 +$:.unshift(File.join((msfbase), 'lib'))
  
  require 'rex'
@@ -76,7 +76,7 @@ diff -Naur framework-3.0-beta-1.orig/msfopcode framework-3.0-beta-1/msfopcode
  
 -msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 -$:.unshift(File.join(File.dirname(msfbase), 'lib'))
-+msfbase = "/usr/lib/metasploit/"
++msfbase = "/usr/lib/metasploit3/"
 +$:.unshift(File.join((msfbase), 'lib'))
  
  require 'rex'
@@ -89,7 +89,7 @@ diff -Naur framework-3.0-beta-1.orig/msfpayload framework-3.0-beta-1/msfpayload
  
 -msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 -$:.unshift(File.join(File.dirname(msfbase), 'lib'))
-+msfbase = "/usr/lib/metasploit/"
++msfbase = "/usr/lib/metasploit3/"
 +$:.unshift(File.join((msfbase), 'lib'))
  
  require 'rex'
@@ -102,7 +102,7 @@ diff -Naur framework-3.0-beta-1.orig/msfpescan framework-3.0-beta-1/msfpescan
  
 -msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 -$:.unshift(File.join(File.dirname(msfbase), 'lib'))
-+msfbase = "/usr/lib/metasploit/"
++msfbase = "/usr/lib/metasploit3/"
 +$:.unshift(File.join((msfbase), 'lib'))
  
  require 'rex/peparsey'
@@ -116,7 +116,7 @@ diff -Naur framework-3.0-beta-1.orig/msfweb framework-3.0-beta-1/msfweb
  
 -msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 -$:.unshift(File.join(File.dirname(msfbase), 'lib'))
-+msfbase = "/usr/lib/metasploit/"
++msfbase = "/usr/lib/metasploit3/"
 +$:.unshift(File.join((msfbase), 'lib'))
  
  
@@ -130,7 +130,7 @@ diff -Naur framework-3.0-beta-1.orig/msfwx framework-3.0-beta-1/msfwx
  
 -msfbase = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 -$:.unshift(File.join(File.dirname(msfbase), 'lib'))
-+msfbase = "/usr/lib/metasploit/"
++msfbase = "/usr/lib/metasploit3/"
 +$:.unshift(File.join((msfbase), 'lib'))
  
  
