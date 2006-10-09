@@ -12,7 +12,9 @@ EAPDIR = '/usr/share/genmenu/e17/all'
 MENUSRC = '/usr/share/genmenu/e17/menu/all'
 ENVDIR = '/etc/env.d/'
 menus_used = []
-
+star = green("  *  ")
+arrow = bold(" >>> ")
+warn = red (" !!! ")
 
 def getHomeDir():
     ''' Try to find user's home directory, otherwise return current directory.'''
@@ -91,13 +93,14 @@ def clean_menu():
             all_menus.remove(menus_used[x])
     # This just generated the list of unused menu entries.
     for x in range(all_menus.__len__()):
+        menu = os.path.join(MENUDIR, "all", all_menus[x])
         if not options.simulate:
-            if os.path.exists(os.path.join(MENUDIR, "all", all_menus[x])):
-                os.rmdir(os.path.join(MENUDIR, "all", all_menus[x]))
+            if os.path.exists(menu):
+                os.rmdir(menu)
             else:
-                print MENUDIR + "/all/" + all_menus[x] + " NOT FOUND"
+                print warn + menu + " NOT FOUND"
         else:
-            print MENUDIR + "/all/" + all_menus[x] + " NOT FOUND"
+            print warn + menu + " NOT FOUND"
 
 #REM Function done     
 def copy_menu_struct():
@@ -113,11 +116,11 @@ def make_menu_entry(eapfile="" , category="" ):
     if os.path.exists(file):
         # Check if dry-run
         if options.simulate:
-            print "Copying " + eapfile + " to " + ICONDIR
+            print arrow + "Copying " + eapfile + " to " + ICONDIR
             if not menus_used.__contains__(category):
                 menus_used.append(category)
             if not os.path.exists(os.path.join(MENUDIR, "all", category)):
-                print "Making menu entry for " + eapfile + " in " + MENUDIR + "/all/" + category
+                print arrow + "Making menu entry for " + eapfile + " in " + MENUDIR + "/all/" + category
             return 0
         # Create the menu entry
         else:
@@ -126,8 +129,8 @@ def make_menu_entry(eapfile="" , category="" ):
             try:
                 shutil.copyfile(file, ICONDIR)
             except:
-                sys.stderr.write("Unable to copy " + eapfile + " to " + ICONDIR)
-                sys.stderr.write("Verify that you have write permissions in " + ICONDIR)
+                sys.stderr.write(red("Unable to copy " + eapfile + " to " + ICONDIR + "\n"))
+                sys.stderr.write(red("Verify that you have write permissions in " + ICONDIR + "\n"))
                 return -1
             if not menus_used.__contains__(category):
                 menus_used.append(category)
@@ -151,21 +154,20 @@ def main():
         return 0
 
     if options.simulate:
-        print green("*****************************************")
-        print green("          Starting Simulation")
-        print green("*****************************************")
+        print star + bold("Starting simulation")
 
     pkginstalled = []
     pkginstalled = listpackages(PORTDIR)
     notthere = []
     if not options.simulate:
-        copy_menu_struct()
+        try:
+            copy_menu_struct()
+        except:
+            return -1
     for y in range(db.__len__()):
         if pkginstalled.__contains__(db[y][0]):
             if options.listonly:
-                print "*****************************************"
-                print "   Listing supported packages installed"
-                print "*****************************************"
+                print star + "Listing supported packages installed"
                 print "Package\t\tIcon file\t\tMenu category"
                 print db[y][0] + "\t" + db[y][1] + "\t\t" + db[y][2] + "\t"
             else:
@@ -179,12 +181,12 @@ def main():
         else:
             notthere.append(db[y][0])
     clean_menu()
-    # Final move, show the unfound icons in the db
-    print red("*****************************************")
-    print red("         Missing applications :")
-    print red("*****************************************")
-    for i in range(notthere.__len__()):
-        print " ---> " + notthere[i]
+    if options.verbose:
+        # Final move, show the unfound icons in the db
+        print warn + red("Missing applications :")
+        print star + green("The following applications are available but not installed")
+        for i in range(notthere.__len__()):
+            print arrow + notthere[i]
 
 
 if __name__ == "__main__":
@@ -192,6 +194,8 @@ if __name__ == "__main__":
     from optparse import OptionParser
     parser = OptionParser()
     parser.add_option("-l", "--list", action="store_true", dest="listonly", default=False,
+                      help="Show supported installed packages")
+    parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False,
                       help="Show supported installed packages")
     parser.add_option("-L", "--list-supported", action="store_true", dest="listsupported", default=False,
                       help="Show supported installed packages")
