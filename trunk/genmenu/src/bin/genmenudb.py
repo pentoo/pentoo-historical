@@ -39,7 +39,7 @@ DB=[["net-analyzer/absinthe", "absinthe.eap", "Database"],
     ["net-analyzer/nmbscan", "nmbscan.eap", "Scanners"],
     ["net-analyzer/ntop", "ntop.eap", "Analyzer"],
     ["net-analyzer/ntp-fingerprint", "ntp-fingerprint.eap", "Fingerprint"],
-    ["net-analyzer/p0f", "p0f.eap", "Fingerprint",
+    ["net-analyzer/p0f", "p0f.eap", "Fingerprint"],
     ["net-analyzer/packit", "packit.eap", "Forging-Spoofing"],
     ["net-analyzer/paketto", "paketto-linkcat.eap paketto-minewt.eap paketto-paratrace.eap paketto-scanrand.eap", "Forging-Spoofing"],
     ["net-analyzer/rain", "rain.eap", "Forging-Spoofing"],
@@ -112,3 +112,4 @@ DB=[["net-analyzer/absinthe", "absinthe.eap", "Database"],
     ["net-wireless/wifitap", "wifitap.eap", "Wireless"],
     ["net-wireless/wpa_supplicant", "wpa_supplicant.eap", "Wireless"],
     ["net-www/apache", "apache.eap", "Services"]]
+
