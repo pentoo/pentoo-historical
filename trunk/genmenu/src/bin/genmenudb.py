@@ -113,3 +113,6 @@ DB=[["net-analyzer/absinthe", "absinthe.eap", "Database"],
     ["net-wireless/wpa_supplicant", "wpa_supplicant.eap", "Wireless"],
     ["net-www/apache", "apache.eap", "Services"]]
 
+def getdb():
+    return DB
+

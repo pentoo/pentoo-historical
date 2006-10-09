@@ -2,11 +2,9 @@
 
 import sys,os,re,shutil
 from output import red, green, blue, bold
+import genmenudb
 
-db=[["net-analyzer/nmap", "nmap.eap", "Scanners"], ["net-analyzer/nmap", "nmap.eap", "Scanners Nmap"], ["net-analyzer/nessus", "nessus.eap toto.eap", "Scanners"], ["net-analyzer/xprobe", "xprobe.eap", "Fingerprinters"], ["net-irc/xchat", "xchat.eap", "Internet"]]
-
-toto = [["e"],
-        ["baf"]]
+db = genmenudb.getdb()
 
 PORTDIR="/var/db/pkg/"
 #PORTDIR = 'c:/Pentoo/test/portage'
