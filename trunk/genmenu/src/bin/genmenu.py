@@ -40,7 +40,7 @@ def getHomeDir():
     else: return path1
 
 ICONDIR = getHomeDir() + '/.e/e/applications/all/'
-MENUDIR = getHomeDir() + '/.e/e/applications/menu'
+MENUDIR = getHomeDir() + '/.e/e/applications/menu/all/'
 
 #REM Almost done, need to sanitize tabbed output
 def listdb():
@@ -93,10 +93,10 @@ def clean_menu():
             all_menus.remove(menus_used[x])
     # This just generated the list of unused menu entries.
     for x in range(all_menus.__len__()):
-        menu = os.path.join(MENUDIR, "all", all_menus[x])
+        menu = os.path.join(MENUDIR, all_menus[x])
         if not options.simulate:
             if os.path.exists(menu):
-                os.rmdir(menu)
+                shutil.rmtree(menu)
             else:
                 print warn + menu + " NOT FOUND"
         else:
@@ -105,7 +105,7 @@ def clean_menu():
 #REM Function done     
 def copy_menu_struct():
     try:
-        shutil.copyfile(MENUSRC, MENUDIR)
+        shutil.copytree(MENUSRC, MENUDIR)
     except:
         sys.stderr.write("Unable to copy menu structure to" + MENUDIR)
         sys.stderr.write("Verify that you have right permissions")
@@ -127,7 +127,7 @@ def make_menu_entry(eapfile="" , category="" ):
             if not os.path.exists(ICONDIR):
                 os.mkdir(ICONDIR)
             try:
-                shutil.copyfile(file, ICONDIR)
+                shutil.copyfile(file, ICONDIR + eapfile)
             except:
                 sys.stderr.write(red("Unable to copy " + eapfile + " to " + ICONDIR + "\n"))
                 sys.stderr.write(red("Verify that you have write permissions in " + ICONDIR + "\n"))
@@ -136,7 +136,7 @@ def make_menu_entry(eapfile="" , category="" ):
                 menus_used.append(category)
             # Eventually remove the space from the category; only for submenus
             category = re.sub(" ", "/", category, 1)
-            menuorder = open(os.path.join(MENUDIR, "all", category, ".order"), "w")
+            menuorder = open(os.path.join(MENUDIR, category, ".order"), "w")
             menuorder.write(eapfile)
             menuorder.close()
             return 0
@@ -181,6 +181,7 @@ def main():
         else:
             notthere.append(db[y][0])
     clean_menu()
+    settermenv()
     if options.verbose:
         # Final move, show the unfound icons in the db
         print warn + red("Missing applications :")
