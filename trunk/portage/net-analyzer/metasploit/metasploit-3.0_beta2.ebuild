@@ -3,8 +3,8 @@
 # $Header: $
 
 inherit eutils
-
-MY_P="${PN/metasploit/framework}-${PV/_/-}-1"
+MY_PV="${PV/beta/beta-}"
+MY_P="${PN/metasploit/framework}-${MY_PV/_/-}-svn"
 S="${WORKDIR}/${MY_P}"
 DESCRIPTION="The Metasploit Framework is an advanced open-source platform for developing, testing, and using vulnerability exploit code."
 HOMEPAGE="http://www.metasploit.org/"
@@ -14,11 +14,17 @@ LICENSE="MSF-1.1"
 SLOT="3"
 KEYWORDS="~amd64 ~ppc ~x86"
 RESTRICT="fetch"
-IUSE="gtk"
+IUSE="gtk sqlite2 sqlite3 postgres"
 
 RDEPEND="dev-lang/ruby
 	 dev-ruby/ruby-zlib
-	 gtk? ( >=dev-ruby/wxruby-0.6 )"
+	 gtk? ( >=dev-ruby/wxruby-0.6 )
+	 sqlite2? ( dev-ruby/sqlite-ruby
+		    dev-ruby/activerecord )
+	 sqlite3? ( dev-ruby/sqlite3-ruby
+		    dev-ruby/activerecord )
+	 postgres? ( dev-ruby/ruby-postgre
+		     dev-ruby/activerecord )"
 
 pkg_nofetch() {
 	# Fetch restricted due to license acceptation
