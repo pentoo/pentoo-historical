@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=SSH MITM
+Exec=$E17TERM -e launch sshmitm -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=ssh-mitm

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Plaintoo
+GenericName=Grab hashes
+Exec=$E17TERM -e plaintoo
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=plaintoo

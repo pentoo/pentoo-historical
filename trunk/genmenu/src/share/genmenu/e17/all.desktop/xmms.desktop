@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=XMMS
+GenericName=Music Player
+Exec=xmms
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+StartupWMClass=xmms
+Icon=xmms

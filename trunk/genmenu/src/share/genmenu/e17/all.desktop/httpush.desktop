@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=HTTPush
+Exec=$E17TERM -e /opt/pentoo/scripts/httpush.sh
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=httpush

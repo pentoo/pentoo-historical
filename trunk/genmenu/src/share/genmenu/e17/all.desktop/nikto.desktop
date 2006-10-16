@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Nikto
+Exec=$E17TERM -e /opt/pentoo/scripts/nikto.sh
+Icon=nikto

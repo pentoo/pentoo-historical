@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=IPSorcery
+Exec=magic
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=ipsorcery

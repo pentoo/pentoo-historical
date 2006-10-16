@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Bonobo Component Browser
+Exec=$E17TERM -e bonobo-browser
+Icon=bonobo-browser

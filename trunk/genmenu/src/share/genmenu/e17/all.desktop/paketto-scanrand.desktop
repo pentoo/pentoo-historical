@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Paketto- Scanrand
+Exec=$E17TERM -e launch scanrand
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=paketto-scanrand

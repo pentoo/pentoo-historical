@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Yersinia
+GenericName=cli
+Exec=$E17TERM -e launch yersinia -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=yersinia-cmd

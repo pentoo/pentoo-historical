@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Ethereal
+GenericName=Network Sniffer
+Exec=ethereal
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+StartupWMClass=Ethereal
+Icon=ethereal

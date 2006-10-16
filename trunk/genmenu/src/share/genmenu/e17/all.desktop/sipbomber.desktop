@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SIP Bomber
+Exec=$E17TERM -e sipbomber
+Icon=sipbomber

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=MailSnarf
+Exec=$E17TERM -e launch mailsnarf -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=mailsnarf

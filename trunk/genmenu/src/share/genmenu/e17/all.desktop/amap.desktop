@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Amap
+Exec=$E17TERM -e /opt/pentoo/scripts/amap.sh
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=amap

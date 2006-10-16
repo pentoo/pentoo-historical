@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Hping
+Exec=$E17TERM -e launch hping2 -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=hping

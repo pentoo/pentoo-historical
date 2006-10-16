@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=HTTP-Fuzz
+Exec=$E17TERM -e launch http-fuzz -h
+Icon=http-fuzz

@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=John the Ripper
+Exec=$E17TERM -e /opt/pentoo/scripts/john.sh
+Icon=john-the-ripper

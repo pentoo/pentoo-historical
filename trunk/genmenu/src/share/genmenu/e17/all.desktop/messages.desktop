@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Messages
+Exec=$E17TERM -e /opt/pentoo/bin/kernel/tail.sh
+Icon=messages

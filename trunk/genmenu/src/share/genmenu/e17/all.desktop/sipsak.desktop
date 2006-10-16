@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SipSak
+Exec=$E17TERM -e launch sipsak -h
+Icon=sipsak

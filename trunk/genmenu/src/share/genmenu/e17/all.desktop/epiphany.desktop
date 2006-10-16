@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Epiphany
+GenericName=Browser
+Comment=Browser
+Exec=epiphany
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+X-Enlightenment-WindowName=epiphany
+StartupWMClass=Epiphany
+Icon=epiphany

@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=RedFang
+Exec=$E17TERM -e /opt/pentoo/scripts/redfang.sh
+Icon=redfang

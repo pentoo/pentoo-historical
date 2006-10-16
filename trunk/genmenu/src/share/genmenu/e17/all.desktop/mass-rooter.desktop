@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Mass Rooter
+Exec=$E17TERM -e /opt/pentoo/scripts/massrooter.sh
+Icon=mass-rooter

@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=ALL - Amap
+Exec=$E17TERM -e /opt/pentoo/scripts/amap.sh
+Icon=all-amap

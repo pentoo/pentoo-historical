@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=AirCrack
+Exec=$E17TERM -e /opt/pentoo/scripts/aircrack.sh
+Icon=aircrack

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Macof
+Exec=$E17TERM -e launch macof -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=macof

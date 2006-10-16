@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=LDAP Administration Tool
+Exec=lat
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=lat

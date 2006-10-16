@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Nemesis
+Exec=$E17TERM -e launch nemesis
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=nemesis

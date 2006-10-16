@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=P0f
+Exec=$E17TERM -e launch p0f -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=p0f

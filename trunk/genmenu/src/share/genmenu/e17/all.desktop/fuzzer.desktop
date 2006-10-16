@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Fuzzer
+Exec=$E17TERM -e launch fuzzer -h
+Icon=fuzzer

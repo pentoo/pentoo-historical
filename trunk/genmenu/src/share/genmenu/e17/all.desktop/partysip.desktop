@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=PartySIP
+Exec=$E17TERM -e launch partysip -h
+Icon=partysip

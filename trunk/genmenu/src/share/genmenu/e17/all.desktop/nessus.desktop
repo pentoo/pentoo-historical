@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Nessus
+Exec=$E17TERM -e /opt/pentoo/scripts/nessus.sh
+Icon=nessus

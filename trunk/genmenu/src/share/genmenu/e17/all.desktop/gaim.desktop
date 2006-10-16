@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Gaim
+Exec=gaim
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+StartupWMClass=Gaim
+Icon=gaim

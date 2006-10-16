@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Fingerprints Update
+Exec=$E17TERM -e /opt/pentoo/scripts/update-all.sh
+Icon=fingerprints-update

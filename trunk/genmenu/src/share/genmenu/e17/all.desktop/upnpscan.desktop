@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=UPNPScan
+Exec=$E17TERM -e launch upnpscan -h
+Icon=upnpscan

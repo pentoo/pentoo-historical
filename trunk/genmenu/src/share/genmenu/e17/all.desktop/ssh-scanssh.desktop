@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SSH - ScanSSH
+Exec=$E17TERM -e /opt/pentoo/scripts/scanssh.sh
+Icon=ssh-scanssh

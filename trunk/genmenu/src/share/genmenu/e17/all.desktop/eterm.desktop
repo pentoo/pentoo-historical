@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Eterm Terminal
+GenericName=Terminal
+Exec=Eterm
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+StartupWMClass=Eterm
+Icon=eterm

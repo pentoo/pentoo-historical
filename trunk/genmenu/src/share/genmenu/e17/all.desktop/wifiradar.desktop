@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Wifi Radar
+Exec=wifi-radar
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=wifiradar

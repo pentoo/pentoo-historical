@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=X Terminal
+GenericName=Terminal
+Exec=xterm
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+StartupWMClass=XTerm
+Icon=xterm

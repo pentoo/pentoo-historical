@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Gnome Terminal
+GenericName=Terminal
+Exec=gnome-terminal
+StartupNotify=true
+X-Enlightenment-WaitExit=false
+StartupWMClass=Gnome-terminal
+Icon=gnome-terminal

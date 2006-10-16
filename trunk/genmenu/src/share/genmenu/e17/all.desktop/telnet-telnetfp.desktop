@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=TELNET - TelnetFP
+Exec=$E17TERM -e /opt/pentoo/scripts/telnetfp.sh
+Icon=telnet-telnetfp

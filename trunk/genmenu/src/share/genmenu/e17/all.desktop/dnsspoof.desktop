@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=DnsSpoof
+Exec=$E17TERM -e launch dnsspoof -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=dnsspoof

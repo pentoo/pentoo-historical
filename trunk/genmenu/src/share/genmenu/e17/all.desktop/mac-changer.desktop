@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=MAC Changer
+Exec=$E17TERM -e launch macchanger -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=mac-changer

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=FileSnarf
+Exec=$E17TERM -e launch filesnarf -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=filesnarf

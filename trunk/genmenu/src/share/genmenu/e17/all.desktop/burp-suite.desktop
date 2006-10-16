@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Burp Suite
+Exec=$E17TERM -e burpsuite
+Icon=burp-suite

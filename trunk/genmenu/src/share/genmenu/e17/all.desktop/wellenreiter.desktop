@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Wellenreiter
+Exec=$E17TERM -e /usr/bin/wellenreiter
+Icon=wellenreiter

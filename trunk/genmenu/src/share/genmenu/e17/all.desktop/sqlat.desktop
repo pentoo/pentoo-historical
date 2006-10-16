@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SQL Attack Toolkit
+Exec=$E17TERM -e /opt/pentoo/scripts/sqlat.sh
+Icon=sqlat

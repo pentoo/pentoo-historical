@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=BED
+Exec=$E17TERM -e launch bed
+Icon=bed

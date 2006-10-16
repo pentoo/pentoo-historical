@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Isic
+Exec=$E17TERM -e launch isic
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=isic

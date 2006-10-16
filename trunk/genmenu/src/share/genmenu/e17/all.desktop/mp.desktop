@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=MP Editor
+Exec=mp
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+StartupWMClass=mp
+Icon=mp

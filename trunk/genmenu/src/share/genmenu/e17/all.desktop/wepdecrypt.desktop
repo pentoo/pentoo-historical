@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=WepDecrypt
+Exec=$E17TERM -e /opt/pentoo/scripts/wepdecrypt.sh
+Icon=wepdecrypt

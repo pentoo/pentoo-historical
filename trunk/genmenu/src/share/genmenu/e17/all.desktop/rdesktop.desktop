@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=RDesktop
+Exec=$E17TERM -e launch rdesktop
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=rdesktop

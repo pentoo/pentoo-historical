@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Honeyd
+Exec=$E17TERM -e /opt/pentoo/scripts/honeyd.sh
+Icon=honeyd

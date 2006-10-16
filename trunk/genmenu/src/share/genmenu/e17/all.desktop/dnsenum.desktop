@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=DNSenum
+Exec=$E17TERM -e launch dnsenum
+Icon=dnsenum

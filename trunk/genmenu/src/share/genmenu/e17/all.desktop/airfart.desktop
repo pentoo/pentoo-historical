@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Airfart
+Exec=$E17TERM -e /usr/bin/airfart
+Icon=airfart

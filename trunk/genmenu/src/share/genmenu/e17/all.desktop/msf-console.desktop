@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=MSF Console
+Exec=$E17TERM -e msfconsole
+Icon=msf-console

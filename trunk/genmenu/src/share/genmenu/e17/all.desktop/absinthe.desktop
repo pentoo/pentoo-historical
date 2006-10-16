@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Absinthe
+Exec=$E17TERM -e absinthe
+Icon=absinthe

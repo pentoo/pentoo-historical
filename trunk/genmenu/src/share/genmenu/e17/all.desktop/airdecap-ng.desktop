@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Airdecap-ng
+Exec=$E17TERM -e launch airdecap-ng -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+StartupWMClass=Eterm
+Icon=airdecap-ng

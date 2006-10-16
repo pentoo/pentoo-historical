@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SSL Sniff
+Exec=$E17TERM -e /opt/pentoo/scripts/sslsniff.sh
+Icon=ssl-sniff

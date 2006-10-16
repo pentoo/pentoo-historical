@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SMUDGE
+Exec=$E17TERM -e launch smudge
+Icon=smudge

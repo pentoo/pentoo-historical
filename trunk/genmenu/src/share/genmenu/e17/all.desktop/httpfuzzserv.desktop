@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=HTTP Fuzzer Server
+Exec=$E17TERM -e launch fuzzer-server port 80
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=httpfuzzserv

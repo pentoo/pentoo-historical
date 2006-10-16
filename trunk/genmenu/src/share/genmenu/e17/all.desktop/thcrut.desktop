@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=THC rut
+Exec= launch thcrut
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=thcrut

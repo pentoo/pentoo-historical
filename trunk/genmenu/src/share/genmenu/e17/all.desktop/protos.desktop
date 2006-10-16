@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Protos
+Exec=$E17TERM -e launch protos
+Icon=protos

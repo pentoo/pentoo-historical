@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Aireplay-ng
+Exec=$E17TERM -e launch aireplay-ng -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+StartupWMClass=Eterm
+Icon=aireplay-ng

@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Raccess
+Exec=$E17TERM -e /opt/pentoo/scripts/raccess.sh
+Icon=raccess

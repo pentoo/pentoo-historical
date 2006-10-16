@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=GtkSkan
+Exec=$E17TERM -e /usr/bin/gtkskan
+Icon=gtkskan

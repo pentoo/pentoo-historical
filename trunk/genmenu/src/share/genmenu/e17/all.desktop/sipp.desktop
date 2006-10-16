@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SIPp
+Exec=$E17TERM -e launch sipp -h
+Icon=sipp

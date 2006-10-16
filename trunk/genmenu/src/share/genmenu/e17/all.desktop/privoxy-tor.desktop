@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Privoxy - TOR
+Exec=$E17TERM -e /opt/pentoo/scripts/privoxy.sh
+Icon=privoxy-tor

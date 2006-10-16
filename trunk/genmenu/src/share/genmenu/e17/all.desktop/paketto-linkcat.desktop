@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Paketto- Linkcat
+Exec=$E17TERM -e /opt/pentoo/scripts/lc.sh
+Icon=paketto-linkcat

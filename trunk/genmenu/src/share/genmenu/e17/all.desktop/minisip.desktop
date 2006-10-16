@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=MiniSIP
+Exec=$E17TERM -e minisip
+Icon=minisip

@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=TkMIB
+Exec=$E17TERM -e tkmib
+Icon=tkmib

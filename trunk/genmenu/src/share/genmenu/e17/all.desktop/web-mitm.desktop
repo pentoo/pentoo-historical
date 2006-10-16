@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Web MITM
+Exec=$E17TERM -e launch webmitm
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=web-mitm

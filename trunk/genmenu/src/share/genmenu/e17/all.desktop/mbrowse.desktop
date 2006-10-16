@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=MBrowse
+Exec=$E17TERM -e /usr/bin/mbrowse
+Icon=mbrowse

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=The Gimp
+GenericName=Paint Program
+Comment=Smelly Pants
+Exec=gimp
+StartupNotify=true
+X-Enlightenment-WaitExit=false
+StartupWMClass=Gimp
+Icon=gimp

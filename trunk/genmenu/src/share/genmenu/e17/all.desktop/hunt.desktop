@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Hunt
+Exec=$E17TERM -e /usr/bin/hunt
+Icon=hunt

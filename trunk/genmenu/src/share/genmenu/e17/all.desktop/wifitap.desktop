@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Wifitap
+Exec=$E17TERM -e launch wifitap
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=wifitap

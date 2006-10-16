@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Eric
+GenericName=Python IDE
+Exec=eric3 --nosplash
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=eric

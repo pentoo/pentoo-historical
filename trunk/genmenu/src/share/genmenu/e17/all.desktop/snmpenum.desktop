@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SNMPenum
+Exec=$E17TERM -e launch snmpenum
+Icon=snmpenum

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=GParted
+Exec=gparted
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=gparted

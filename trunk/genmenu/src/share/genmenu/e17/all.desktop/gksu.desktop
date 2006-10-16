@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Root Terminal
+Exec=$E17TERM -e /usr/bin/gedit
+Icon=gksu

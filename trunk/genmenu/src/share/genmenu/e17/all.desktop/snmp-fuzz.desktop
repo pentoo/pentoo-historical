@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SNMP-Fuzz
+Exec=$E17TERM -e launch snmp-fuzz
+Icon=snmp-fuzz

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=FragRoute
+Exec=$E17TERM -e launch fragroute -h
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=fragroute

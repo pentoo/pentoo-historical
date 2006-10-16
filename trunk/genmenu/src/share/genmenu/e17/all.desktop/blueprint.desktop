@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=BluePrint
+Exec=$E17TERM -e /opt/pentoo/scripts/blueprint.sh
+Icon=blueprint

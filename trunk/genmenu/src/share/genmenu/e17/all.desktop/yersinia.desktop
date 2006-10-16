@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Yersinia
+GenericName=Curses
+Exec=$E17TERM -e /opt/pentoo/scripts/yersinia-gui.sh
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=yersinia

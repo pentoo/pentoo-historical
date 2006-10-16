@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=BT_Audit
+Exec=$E17TERM -e /opt/pentoo/scripts/bt_audit.sh
+Icon=bt_audit

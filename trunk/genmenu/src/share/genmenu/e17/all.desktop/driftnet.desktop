@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=DriftNet
+Exec=driftnet
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=driftnet

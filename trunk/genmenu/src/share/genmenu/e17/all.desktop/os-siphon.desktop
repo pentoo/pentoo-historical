@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=OS - Siphon
+Exec=$E17TERM -e /opt/pentoo/scripts/siphon.sh
+Icon=os-siphon

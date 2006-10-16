@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Kismet
+GenericName=curses, autoconfigured
+Exec=$E17TERM -e /opt/pentoo/scripts/kismetauto.sh
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=kismetauto

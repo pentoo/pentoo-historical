@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Scapy
+Exec=$E17TERM -e launch scapy -h
+Icon=scapy

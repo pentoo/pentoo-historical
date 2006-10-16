@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=NbtScan
+Exec=$E17TERM -e /opt/pentoo/scripts/nbtscan.sh
+Icon=nbtscan

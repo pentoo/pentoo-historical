@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SMTP - Smtpscan
+Exec=$E17TERM -e /opt/pentoo/scripts/smtpscan.sh
+Icon=smtp-smtpscan

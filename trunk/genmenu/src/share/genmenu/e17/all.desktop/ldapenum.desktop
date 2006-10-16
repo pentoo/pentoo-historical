@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Ldapenum
+Exec=$E17TERM -e /opt/pentoo/scripts/ldapenum.sh
+Icon=ldapenum

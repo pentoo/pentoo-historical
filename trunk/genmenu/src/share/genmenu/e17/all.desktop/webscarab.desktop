@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=WebScarab
+Exec=$E17TERM -e /usr/bin/webscarab
+Icon=webscarab

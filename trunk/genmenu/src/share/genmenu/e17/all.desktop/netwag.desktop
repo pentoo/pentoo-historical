@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=NetWag
+Exec=$E17TERM -e netwag
+Icon=netwag

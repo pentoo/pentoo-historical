@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Ike-Scan
+Exec= launch ike-scan
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=ike-scan

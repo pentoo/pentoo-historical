@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Ntop
+Exec=$E17TERM -e /opt/pentoo/scripts/ntop.sh
+Icon=ntop

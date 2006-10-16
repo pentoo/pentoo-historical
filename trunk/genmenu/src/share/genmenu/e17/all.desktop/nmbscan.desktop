@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=NmbScan
+Exec=$E17TERM -e /opt/pentoo/scripts/nmbscan.sh
+Icon=nmbscan

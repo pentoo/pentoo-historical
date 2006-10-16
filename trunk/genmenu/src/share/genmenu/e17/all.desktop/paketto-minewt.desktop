@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Paketto- Minewt
+Exec=$E17TERM -e launch minewt
+StartupNotify=false
+X-Enlightenment-WaitExit=false
+Icon=paketto-minewt

@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Siproxd
+Exec=$E17TERM -e launch siproxd -h
+Icon=siproxd

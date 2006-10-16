@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Text Editor
+Exec=$E17TERM -e /usr/bin/gedit
+Icon=gedit

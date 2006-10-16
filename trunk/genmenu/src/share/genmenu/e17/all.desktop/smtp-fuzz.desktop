@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=SMTP-Fuzz
+Exec=$E17TERM -e launch smtp-fuzz -h
+Icon=smtp-fuzz

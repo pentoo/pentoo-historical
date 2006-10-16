@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Hydra
+Exec=$E17TERM -e /usr/bin/xhydra
+Icon=hydra
