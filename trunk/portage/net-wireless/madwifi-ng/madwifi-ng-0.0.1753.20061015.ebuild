@@ -68,14 +68,14 @@ src_unpack() {
 
 	cd ${S}
 	epatch ${FILESDIR}/madwifi-ng-r1754.patch
-	for dir in ath ath_hal net80211 ath_rate/amrr ath_rate/onoe ath_rate/sample; do
-		convert_to_m ${S}/${dir}/Makefile
-	done
+#	for dir in ath ath_hal net80211 ath_rate/amrr ath_rate/onoe ath_rate/sample; do
+#		convert_to_m ${S}/${dir}/Makefile
+#	done
 }
 
 src_compile() {
 	# assists in debugging
-	emake KERNELPATH=${KV_OUT_DIR} info || die "emake info failed"
+	emake KERNELPATH=${KV_OUT_DIR} || die "emake info failed"
 
 	# needed by the modules
 	emake svnversion.h
