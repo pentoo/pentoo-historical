@@ -11,14 +11,15 @@ DESCRIPTION="Next Generation driver for Atheros based IEEE 802.11a/b/g wireless 
 HOMEPAGE="http://www.madwifi.org/"
 SRC_URI="http://snapshots.madwifi.org/madwifi-ng/${MY_P}.tar.gz"
 
-LICENSE="|| ( BSD GPL-2 )"
+LICENSE="as-is
+	|| ( BSD GPL-2 )"
 SLOT="0"
-KEYWORDS="~amd64 ppc x86"
+KEYWORDS="amd64 ppc x86"
 
 IUSE="amrr onoe"
 DEPEND="app-arch/sharutils"
 RDEPEND="!net-wireless/madwifi-old
-		>=net-wireless/madwifi-ng-tools-${PV}"
+		=net-wireless/madwifi-ng-tools-${PV}"
 
 CONFIG_CHECK="CRYPTO NET_RADIO SYSCTL"
 ERROR_CRYPTO="${P} requires Cryptographic API support (CONFIG_CRYPTO)."
@@ -30,7 +31,7 @@ MODULESD_ATH_PCI_DOCS="README"
 pkg_setup() {
 	linux-mod_pkg_setup
 
-	MODULE_NAMES="ath_hal(net:${S}/ath_hal)
+	MODULE_NAMES="ath_hal(net:${S}/ath)
 				wlan(net:${S}/net80211)
 				wlan_acl(net:${S}/net80211)
 				wlan_ccmp(net:${S}/net80211)
@@ -40,7 +41,7 @@ pkg_setup() {
 				wlan_scan_sta(net:${S}/net80211)
 				wlan_scan_ap(net:${S}/net80211)"
 
-	BUILD_PARAMS="KERNELPATH=${KV_OUT_DIR}"
+	BUILD_PARAMS="KERNELPATH=${KV_OUT_DIR} TARGET=i386-elf"
 
 	if use amrr && use onoe; then
 		eerror
@@ -67,15 +68,16 @@ src_unpack() {
 	unpack ${A}
 
 	cd ${S}
-	epatch ${FILESDIR}/madwifi-ng-r1754.patch
-#	for dir in ath ath_hal net80211 ath_rate/amrr ath_rate/onoe ath_rate/sample; do
-#		convert_to_m ${S}/${dir}/Makefile
-#	done
+	for dir in ath net80211 ath_rate/amrr ath_rate/onoe ath_rate/sample; do
+		convert_to_m ${S}/${dir}/Makefile
+	done
 }
 
 src_compile() {
+	epatch ${FILESDIR}/madwifi-ng-r1754.patch
+
 	# assists in debugging
-	emake KERNELPATH=${KV_OUT_DIR} || die "emake info failed"
+	emake KERNELPATH=${KV_OUT_DIR} info TARGET=i386-elf || die "emake info failed"
 
 	# needed by the modules
 	emake svnversion.h
