@@ -20,7 +20,7 @@ BUILD_TARGETS="all"
 
 pkg_setup() {
 	linux-mod_pkg_setup
-	BUILD_PARAMS="KSRC=${KV_DIR}"
+	BUILD_PARAMS="KSRC=${KV_DIR} MODVERDIR="
 }
 
 src_unpack() {
@@ -28,6 +28,9 @@ src_unpack() {
 	cd ${S}
 	epatch ${FILESDIR}/rtl8180_gcc4_fix.patch
 	epatch ${FILESDIR}/rtl8180-0.21.patch
+	sed -i -e 's:MODVERDIR=\${PWD}:MODVERDIR=\${PWD}/tmp:'
+	sed -i -e 's:MODULE_PARM(\([^,]*\),"i");:module_param(\1, int, 0);:' \
+               -e 's:MODULE_PARM(\([^,]*\),"s");:module_param(\1, charp, 0);:' r8180_core.c
 }
 
 src_install() {
