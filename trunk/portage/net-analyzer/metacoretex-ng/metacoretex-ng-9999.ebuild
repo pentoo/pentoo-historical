@@ -8,7 +8,7 @@ DESCRIPTION="A nice, java-based, MYSQL/Oracle/MSSQL/ODBC attack framework"
 HOMEPAGE="http://metacoretex-ng.sourceforge.net"
 LICENSE="GPL-2"
 
-ECVS_SERVER="cvs.sourceforge.net:/cvsroot/metacoretex-ng/"
+ECVS_SERVER="metacoretex-ng.cvs.sourceforge.net:/cvsroot/metacoretex-ng/"
 ECVS_MODULE="MetaCoreTex-NG"
 ECVS_LOCALNAME="${P}"
 
