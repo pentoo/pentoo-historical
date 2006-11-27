@@ -8,7 +8,7 @@ db = genmenudb.getdb()
 
 PORTDIR="/var/db/pkg/"
 #PORTDIR = 'c:/Pentoo/test/portage'
-EAPDIR = '/usr/share/genmenu/e17/all'
+EAPDIR = '/usr/share/genmenu/e17/all.desktop'
 MENUSRC = '/usr/share/genmenu/e17/menu/all'
 ENVDIR = '/etc/env.d/'
 menus_used = []
@@ -156,10 +156,14 @@ def main():
     if options.simulate:
         print star + bold("Starting simulation")
 
+    if options.listonly:
+        print star + "Listing supported packages installed"
+        print "Package\t\tIcon file\t\tMenu category"
+
     pkginstalled = []
     pkginstalled = listpackages(PORTDIR)
     notthere = []
-    if not options.simulate:
+    if not (options.simulate or options.listonly):
         try:
             copy_menu_struct()
         except:
@@ -167,8 +171,6 @@ def main():
     for y in range(db.__len__()):
         if pkginstalled.__contains__(db[y][0]):
             if options.listonly:
-                print star + "Listing supported packages installed"
-                print "Package\t\tIcon file\t\tMenu category"
                 print db[y][0] + "\t" + db[y][1] + "\t\t" + db[y][2] + "\t"
             else:
                 # calls makemenuentry file.eap, menu category
@@ -180,8 +182,9 @@ def main():
                         return -1
         else:
             notthere.append(db[y][0])
-    clean_menu()
-    settermenv()
+    if not (options.listonly):
+        clean_menu()
+    #    settermenv()
     if options.verbose:
         # Final move, show the unfound icons in the db
         print warn + red("Missing applications :")
