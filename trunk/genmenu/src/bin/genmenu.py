@@ -17,7 +17,7 @@ arrow = bold(" >>> ")
 warn = red (" !!! ")
 
 def getHomeDir():
-    ''' Try to find user's home directory, otherwise return current directory.'''
+    ''' Try to find user's home directory, otherwise return /root.'''
     try:
         path1=os.path.expanduser("~")
     except:
@@ -34,7 +34,7 @@ def getHomeDir():
     if not os.path.exists(path1):
         if not os.path.exists(path2):
             if not os.path.exists(path3):
-                return os.getcwd()
+                return '/root'
             else: return path3
         else: return path2
     else: return path1
