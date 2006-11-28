@@ -1,0 +1,23 @@
+
+net-nds/gq kerberos
+net-im/gaim krb4 -eds
+net-analyzer/authforce curl
+www-client/links fbcon
+net-wireless/kismet ethereal
+dev-db/freetds mssql
+sys-libs/glibc userlocales
+sys-block/gparted fat hfs jfs ntfs reiser4 reiserfs xfs
+dev-java/sun-jre-bin browserplugin mozilla nsplugin
+gnome-base/gnome-applets acpi
+app-admin/gnome-system-tools nfs
+net-misc/partysip -berkdb
+app-emulation/qemu-softmmu kqemu
+app-fuzz/protos h2250 http isakmp ldap sip -snmp
+net-p2p/bittorrent -gtk
+net-wireless/madwifi-ng onoe -amrr
+dev-util/subversion -apache2 -berkdb minimal
+net-misc/tsclient vnc
+net-analyzer/snort mysql
+net-analyzer/wireshark gtk ipv6 kerberos ssl adns snmp threads
+x11-libs/cairo X png pdf svg
+net-analyzer/ntop snmp

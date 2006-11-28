@@ -1,0 +1,29 @@
+# File taht unmask my progs
+
+#>=net-analyzer/nessus-libraries-2.3.0
+#>=net-analyzer/libnasl-2.3.0
+#>=net-analyzer/nessus-core-2.3.0
+#>=net-analyzer/nessus-plugins-2.3.0
+#>=net-analyzer/nessus-2.3.0
+
+# >=net-analyser/gnome-nettool-1.*
+dev-dotnet/gtk-sharp
+dev-dotnet/gnome-sharp
+dev-dotnet/glade-sharp
+dev-dotnet/art-sharp
+dev-dotnet/gnomevfs-sharp
+#app-text/gpdf <--doesn't matter if you unmask it, the ebuild is gone
+app-misc/gpsdrive
+
+#Zero_Chaos's fixes
+>=net-wireless/gkismet-0.0.10
+net-analyzer/cheops-ng
+media-libs/gdk-pixbuf
+net-misc/minisip
+dev-perl/gtk-perl
+net-nds/directoryadministrator
+net-analyzer/metacoretex-ng
+#Paros pulls in 90Mb of deps if we allow the next version up, is it worth it?
+<=net-proxy/paros-3.2.10
+gnome-base/gnome-libs
+gnome-base/orbit
