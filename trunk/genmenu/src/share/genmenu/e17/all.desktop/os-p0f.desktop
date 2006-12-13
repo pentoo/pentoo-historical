@@ -1,4 +1,0 @@
-[Desktop Entry]
-Name=OS - p0f
-Exec=$E17TERM -e /usr/sbin/p0f
-Icon=os-p0f

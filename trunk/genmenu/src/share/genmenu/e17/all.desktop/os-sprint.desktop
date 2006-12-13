@@ -1,4 +1,0 @@
-[Desktop Entry]
-Name=OS - Sprint
-Exec=$E17TERM -e /opt/pentoo/scripts/sprint.sh
-Icon=os-sprint

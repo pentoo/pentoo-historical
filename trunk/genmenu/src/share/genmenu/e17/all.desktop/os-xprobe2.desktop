@@ -1,4 +1,0 @@
-[Desktop Entry]
-Name=OS - Xprobe2
-Exec=$E17TERM -e /opt/pentoo/scripts/xprobe.sh
-Icon=os-xprobe2

@@ -1,4 +1,0 @@
-[Desktop Entry]
-Name=OS - Thc-rut
-Exec=$E17TERM -e /opt/pentoo/scripts/thcrut.sh
-Icon=os-thc-rut

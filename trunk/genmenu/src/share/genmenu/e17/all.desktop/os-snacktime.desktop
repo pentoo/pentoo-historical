@@ -1,4 +1,0 @@
-[Desktop Entry]
-Name=OS - Snacktime
-Exec=$E17TERM -e /opt/pentoo/scripts/snacktime.sh
-Icon=os-snacktime
