@@ -3,4 +3,4 @@ Name=Start/Restart BLUETOOTH
 Exec=$E17TERM -e launch /etc/init.d/bluetooth restart
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=start-bluetooth
+Icon=/usr/share/genmenu/pixmaps/stock_bluetooth.png

@@ -3,4 +3,4 @@ Name=MetaCoretex-NG
 Exec=mctx
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=metacoretex
+Icon=/usr/share/genmenu/pixmaps/scan.gif

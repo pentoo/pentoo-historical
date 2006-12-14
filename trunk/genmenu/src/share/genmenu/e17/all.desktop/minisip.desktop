@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=MiniSIP
 Exec=$E17TERM -e minisip
-Icon=minisip
+Icon=/usr/share/genmenu/pixmaps/tray_icon.png

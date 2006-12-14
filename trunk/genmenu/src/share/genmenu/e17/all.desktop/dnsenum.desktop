@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=DNSenum
 Exec=$E17TERM -e launch dnsenum
-Icon=dnsenum
+Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png

@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=Raccess
 Exec=$E17TERM -e /opt/pentoo/scripts/raccess.sh
-Icon=raccess
+Icon=/usr/share/genmenu/pixmaps/metasploit.png

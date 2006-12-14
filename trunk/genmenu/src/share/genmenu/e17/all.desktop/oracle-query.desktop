@@ -3,4 +3,4 @@ Name=Oracle Query
 Exec=$E17TERM -e /opt/pentoo/scripts/oat oquery
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=oracle-query
+Icon=/usr/share/genmenu/pixmaps/cqure.png

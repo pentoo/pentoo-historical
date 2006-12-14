@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=Firewall Builder
 Exec=$E17TERM -e /usr/bin/fwbuilder
-Icon=firewall-builder
+Icon=/usr/share/genmenu/pixmaps/network-config.png

@@ -3,4 +3,4 @@ Name=Firehol
 Exec=$E17TERM -e launch /etc/init.d/firehol start
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=firehol
+Icon=/usr/share/genmenu/pixmaps/network-config.png

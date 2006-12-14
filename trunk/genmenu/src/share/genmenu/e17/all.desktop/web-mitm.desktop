@@ -3,4 +3,4 @@ Name=Web MITM
 Exec=$E17TERM -e launch webmitm
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=web-mitm
+Icon=/usr/share/genmenu/pixmaps/stock_signature-bad.png

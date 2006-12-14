@@ -3,4 +3,4 @@ Name=Ettercap
 Exec=ettercap -G
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=ettercap
+Icon=/usr/share/genmenu/pixmaps/Ettercap.png

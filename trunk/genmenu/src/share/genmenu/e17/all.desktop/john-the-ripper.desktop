@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=John the Ripper
 Exec=$E17TERM -e /opt/pentoo/scripts/john.sh
-Icon=john-the-ripper
+Icon=/usr/share/genmenu/pixmaps/stock_lock-open.png

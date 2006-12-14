@@ -5,4 +5,4 @@ Exec=firefox
 StartupNotify=true
 X-Enlightenment-WaitExit=false
 StartupWMClass=Firefox-bin
-Icon=firefox
+Icon=/usr/share/genmenu/pixmaps/firefox.png

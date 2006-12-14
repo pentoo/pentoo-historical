@@ -3,4 +3,4 @@ Name=Peach
 Exec=$E17TERM -e launch cd /opt/Peach/
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=peach
+Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png

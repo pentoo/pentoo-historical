@@ -3,4 +3,4 @@ Name=UrlSnarf
 Exec=$E17TERM -e launch urlsnarf -h
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=urlsnarf
+Icon=/usr/share/genmenu/pixmaps/gnome-term.png

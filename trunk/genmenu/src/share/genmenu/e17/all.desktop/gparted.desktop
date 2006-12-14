@@ -3,4 +3,4 @@ Name=GParted
 Exec=gparted
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=gparted
+Icon=/usr/share/genmenu/pixmaps/gparted.png

@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=FTP, POP, SMTP - Smtpmap
 Exec=$E17TERM -e /opt/pentoo/scripts/smtpmap.sh
-Icon=ftp-pop-smtp-smtpmap
+Icon=/usr/share/genmenu/pixmaps/apacheconf.png

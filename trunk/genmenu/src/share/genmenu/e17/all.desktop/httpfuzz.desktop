@@ -3,4 +3,4 @@ Name=HTTP Fuzzer Server
 Exec=$E17TERM -e launch fuzzer-server port 80
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=httpfuzzserv
+Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png

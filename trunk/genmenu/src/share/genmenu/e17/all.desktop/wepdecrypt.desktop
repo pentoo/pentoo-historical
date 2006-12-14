@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=WepDecrypt
 Exec=$E17TERM -e /opt/pentoo/scripts/wepdecrypt.sh
-Icon=wepdecrypt
+Icon=/usr/share/genmenu/pixmaps/stock_lock-open.png

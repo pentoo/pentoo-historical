@@ -3,4 +3,4 @@ Name=MsgSnarf
 Exec=$E17TERM -e launch msgsnarf -h
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=msgsnarf
+Icon=/usr/share/genmenu/pixmaps/gnome-term.png

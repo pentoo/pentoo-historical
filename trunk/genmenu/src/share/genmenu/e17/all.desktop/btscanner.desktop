@@ -3,4 +3,4 @@ Name=BT Scanner
 Exec=$E17TERM -e launch btscanner
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=bt-scanner
+Icon=/usr/share/genmenu/pixmaps/stock_bluetooth.png

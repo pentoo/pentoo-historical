@@ -4,4 +4,4 @@ GenericName=Bluetooth Stack Smasher
 Exec=$E17TERM -e launch bss
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=bss
+Icon=/usr/share/genmenu/pixmaps/stock_bluetooth.png

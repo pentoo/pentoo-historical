@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=VoIPong
 Exec=$E17TERM -e launch voipong -h
-Icon=voipong
+Icon=/usr/share/genmenu/pixmaps/gnome-audio.png

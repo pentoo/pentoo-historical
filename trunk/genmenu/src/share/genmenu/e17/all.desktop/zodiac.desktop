@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=Zodiac
 Exec=$E17TERM -e /usr/bin/zodiac
-Icon=zodiac
+Icon=/usr/share/genmenu/pixmaps/apacheconf.png

@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=APRadar
 Exec=$E17TERM -e /usr/local/bin/apradar
-Icon=apradar
+Icon=/usr/share/genmenu/pixmaps/logo.png

@@ -3,4 +3,4 @@ Name=AutoScan
 Exec=AutoScan_Network
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=autoscan
+Icon=/usr/share/genmenu/pixmaps/Logo.png

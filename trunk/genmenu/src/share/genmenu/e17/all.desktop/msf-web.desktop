@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=MSF Web
 Exec=$E17TERM -e /opt/pentoo/scripts/msfweb.sh
-Icon=msf-web
+Icon=/usr/share/genmenu/pixmaps/metasploit.png

@@ -5,4 +5,4 @@ Exec=ethereal
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 StartupWMClass=Ethereal
-Icon=ethereal
+Icon=/usr/share/genmenu/pixmaps/ethereal.png
