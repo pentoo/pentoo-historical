@@ -5,4 +5,4 @@ Exec=xchat-2
 StartupNotify=true
 X-Enlightenment-WaitExit=false
 StartupWMClass=Xchat
-Icon=xchat
+Icon=/usr/share/pixmaps/xchat.png

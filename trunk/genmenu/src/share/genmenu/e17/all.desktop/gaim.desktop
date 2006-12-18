@@ -4,4 +4,4 @@ Exec=gaim
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 StartupWMClass=Gaim
-Icon=gaim
+Icon=/usr/share/pixmaps/gaim.png
