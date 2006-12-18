@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=gnome-settings-daemon
-Exec=/usr/libexec/gnome-settings-daemon
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=gnome-settings-daemon

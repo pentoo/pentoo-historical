@@ -1,4 +1,0 @@
-[Desktop Entry]
-Name=AirCrack
-Exec=$E17TERM -e /opt/pentoo/scripts/aircrack.sh
-Icon=/usr/share/genmenu/pixmaps/stock_lock-open.png

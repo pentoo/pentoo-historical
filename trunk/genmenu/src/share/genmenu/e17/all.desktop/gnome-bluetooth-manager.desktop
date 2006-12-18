@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=Bluetooth Manager
-Exec=gnome-bluetooth-manager
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=gnome-bluetooth-manager

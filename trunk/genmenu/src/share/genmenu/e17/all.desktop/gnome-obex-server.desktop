@@ -1,4 +1,0 @@
-[Desktop Entry]
-Name=Bluetooth File Sharing
-Exec=$E17TERM -e gnome-obex-server
-Icon=gnome-obex-server
