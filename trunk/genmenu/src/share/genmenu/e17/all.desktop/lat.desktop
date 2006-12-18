@@ -3,4 +3,4 @@ Name=LDAP Administration Tool
 Exec=lat
 StartupNotify=false
 X-Enlightenment-WaitExit=false
-Icon=lat
+Icon=/usr/share/genmenu/pixmaps/lat.png

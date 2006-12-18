@@ -1,4 +1,4 @@
 [Desktop Entry]
 Name=HTTP - Wmap
 Exec=$E17TERM -e /opt/pentoo/scripts/wmap.sh
-Icon=http-wmap
+Icon=/usr/share/genmenu/pixmaps/apacheconf.png
