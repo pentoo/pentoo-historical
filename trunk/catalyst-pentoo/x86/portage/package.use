@@ -17,3 +17,6 @@ dev-lang/perl -minimal
 net-wireless/prism54 pcmcia
 dev-perl/gtk-perl gnome
 net-analyzer/metasploit -gtk
+x11-libs/cairo -X
+dev-python/pygtk -opengl
+dev-perl/gtk-perl -opengl

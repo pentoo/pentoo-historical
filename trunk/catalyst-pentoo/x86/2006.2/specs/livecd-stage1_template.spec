@@ -16,7 +16,7 @@ portage_overlay: /usr/local/portage
 # pkgcache_path: /tmp/packages
 # pkgcache_path:
 
-livecd/use: X livecd -gnome -nls gtk fbcon opengl -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime -qt -cups -spell
+livecd/use: X livecd -gnome -nls gtk fbcon opengl -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime -qt -cups -spell png
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
@@ -100,7 +100,7 @@ net-wireless/airsnort
 net-wireless/bluez-firmware
 net-wireless/bluez-libs
 net-wireless/bluez-utils
-net-wireless/btscanner
+#net-wireless/btscanner commented due to compile problem
 net-wireless/hostapd
 net-wireless/hostap-utils
 net-wireless/ipw3945d
