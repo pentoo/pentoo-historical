@@ -17,7 +17,6 @@ RESTRICT="fetch"
 IUSE="gtk sqlite2 sqlite3 postgres"
 
 RDEPEND="dev-lang/ruby
-	 dev-ruby/ruby-zlib
 	 gtk? ( >=dev-ruby/wxruby-0.6 )
 	 sqlite2? ( dev-ruby/sqlite-ruby
 		    dev-ruby/activerecord )
@@ -25,6 +24,7 @@ RDEPEND="dev-lang/ruby
 		    dev-ruby/activerecord )
 	 postgres? ( dev-ruby/ruby-postgre
 		     dev-ruby/activerecord )"
+#	 dev-ruby/ruby-zlib
 
 pkg_nofetch() {
 	# Fetch restricted due to license acceptation
