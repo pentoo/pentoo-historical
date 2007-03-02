@@ -1,16 +1,18 @@
-mount --bind /proc /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/proc
-mount --bind /dev /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/dev
-mount --bind /dev/pts /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/dev/pts
-mount --bind /usr/portage/distfiles /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/usr/portage/distfiles
-mount --bind /var/tmp/catalyst/packages/default/livecd-stage1-i686-2006.2 /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/usr/portage/packages
-mount --bind /var/tmp/catalyst/kerncache/default/livecd-stage1-i686-2006.2 /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/tmp/kerncache
-mount --bind /root/.ccache /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/var/tmp/ccache
-chroot /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/
+#$1 is the dir to chroot
+mount --bind /proc /var/tmp/catalyst/tmp/default/$1/proc
+mount --bind /dev /var/tmp/catalyst/tmp/default/$1/dev
+mount --bind /dev/pts /var/tmp/catalyst/tmp/default/$1/dev/pts
+#mount --bind /usr/portage/distfiles /var/tmp/catalyst/tmp/default/$1/usr/portage/distfiles
+#mount --bind /var/tmp/catalyst/packages/default/$1 /var/tmp/catalyst/tmp/default/$1/usr/portage/packages
+mount --bind /usr/portage/ /var/tmp/catalyst/tmp/default/$1/usr/portage
+mount --bind /var/tmp/catalyst/kerncache/default/$1 /var/tmp/catalyst/tmp/default/$1/tmp/kerncache
+mount --bind /root/.ccache /var/tmp/catalyst/tmp/default/$1/var/tmp/ccache
+chroot /var/tmp/catalyst/tmp/default/$1/
 sleep 1
-umount /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/proc
-umount /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/dev/pts 
-umount /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/dev 
-umount /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/usr/portage/distfiles
-umount /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/usr/portage/packages 
-umount /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/tmp/kerncache 
-umount /var/tmp/catalyst/tmp/default/livecd-stage1-i686-2006.2/var/tmp/ccache
+umount /var/tmp/catalyst/tmp/default/$1/proc
+umount /var/tmp/catalyst/tmp/default/$1/dev/pts 
+umount /var/tmp/catalyst/tmp/default/$1/dev 
+umount /var/tmp/catalyst/tmp/default/$1/usr/portage
+#umount /var/tmp/catalyst/tmp/default/$1/usr/portage/packages 
+umount /var/tmp/catalyst/tmp/default/$1/tmp/kerncache 
+umount /var/tmp/catalyst/tmp/default/$1/var/tmp/ccache

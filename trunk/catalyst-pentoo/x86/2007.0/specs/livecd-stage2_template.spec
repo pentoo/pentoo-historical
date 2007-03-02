@@ -1,10 +1,10 @@
 subarch: x86
-version_stamp: 2006.2
+version_stamp: 2007.0
 target: livecd-stage2
 rel_type: default
 profile: default-linux/x86/2006.1
-snapshot: 2006.2
-source_subpath: default/livecd-stage1-x86-2006.2
+snapshot: 2007.0
+source_subpath: default/livecd-stage1-x86-2007.0
 portage_confdir: /root/catalyst-pentoo/x86/portage
 portage_overlay: /usr/local/portage
 
@@ -120,7 +120,7 @@ livecd/type: generic-livecd
 # This option will automatically create missing runlevels
 # example:
 # livecd/rcadd:
-livecd/rcadd: autoconfig coldplug
+livecd/rcadd: autoconfig
 
 # This is for removing init script from runlevels.  It is executed after the
 # defaults shipped with catalyst, so it is possible to remove the defaults using
@@ -260,7 +260,8 @@ net-wireless/rtl8180
 net-wireless/zd1211
 sys-fs/fuse
 sys-fs/captive
-
+net-firewall/firehol
+sys-apps/pmount
 
 # This option is only for ppc64 machines.  If used it will create the /etc/yaboot.conf
 # entry used for booting a ibm powerpc machine.

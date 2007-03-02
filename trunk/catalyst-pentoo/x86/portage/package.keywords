@@ -114,3 +114,4 @@ dev-libs/nspr ~x86
 net-wireless/btscanner ~x86
 x11-libs/cairo ~x86
 dev-ruby/wxruby ~x86
+sys-apps/pciutils ~x86

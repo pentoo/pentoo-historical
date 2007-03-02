@@ -1,12 +1,12 @@
 subarch: i686
-version_stamp: 2006.2
+version_stamp: 2007.0
 target: livecd-stage1
 rel_type: default
 profile: default-linux/x86/2006.1
-snapshot: 2006.2
+snapshot: 2007.0
 source_subpath: default/stage3-i686-2006.2
 portage_confdir: /root/catalyst-pentoo/x86/portage
-portage_overlay: /usr/local/portage
+portage_overlay: /usr/local/portage /usr/portage/local/layman/enlightenment
 
 # This allows the optional directory containing the output packages for
 # catalyst.  Mainly used as a way for different spec files to access the same
@@ -16,7 +16,7 @@ portage_overlay: /usr/local/portage
 # pkgcache_path: /tmp/packages
 # pkgcache_path:
 
-livecd/use: X livecd -gnome -nls gtk fbcon opengl -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime -qt -cups -spell png
+livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime -qt -cups -spell png
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
@@ -48,7 +48,6 @@ dev-libs/embryo
 dev-libs/engrave
 dev-libs/libxslt
 dev-libs/openobex
-dev-perl/gtk-perl
 dev-python/pygtk
 dev-util/dialog
 dev-util/e_utils
@@ -59,10 +58,8 @@ media-libs/edje
 media-libs/epeg
 media-libs/epsilon
 media-libs/imlib2
-media-plugins/xmms-liveice
 media-sound/alsa-utils
 media-sound/sox
-media-sound/xmms
 net-analyzer/amap
 net-analyzer/arpwatch
 net-analyzer/dsniff
@@ -84,8 +81,6 @@ net-analyzer/xprobe
 net-analyzer/yersinia
 net-dialup/minicom
 net-dns/bind-tools
-net-firewall/firehol
-net-firewall/iptables
 net-ftp/ftp
 net-ftp/oftpd
 net-im/gaim
@@ -108,7 +103,6 @@ net-wireless/wifi-radar
 net-wireless/wifitap
 net-wireless/wireless-tools
 sys-apps/baselayout
-sys-apps/coldplug
 sys-apps/eject
 sys-apps/hwdata-gentoo
 sys-apps/hwsetup

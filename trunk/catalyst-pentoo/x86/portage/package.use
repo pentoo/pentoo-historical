@@ -20,3 +20,4 @@ net-analyzer/metasploit -gtk
 x11-libs/cairo -X
 dev-python/pygtk -opengl
 dev-perl/gtk-perl -opengl
+sys-apps/pmount -crypt
