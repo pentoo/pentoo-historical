@@ -21,3 +21,5 @@ x11-libs/cairo -X
 dev-python/pygtk -opengl
 dev-perl/gtk-perl -opengl
 sys-apps/pmount -crypt
+# dep required from e
+x11-libs/ecore dbus
