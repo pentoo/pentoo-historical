@@ -99,7 +99,7 @@ net-wireless/zd1211 ~x86
 sys-apps/hwsetup ~x86
 sys-apps/parted ~x86
 sys-block/gparted ~x86
-sys-fs/captive ~x86
+sys-fs/ntfs3g ~x86
 sys-fs/ntfsprogs ~x86
 sys-fs/unionfs ~x86
 sys-kernel/genkernel ~x86
@@ -115,3 +115,4 @@ net-wireless/btscanner ~x86
 x11-libs/cairo ~x86
 dev-ruby/wxruby ~x86
 sys-apps/pciutils ~x86
+sys-fs/fuse ~x86

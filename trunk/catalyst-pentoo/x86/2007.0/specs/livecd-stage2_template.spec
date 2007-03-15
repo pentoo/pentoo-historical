@@ -1,12 +1,12 @@
-subarch: x86
+subarch: i686
 version_stamp: 2007.0
 target: livecd-stage2
 rel_type: default
 profile: default-linux/x86/2006.1
 snapshot: 2007.0
-source_subpath: default/livecd-stage1-x86-2007.0
+source_subpath: default/livecd-stage1-i686-2007.0
 portage_confdir: /root/catalyst-pentoo/x86/portage
-portage_overlay: /usr/local/portage
+portage_overlay: /usr/local/portage /usr/portage/local/enlightenment
 
 # This allows the optional directory containing the output packages for
 # catalyst.  Mainly used as a way for different spec files to access the same
@@ -29,7 +29,7 @@ portage_overlay: /usr/local/portage
 livecd/fstype: squashfs
 livecd/fsops: -root-owned
 livecd/cdtar: /usr/lib/catalyst/livecd/cdtar/isolinux-3.09-memtest86+-cdtar.tar.bz2
-livecd/iso: /tmp/pentoo-2006.2.iso
+livecd/iso: /tmp/pentoo-2007.0.iso
 
 # A fsscript is simply a shell script that is copied into the chroot of the CD
 # after the kernel(s) and any external modules have been compiled and is 
@@ -191,7 +191,7 @@ livecd/rcadd: autoconfig
 # This option sets the volume ID of the CD created.
 # example:
 # livecd/volid: Gentoo Linux 2005.0 X86
-livecd/volid: Pentoo 2006.2C
+livecd/volid: Pentoo 2007.0
 
 # This option is only used when creating a GameCD.  This specifies the file that
 # contains the definitions for GAME_NAME and GAME_EXECUTABLE, which are used by
@@ -213,7 +213,7 @@ boot/kernel/gentoo/sources: gentoo-sources
 # used by genkernel to compile the kernel this label applies to.
 # example:
 # boot/kernel/gentoo/config: /tmp/2.6.11-smp.config
-boot/kernel/gentoo/config: /root/catalyst-pentoo/x86/kernel/config-2.6.17
+boot/kernel/gentoo/config: /root/catalyst-pentoo/x86/2007.0/kernel/config-2.6.17
 
 # This option sets genkernel parameters on a per-kernel basis and applies only
 # to this kernel label.  This can be used for building options into only a
@@ -229,7 +229,7 @@ boot/kernel/gentoo/config: /root/catalyst-pentoo/x86/kernel/config-2.6.17
 # the default USE for the specified profile.
 # example:
 # boot/kernel/gentoo/use: pcmcia usb -X
-boot/kernel/gentoo/use:
+boot/kernel/gentoo/use: pcmcia usb madwifi
 
 # This option appends an extension to the name of your kernel, as viewed by a
 # uname -r/  This also affects any modules built under this kernel label.  This
@@ -245,7 +245,7 @@ boot/kernel/gentoo/use:
 # example:
 # boot/kernel/gentoo/packages: pcmcia-cs speedtouch slmodem globespan-adsl hostap-driver hostap-utils ipw2100 ipw2200 fritzcapi fcdsl cryptsetup
 boot/kernel/gentoo/packages: 
-sys-apps/pcmcia-cs
+#sys-apps/pcmcia-cs
 net-wireless/acx
 net-wireless/at76c503a
 #net-wireless/ieee80211
@@ -256,10 +256,10 @@ net-wireless/linux-wlan-ng
 #net-wireless/madwifi-ng
 net-wireless/prism54
 #net-wireless/rt2x00
-net-wireless/rtl8180
-net-wireless/zd1211
+#net-wireless/rtl8180
+#net-wireless/zd1211
 sys-fs/fuse
-sys-fs/captive
+sys-fs/ntfs3g
 net-firewall/firehol
 sys-apps/pmount
 
@@ -289,7 +289,7 @@ sys-apps/pmount
 # a package that you wish to keep, but won't need the full functionality.
 # example:
 # livecd/empty: /var/tmp /var/cache /var/db /var/empty /var/lock /var/log /var/run /var/spool /var/state /tmp /usr/portage /usr/share/man /usr/share/info /usr/share/unimaps /usr/include /usr/share/zoneinfo /usr/share/dict /usr/share/doc /usr/share/ss /usr/share/state /usr/share/texinfo /usr/lib/python2.2 /usr/lib/portage /usr/share/gettext /usr/share/i18n /usr/share/rfc /usr/lib/X11/config /usr/lib/X11/etc /usr/lib/X11/doc /usr/src /usr/share/doc /usr/share/man /root/.ccache /etc/cron.daily /etc/cron.hourly /etc/cron.monthly /etc/cron.weekly /etc/logrotate.d /etc/rsync /usr/lib/awk /usr/lib/ccache /usr/lib/gcc-config /usr/lib/nfs /usr/local /usr/diet/include /usr/diet/man /usr/share/consolefonts/partialfonts /usr/share/consoletrans /usr/share/emacs /usr/share/gcc-data /usr/share/genkernel /etc/bootsplash/gentoo /etc/bootsplash/gentoo-highquality /etc/splash/gentoo /etc/splash/emergence /usr/share/gnuconfig /usr/share/lcms /usr/share/locale /etc/skel
-livecd/empty: /usr/src
+livecd/empty: /usr/src /var/empty /var/lock /var/log /var/tmp /var/spool /var/state /tmp
 
 # This option tells catalyst to clean specific files from the filesystem and is
 # very usefu in cleaning up stray files in /etc left over after livecd/unmerge.
