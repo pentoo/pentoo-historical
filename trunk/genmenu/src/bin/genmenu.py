@@ -8,10 +8,10 @@ db = genmenudb.getdb()
 
 PORTDIR="/var/db/pkg/"
 #PORTDIR = 'c:/Pentoo/test/portage'
-EAPDIR = '/usr/share/genmenu/e17/all.desktop'
-MENUSRC = '/usr/share/genmenu/e17/menu/all'
+# Move to applications
+APPSDIR = '/usr/share/genmenu/e17/all.desktop'
 ENVDIR = '/etc/env.d/'
-menus_used = []
+ICONDIR = '/usr/share/applications/'
 star = green("  *  ")
 arrow = bold(" >>> ")
 warn = red (" !!! ")
@@ -38,9 +38,6 @@ def getHomeDir():
             else: return path3
         else: return path2
     else: return path1
-
-ICONDIR = getHomeDir() + '/.e/e/applications/all/'
-MENUDIR = getHomeDir() + '/.e/e/applications/menu/all/'
 
 #REM Almost done, need to sanitize tabbed output
 def listdb():
@@ -72,72 +69,35 @@ def listpackages(pkgdir):
 #REM Function done       
 def settermenv():
     """This function creates the apropriate environment variable for the $E17TERM"""
-    file = open(ENVDIR + "99pentoo-terms" , "w")
+    file = open(ENVDIR + "99pentoo-term" , "w")
     file.write("E17TERM=\"" + options.e17term + "\"")
     file.newlines
     file.close()
 
-def clean_menu():
-    """Function removing unused menu entries, usually called at the end"""
-    all_menus = []
-    for y in range(db.__len__()):
-        if not all_menus.__contains__(db[y][2]):
-            all_menus.append(db[y][2])
-        # This will "save" submenus entries
-    for x in range(menus_used.__len__()):
-        # Preserve menu if only submenu inside
-        for single_entry in menus_used[x].split(" "):
-            if all_menus.__contains__(single_entry):
-                all_menus.remove(single_entry)
-        if all_menus.__contains__(menus_used[x]):
-            all_menus.remove(menus_used[x])
-    # This just generated the list of unused menu entries.
-    for x in range(all_menus.__len__()):
-        menu = os.path.join(MENUDIR, all_menus[x])
-        if not options.simulate:
-            if os.path.exists(menu):
-                shutil.rmtree(menu)
-            else:
-                print warn + menu + " NOT FOUND"
-        else:
-            print warn + menu + " NOT FOUND"
-
-#REM Function done     
-def copy_menu_struct():
-    try:
-        shutil.copytree(MENUSRC, MENUDIR)
-    except:
-        sys.stderr.write("Unable to copy menu structure to" + MENUDIR)
-        sys.stderr.write("Verify that you have right permissions")
-        return -1
-
-def make_menu_entry(eapfile="" , category="" ):
-    file = os.path.join(EAPDIR, eapfile)
+def make_menu_entry(iconfile="" , category="" ):
+    file = os.path.join(APPSDIR, iconfile)
     if os.path.exists(file):
         # Check if dry-run
         if options.simulate:
-            print arrow + "Copying " + eapfile + " to " + ICONDIR
-            if not menus_used.__contains__(category):
-                menus_used.append(category)
+            print arrow + "Copying " + iconfile + " to " + ICONDIR
             if not os.path.exists(os.path.join(MENUDIR, "all", category)):
-                print arrow + "Making menu entry for " + eapfile + " in " + MENUDIR + "/all/" + category
+                print arrow + "Making menu entry for " + iconfile + " in " + MENUDIR + "/all/" + category
             return 0
         # Create the menu entry
         else:
             if not os.path.exists(ICONDIR):
                 os.mkdir(ICONDIR)
             try:
-                shutil.copyfile(file, ICONDIR + eapfile)
+                shutil.copyfile(file, ICONDIR + iconfile)
             except:
-                sys.stderr.write(red("Unable to copy " + eapfile + " to " + ICONDIR + "\n"))
+                sys.stderr.write(red("Unable to copy " + iconfile + " to " + ICONDIR + "\n"))
                 sys.stderr.write(red("Verify that you have write permissions in " + ICONDIR + "\n"))
                 return -1
-            if not menus_used.__contains__(category):
-                menus_used.append(category)
+
             # Eventually remove the space from the category; only for submenus
             category = re.sub(" ", "/", category, 1)
             menuorder = open(os.path.join(MENUDIR, category, ".order"), "w")
-            menuorder.write(eapfile)
+            menuorder.write(iconfile)
             menuorder.close()
             return 0
     else:
