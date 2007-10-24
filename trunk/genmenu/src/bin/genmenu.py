@@ -1,8 +1,13 @@
 #!/bin/python
 
 import sys,os,re,shutil
-from output import red, green, blue, bold
+
+#from output import red, green, blue, bold
 import genmenudb
+
+from xml.dom import implementation
+from xml.dom import EMPTY_NAMESPACE, XML_NAMESPACE
+from xml.dom.ext import Print
 
 db = genmenudb.getdb()
 
@@ -12,9 +17,9 @@ PORTDIR="/var/db/pkg/"
 APPSDIR = '/usr/share/genmenu/e17/all.desktop'
 ENVDIR = '/etc/env.d/'
 ICONDIR = '/usr/share/applications/'
-star = green("  *  ")
-arrow = bold(" >>> ")
-warn = red (" !!! ")
+#star = green("  *  ")
+#arrow = bold(" >>> ")
+#warn = red (" !!! ")
 
 def getHomeDir():
     ''' Try to find user's home directory, otherwise return /root.'''
@@ -108,6 +113,9 @@ def main():
     This program is used to generate the menu in enlightenment for the pentoo livecd
     Future version _might_ support other VM like gnome or others but kde :-)
     """
+    if options.simxml:
+        genxml()
+
 
     if options.listsupported:
         listdb()
@@ -152,6 +160,31 @@ def main():
         for i in range(notthere.__len__()):
             print arrow + notthere[i]
 
+def genxml():
+    #Create a document type node using the doctype name "message"
+    #A blank system ID and blank public ID (i.e. no DTD information)
+    doctype = implementation.createDocumentType("message", None, None)
+    
+    #Create a document node, which also creates a document element node
+    #For the element, use a blank namespace URI and local name "message"
+    doc = implementation.createDocument(EMPTY_NAMESPACE, "message", doctype)
+    
+    #Get the document element
+    msg_elem = doc.documentElement
+    
+    #Create an xml:lang attribute on the new element
+    msg_elem.setAttributeNS(XML_NAMESPACE, "xml:lang", "en")
+    
+    #Create a text node with some data in it
+    new_text = doc.createTextNode("You need Python")
+    
+    #Add the new text node to the document element
+    msg_elem.appendChild(new_text)
+    
+    #Print out the result
+    Print(doc)
+
+    
 
 if __name__ == "__main__":
 
@@ -159,6 +192,8 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-l", "--list", action="store_true", dest="listonly", default=False,
                       help="Show supported installed packages")
+    parser.add_option("-x", "--xml", action="store_true", dest="simxml", default=False,
+                      help="Test xml")
     parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False,
                       help="Show supported installed packages")
     parser.add_option("-L", "--list-supported", action="store_true", dest="listsupported", default=False,
