@@ -11,15 +11,15 @@ from xml.dom.ext import Print
 
 db = genmenudb.getdb()
 
-PORTDIR="/var/db/pkg/"
-#PORTDIR = 'c:/Pentoo/test/portage'
+#PORTDIR="/var/db/pkg/"
+PORTDIR = 'V:/Linux/portage/db'
 # Move to applications
 APPSDIR = '/usr/share/genmenu/e17/all.desktop'
 ENVDIR = '/etc/env.d/'
 ICONDIR = '/usr/share/applications/'
-#star = green("  *  ")
-#arrow = bold(" >>> ")
-#warn = red (" !!! ")
+star = "  *  "
+arrow = " >>> "
+warn = " !!! "
 
 def getHomeDir():
     ''' Try to find user's home directory, otherwise return /root.'''
@@ -122,7 +122,7 @@ def main():
         return 0
 
     if options.simulate:
-        print star + bold("Starting simulation")
+        print star + "Starting simulation"
 
     if options.listonly:
         print star + "Listing supported packages installed"
@@ -131,11 +131,6 @@ def main():
     pkginstalled = []
     pkginstalled = listpackages(PORTDIR)
     notthere = []
-    if not (options.simulate or options.listonly):
-        try:
-            copy_menu_struct()
-        except:
-            return -1
     for y in range(db.__len__()):
         if pkginstalled.__contains__(db[y][0]):
             if options.listonly:
@@ -150,13 +145,12 @@ def main():
                         return -1
         else:
             notthere.append(db[y][0])
-    if not (options.listonly):
-        clean_menu()
+
     #    settermenv()
     if options.verbose:
         # Final move, show the unfound icons in the db
-        print warn + red("Missing applications :")
-        print star + green("The following applications are available but not installed")
+        print warn + "Missing applications :"
+        print star + "The following applications are available but not installed"
         for i in range(notthere.__len__()):
             print arrow + notthere[i]
 
