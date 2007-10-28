@@ -5,9 +5,8 @@ import sys,os,re,shutil
 #from output import red, green, blue, bold
 import genmenudb
 
-from xml.dom import implementation
-from xml.dom import EMPTY_NAMESPACE, XML_NAMESPACE
-from xml.dom.ext import Print
+from lxml import etree
+from StringIO import StringIO
 
 db = genmenudb.getdb()
 
@@ -154,31 +153,41 @@ def main():
         for i in range(notthere.__len__()):
             print arrow + notthere[i]
 
-def genxml():
-    #Create a document type node using the doctype name "message"
-    #A blank system ID and blank public ID (i.e. no DTD information)
-    doctype = implementation.createDocumentType("message", None, None)
-    
-    #Create a document node, which also creates a document element node
-    #For the element, use a blank namespace URI and local name "message"
-    doc = implementation.createDocument(EMPTY_NAMESPACE, "message", doctype)
-    
-    #Get the document element
-    msg_elem = doc.documentElement
-    
-    #Create an xml:lang attribute on the new element
-    msg_elem.setAttributeNS(XML_NAMESPACE, "xml:lang", "en")
-    
-    #Create a text node with some data in it
-    new_text = doc.createTextNode("You need Python")
-    
-    #Add the new text node to the document element
-    msg_elem.appendChild(new_text)
-    
-    #Print out the result
-    Print(doc)
+
+# Adds a desktop entry in the specified category, always under Pentoo.
+def add_menu_entry(category, desktopentry):
+
+    # This is the xml header of the menu file
+    print "Hello"
 
     
+
+def genxml():
+
+    menuhead = StringIO('''<!DOCTYPE Menu
+      PUBLIC '-//freedesktop//DTD Menu 1.0//EN'
+      'http://standards.freedesktop.org/menu-spec/menu-1.0.dtd'>
+    <Menu>
+        <Name>Applications</Name>
+        <MergeFile type="parent">/etc/xdg/menus/applications.menu</MergeFile>
+        <Menu>
+            <Name>Pentoo</Name>
+            <Directory>Pentoo.directory</Directory>        
+        </Menu>
+    </Menu>''')
+    # Get the root of the XML tree.
+    menu = etree.parse(menuhead)
+
+    root_menu = menu.getroot()
+    pentoo = root_menu.find("<Menu><Menu/><Menu>")
+    print pentoo
+
+    #root_menu = etree.Element("Menu")
+    #menu = etree.SubElement(root_menu, "Name")
+    #menu.text = "Applications"
+
+    print etree.tostring(root_menu, pretty_print=True)
+
 
 if __name__ == "__main__":
 
