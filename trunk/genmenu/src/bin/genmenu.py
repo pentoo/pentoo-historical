@@ -20,6 +20,7 @@ star = "  *  "
 arrow = " >>> "
 warn = " !!! "
 
+
 def getHomeDir():
     ''' Try to find user's home directory, otherwise return /root.'''
     try:
@@ -78,7 +79,34 @@ def settermenv():
     file.newlines
     file.close()
 
-def make_menu_entry(iconfile="" , category="" ):
+# Adds a desktop entry in the specified category, always under Pentoo.
+def add_menu_entry(category, desktopEntry):
+
+    new_menu_entry = etree.SubElement(category, "Include")
+    new_menu_entry.text = desktopEntry
+
+
+def find_menu_entry(menu, submenu):
+    for x in menu.iterchildren():
+        if x.text == submenu:
+            foundMenu=x.getparent()
+            return x.getparent()
+        else:
+            tmp = find_menu_entry(x, submenu)
+            if not tmp == None:
+                return tmp
+
+
+def genxml():
+
+    # Get the root of the XML tree.
+    print pentoo
+
+    #root_menu = etree.Element("Menu")
+
+    print etree.tostring(root_menu, pretty_print=True)
+
+def make_menu_entry(root_menu, iconfile="" , category=""):
     file = os.path.join(APPSDIR, iconfile)
     if os.path.exists(file):
         # Check if dry-run
@@ -86,6 +114,8 @@ def make_menu_entry(iconfile="" , category="" ):
             print arrow + "Copying " + iconfile + " to " + ICONDIR
             if not os.path.exists(os.path.join(MENUDIR, "all", category)):
                 print arrow + "Making menu entry for " + iconfile + " in " + MENUDIR + "/all/" + category
+            new_menu_entry = etree.SubElement(find_menu_entry(root_menu, category), "Include")
+            new_menu_entry.text = iconfile
             return 0
         # Create the menu entry
         else:
@@ -98,11 +128,8 @@ def make_menu_entry(iconfile="" , category="" ):
                 sys.stderr.write(red("Verify that you have write permissions in " + ICONDIR + "\n"))
                 return -1
 
-            # Eventually remove the space from the category; only for submenus
-            category = re.sub(" ", "/", category, 1)
-            menuorder = open(os.path.join(MENUDIR, category, ".order"), "w")
-            menuorder.write(iconfile)
-            menuorder.close()
+            new_menu_entry = etree.SubElement(find_menu_entry(root_menu, category), "Include")
+            new_menu_entry.text = iconfile
             return 0
     else:
         return 1
@@ -112,10 +139,6 @@ def main():
     This program is used to generate the menu in enlightenment for the pentoo livecd
     Future version _might_ support other VM like gnome or others but kde :-)
     """
-    if options.simxml:
-        genxml()
-
-
     if options.listsupported:
         listdb()
         return 0
@@ -130,6 +153,9 @@ def main():
     pkginstalled = []
     pkginstalled = listpackages(PORTDIR)
     notthere = []
+    menu = etree.parse("applications.menu")
+    root_menu = menu.getroot()
+
     for y in range(db.__len__()):
         if pkginstalled.__contains__(db[y][0]):
             if options.listonly:
@@ -138,7 +164,7 @@ def main():
                 # calls makemenuentry file.eap, menu category
                 for single_entry in db[y][1].split(" "):
                     try:
-                        make_menu_entry(single_entry,db[y][2])
+                        make_menu_entry( root_menu, single_entry, db[y][2])
                     except:
                         print >> sys.stderr, "Can't find " + single_entry + " in " + EAPDIR
                         return -1
@@ -152,40 +178,6 @@ def main():
         print star + "The following applications are available but not installed"
         for i in range(notthere.__len__()):
             print arrow + notthere[i]
-
-
-# Adds a desktop entry in the specified category, always under Pentoo.
-def add_menu_entry(category, desktopentry):
-
-    # This is the xml header of the menu file
-    print "Hello"
-
-    
-
-def genxml():
-
-    menuhead = StringIO('''<!DOCTYPE Menu
-      PUBLIC '-//freedesktop//DTD Menu 1.0//EN'
-      'http://standards.freedesktop.org/menu-spec/menu-1.0.dtd'>
-    <Menu>
-        <Name>Applications</Name>
-        <MergeFile type="parent">/etc/xdg/menus/applications.menu</MergeFile>
-        <Menu>
-            <Name>Pentoo</Name>
-            <Directory>Pentoo.directory</Directory>        
-        </Menu>
-    </Menu>''')
-    # Get the root of the XML tree.
-    menu = etree.parse(menuhead)
-
-    root_menu = menu.getroot()
-    pentoo = root_menu.find("<Menu><Menu/><Menu>")
-    print pentoo
-
-    #root_menu = etree.Element("Menu")
-    #menu = etree.SubElement(root_menu, "Name")
-    #menu.text = "Applications"
-
     print etree.tostring(root_menu, pretty_print=True)
 
 
