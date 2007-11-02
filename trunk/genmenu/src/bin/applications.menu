@@ -44,6 +44,10 @@
 			<Directory>fuzzing.directory</Directory>
 		</Menu>
 		<Menu>
+			<Name>Internet</Name>
+			<Directory>internet.directory</Directory>
+		</Menu>
+		<Menu>
 			<Name>Misc</Name>
 			<Directory>misc.directory</Directory>
 		</Menu>

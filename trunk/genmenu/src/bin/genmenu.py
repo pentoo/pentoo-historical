@@ -10,8 +10,8 @@ from StringIO import StringIO
 
 db = genmenudb.getdb()
 
-#PORTDIR="/var/db/pkg/"
-PORTDIR = 'V:/Linux/portage/db'
+PORTDIR="/var/db/pkg/"
+#PORTDIR = 'V:/Linux/portage/db'
 # Move to applications
 APPSDIR = '/usr/share/genmenu/e17/all.desktop'
 ENVDIR = '/etc/env.d/'
@@ -112,8 +112,8 @@ def make_menu_entry(root_menu, iconfile="" , category=""):
         # Check if dry-run
         if options.simulate:
             print arrow + "Copying " + iconfile + " to " + ICONDIR
-            if not os.path.exists(os.path.join(MENUDIR, "all", category)):
-                print arrow + "Making menu entry for " + iconfile + " in " + MENUDIR + "/all/" + category
+#            if not os.path.exists(os.path.join(MENUDIR, "all", category)):
+#                print arrow + "Making menu entry for " + iconfile + " in " + MENUDIR + "/all/" + category
             new_menu_entry = etree.SubElement(find_menu_entry(root_menu, category), "Include")
             new_menu_entry.text = iconfile
             return 0
@@ -164,9 +164,9 @@ def main():
                 # calls makemenuentry file.eap, menu category
                 for single_entry in db[y][1].split(" "):
                     try:
-                        make_menu_entry( root_menu, single_entry, db[y][2])
+                        make_menu_entry(root_menu, single_entry, db[y][2])
                     except:
-                        print >> sys.stderr, "Can't find " + single_entry + " in " + EAPDIR
+                        print >> sys.stderr, "Can't find " + single_entry + " in " + APPSDIR
                         return -1
         else:
             notthere.append(db[y][0])
