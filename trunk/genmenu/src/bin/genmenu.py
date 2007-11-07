@@ -16,6 +16,8 @@ PORTDIR="/var/db/pkg/"
 APPSDIR = '/usr/share/genmenu/e17/all.desktop'
 ENVDIR = '/etc/env.d/'
 ICONDIR = '/usr/share/applications/'
+LOCALDIR = '/.local/share/desktop-directories/'
+CONFIGDIR = '/.config/menus/'
 star = "  *  "
 arrow = " >>> "
 warn = " !!! "
@@ -84,9 +86,10 @@ def add_menu_entry(category, desktopEntry):
 
     new_menu_entry = etree.SubElement(category, "Include")
     new_menu_entry.text = desktopEntry
+    return new_menu_entry 
 
 
-def find_menu_entry(menu, submenu):
+def find_menu_entry(menu, submenu, option="Include"):
     for x in menu.iterchildren():
         if x.text == submenu:
             foundMenu=x.getparent()
@@ -114,7 +117,7 @@ def make_menu_entry(root_menu, iconfile="" , category=""):
             print arrow + "Copying " + iconfile + " to " + ICONDIR
 #            if not os.path.exists(os.path.join(MENUDIR, "all", category)):
 #                print arrow + "Making menu entry for " + iconfile + " in " + MENUDIR + "/all/" + category
-            new_menu_entry = etree.SubElement(find_menu_entry(root_menu, category), "Include")
+            new_menu_entry = etree.SubElement(find_menu_entry(root_menu, category, "Include"), "Filename")
             new_menu_entry.text = iconfile
             return 0
         # Create the menu entry
