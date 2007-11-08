@@ -13,11 +13,10 @@ db = genmenudb.getdb()
 PORTDIR="/var/db/pkg/"
 #PORTDIR = 'V:/Linux/portage/db'
 # Move to applications
-APPSDIR = '/usr/share/genmenu/e17/all.desktop'
+APPSDIR = '/usr/share/genmenu/desktop'
+MENUDIR = '/usr/share/genmenu/directory'
 ENVDIR = '/etc/env.d/'
-ICONDIR = '/usr/share/applications/'
-LOCALDIR = '/.local/share/desktop-directories/'
-CONFIGDIR = '/.config/menus/'
+
 star = "  *  "
 arrow = " >>> "
 warn = " !!! "
@@ -45,6 +44,12 @@ def getHomeDir():
             else: return path3
         else: return path2
     else: return path1
+
+HOME = getHomeDir()
+ICONDIR = HOME + '/.local/share/applications/'
+LOCALDIR = HOME + '/.local/share/desktop-directories/'
+CONFIGDIR = HOME + '/.config/menus/'
+
 
 #REM Almost done, need to sanitize tabbed output
 def listdb():
@@ -82,46 +87,67 @@ def settermenv():
     file.close()
 
 # Adds a desktop entry in the specified category, always under Pentoo.
-def add_menu_entry(category, desktopEntry):
 
-    new_menu_entry = etree.SubElement(category, "Include")
-    new_menu_entry.text = desktopEntry
-    return new_menu_entry 
-
-
-def find_menu_entry(menu, submenu, option="Include"):
-    for x in menu.iterchildren():
-        if x.text == submenu:
-            foundMenu=x.getparent()
-            return x.getparent()
+def find_option(submenu, tag):
+    for x in submenu.iterchildren():
+        if x.tag == tag:
+            return x
         else:
-            tmp = find_menu_entry(x, submenu)
+            tmp = find_option(x, tag)
             if not tmp == None:
                 return tmp
 
+def find_menu_entry(menu, submenu, option=None):
+    for x in menu.iterchildren():
+        if x.text == submenu:
+            if not option == None:
+                return find_option(x.getparent(), option)
+            else:
+                return x.getparent() 
+        else:
+            tmp = find_menu_entry(x, submenu, option)
+            if not tmp == None:
+                return tmp
 
-def genxml():
+def add_menu_entry(root_menu, category):
+    menu = find_menu_entry(root_menu, category)
+    if menu == None:
+        new_menu_entry = etree.SubElement(find_menu_entry(root_menu, "Pentoo"), "Menu")
+        new_name_entry = etree.SubElement(new_menu_entry, "Name")
+        new_name_entry.text = category
+        file = os.path.join(LOCALDIR, category + ".directory")
+        if not options.simulate:
+            if not os.path.exists(LOCALDIR):
+                try:
+                    os.mkdir(LOCALDIR)
+                except:
+                    sys.stderr.write("Unable to copy " + category + ".directory" + " to " + LOCALDIR + "\n")
+                    sys.stderr.write("Verify that you have write permissions in " + LOCALDIR + "\n")
+                    return -1
+            shutil.copyfile(os.path.join(MENUDIR, category + ".directory"), file)
+        new_directory_entry = etree.SubElement(new_menu_entry, "Directory")
+        new_directory_entry.text = category + ".directory"
+        new_includelist = etree.SubElement(new_menu_entry, "Include")
+        return new_includelist
 
-    # Get the root of the XML tree.
-    print pentoo
+def add_desktop_entry(menu, iconfile):
+    new_desktop_entry = etree.SubElement(menu, "Filename")
+    new_desktop_entry.text = iconfile
 
-    #root_menu = etree.Element("Menu")
 
-    print etree.tostring(root_menu, pretty_print=True)
-
-def make_menu_entry(root_menu, iconfile="" , category=""):
+def make_menu_entry(root_menu, iconfile, category):
     file = os.path.join(APPSDIR, iconfile)
     if os.path.exists(file):
         # Check if dry-run
-        if options.simulate:
+        menu = find_menu_entry(root_menu, category, "Include")
+        if menu == None:
+            menu = add_menu_entry(root_menu, category)
+        add_desktop_entry(menu, iconfile)
+
+        if options.verbose:
             print arrow + "Copying " + iconfile + " to " + ICONDIR
-#            if not os.path.exists(os.path.join(MENUDIR, "all", category)):
-#                print arrow + "Making menu entry for " + iconfile + " in " + MENUDIR + "/all/" + category
-            new_menu_entry = etree.SubElement(find_menu_entry(root_menu, category, "Include"), "Filename")
-            new_menu_entry.text = iconfile
-            return 0
-        # Create the menu entry
-        else:
+        if not options.simulate:
+        # Copy the file
             if not os.path.exists(ICONDIR):
                 os.mkdir(ICONDIR)
             try:
@@ -130,12 +156,22 @@ def make_menu_entry(root_menu, iconfile="" , category=""):
                 sys.stderr.write(red("Unable to copy " + iconfile + " to " + ICONDIR + "\n"))
                 sys.stderr.write(red("Verify that you have write permissions in " + ICONDIR + "\n"))
                 return -1
-
-            new_menu_entry = etree.SubElement(find_menu_entry(root_menu, category), "Include")
-            new_menu_entry.text = iconfile
-            return 0
+        return 0
     else:
         return 1
+
+
+def genxml(root_menu):
+    '''Generate the applications.menu XMl file in the user's directory.'''
+    dtd = etree.DTD("menu-1.0.dtd")
+    if dtd.validate(root_menu) == 0:
+        print dtd.error_log.filter_from_errors()
+        return -1
+    if options.verbose:
+        #menu = etree.parse(root_menu)
+        print etree.tostring(root_menu, pretty_print=True)
+    if not options.simulate:
+        root_menu.write(CONFIGDIR + '/applications.menu')
 
 def main():
     """
@@ -175,14 +211,14 @@ def main():
             notthere.append(db[y][0])
 
     #    settermenv()
-    if options.verbose:
+    if options.vverbose:
         # Final move, show the unfound icons in the db
         print warn + "Missing applications :"
         print star + "The following applications are available but not installed"
         for i in range(notthere.__len__()):
             print arrow + notthere[i]
-    print etree.tostring(root_menu, pretty_print=True)
-
+    #print etree.tostring(root_menu, pretty_print=True)
+    genxml(menu)
 
 if __name__ == "__main__":
 
@@ -193,6 +229,8 @@ if __name__ == "__main__":
     parser.add_option("-x", "--xml", action="store_true", dest="simxml", default=False,
                       help="Test xml")
     parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False,
+                      help="Show what's going on")
+    parser.add_option("-V", "--very-verbose", action="store_true", dest="vverbose", default=False,
                       help="Show supported installed packages")
     parser.add_option("-L", "--list-supported", action="store_true", dest="listsupported", default=False,
                       help="Show supported installed packages")
