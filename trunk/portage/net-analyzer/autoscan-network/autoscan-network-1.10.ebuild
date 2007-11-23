@@ -5,21 +5,22 @@
 inherit gnome2
 
 DESCRIPTION="Utility for network exploration with Samba support."
-HOMEPAGE="http://autoscan.free.fr"
+HOMEPAGE="http://autoscan-network.com"
 LICENSE="GPL-2"
 
 SLOT="0"
 KEYWORDS="~x86 ~ppc ~alpha ~sparc ~hppa ~amd64 ~ia64 ~mips"
-IUSE=""
+IUSE="snmp samba gtk nessus nmap trayicon gnome"
 
 MY_P="AutoScan-${PV}"
 SRC_URI="http://autoscan.free.fr/${MY_P}_SOURCES.tar.gz"
 
-RDEPEND=">=gnome-base/libgnomeui-2.0 \
-	net-fs/samba \
-	>=gnome-extra/gtkhtml-2.0 \
-	net-analyzer/nmap \
-	>=net-analyzer/net-snmp-5.0"
+RDEPEND="gmone? >=gnome-base/libgnomeui-2.0
+	samba? net-fs/samba
+	gtk? >=gnome-extra/gtkhtml-2.0
+	nmap? net-analyzer/nmap
+	nessus? net-analyzer/nessus
+	snmp? >=net-analyzer/net-snmp-5.0"
 
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig"
