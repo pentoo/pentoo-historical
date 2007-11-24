@@ -1,34 +1,90 @@
 # for E17 DRM
-app-editors/enscribe -*
-app-misc/evidence -*
-app-misc/examine -*
-dev-db/edb -*
-dev-libs/eet -*
-dev-libs/embryo -*
-dev-libs/engrave -*
-dev-util/e_utils -*
-media-gfx/elicit -*
-media-gfx/entice -*
-media-libs/edje -*
-media-libs/emotion -*
-media-libs/epeg -*
-media-libs/epsilon -*
-media-libs/etox -*
-media-libs/imlib2 -*
-media-video/eclair -*
-net-im/express -*
-net-news/erss -*
-x11-libs/ecore -*
-x11-libs/esmart -*
-x11-libs/evas -*
-x11-libs/ewl -*
-x11-misc/engage -*
-x11-misc/entrance -*
-x11-misc/iconbar -*
-x11-plugins/e_modules -*
-x11-terms/eterm -*
-x11-wm/e -*
-dev-libs/exml -*
+app-admin/empower * ~* **
+app-editors/enscribe * ~* **
+app-laptop/epbb * ~* **
+app-misc/entropy * ~* **
+app-misc/evidence * ~* **
+app-misc/examine * ~* **
+app-text/epdf * ~* **
+dev-db/edb * ~* **
+dev-libs/eet * ~* **
+dev-libs/efreet * ~* **
+dev-libs/embryo * ~* **
+dev-libs/engrave * ~* **
+dev-libs/evolve * ~* **
+dev-libs/exml * ~* **
+dev-util/e_utils * ~* **
+dev-util/edje_editor * ~* **
+dev-util/edje_viewer * ~* **
+dev-util/enhance * ~* **
+games-misc/elitaire * ~* **
+mail-client/embrace * ~* **
+media-gfx/elicit * ~* **
+media-gfx/ephoto * ~* **
+media-gfx/exhibit * ~* **
+media-gfx/imlib2_tools * ~* **
+media-gfx/retina * ~* **
+media-libs/edje * ~* **
+media-libs/emotion * ~* **
+media-libs/epeg * ~* **
+media-libs/epsilon * ~* **
+media-libs/imlib2 * ~* **
+media-libs/imlib2_loaders * ~* **
+media-sound/emphasis * ~* **
+media-sound/extrackt * ~* **
+media-video/eclair * ~* **
+media-video/elation * ~* **
+media-video/envision * ~* **
+media-video/rage * ~* **
+net-im/express * ~* **
+sci-calculators/equate * ~* **
+sci-misc/engycad * ~* **
+sys-fs/evfs * ~* **
+x11-apps/elapse * ~* **
+x11-libs/e_dbus * ~* **
+x11-libs/ecore * ~* **
+x11-libs/esmart * ~* **
+x11-libs/etk * ~* **
+x11-libs/evas * ~* **
+x11-libs/ewl * ~* **
+x11-misc/engage * ~* **
+x11-misc/enity * ~* **
+x11-misc/enotes * ~* **
+x11-misc/entrance * ~* **
+x11-misc/entrance_edit_gui * ~* **
+x11-misc/eosd * ~* **
+x11-misc/estickies * ~* **
+x11-misc/expedite * ~* **
+x11-misc/iconbar * ~* **
+x11-plugins/e_modules * ~* **
+x11-plugins/e_modules-alarm * ~* **
+x11-plugins/e_modules-bling * ~* **
+x11-plugins/e_modules-cpu * ~* **
+x11-plugins/e_modules-deskshow * ~* **
+x11-plugins/e_modules-emu * ~* **
+x11-plugins/e_modules-flame * ~* **
+x11-plugins/e_modules-forecasts * ~* **
+x11-plugins/e_modules-language * ~* **
+x11-plugins/e_modules-mail * ~* **
+x11-plugins/e_modules-mem * ~* **
+x11-plugins/e_modules-mixer * ~* **
+x11-plugins/e_modules-moon * ~* **
+x11-plugins/e_modules-net * ~* **
+x11-plugins/e_modules-news * ~* **
+x11-plugins/e_modules-photo * ~* **
+x11-plugins/e_modules-rain * ~* **
+x11-plugins/e_modules-screenshot * ~* **
+x11-plugins/e_modules-slideshow * ~* **
+x11-plugins/e_modules-snow * ~* **
+x11-plugins/e_modules-taskbar * ~* **
+x11-plugins/e_modules-tclock * ~* **
+x11-plugins/e_modules-uptime * ~* **
+x11-plugins/e_modules-weather * ~* **
+x11-plugins/e_modules-winselector * ~* **
+x11-plugins/e_modules-wlan * ~* **
+x11-terms/enterminus * ~* **
+x11-themes/gtk2-E17-bling * ~* **
+x11-wm/e * ~* **
 
 # XCB lib
 x11-libs/xau -* ~x86
@@ -50,23 +106,54 @@ dev-python/pycrypto ~x86
 net-analyser/nmap ~x86
 net-analyser/sara ~x86
 net-analyzer/amap ~x86
+net-analyzer/absinthe ~x86
 net-analyzer/autoscan ~x86
+net-analyzer/dnsa ~x86
 net-analyzer/dsniff ~x86
 net-analyzer/hping ~x86
 net-analyzer/ike-scan ~x86
 net-analyzer/libnasl ~x86
+net-analyzer/metacoretex-ng -*
 net-analyzer/metasploit ~x86
 net-analyzer/nbtscan ~x86
 net-analyzer/nessus ~x86
 net-analyzer/nessus-core ~x86
 net-analyzer/nessus-libraries ~x86
 net-analyzer/nessus-plugins ~x86
+net-analyzer/netdiscover ~x86
 net-analyzer/nikto ~x86
 net-analyzer/nmap ~x86
+net-analyzer/ntp-fingerprint ~x86
 net-analyzer/p0f ~x86
 net-analyzer/sara ~x86
+net-analyzer/smtpmap ~x86
+net-analyzer/sqlat ~x86
+net-analyzer/sqlbf ~x86
 net-analyzer/thcrut ~x86
+net-analyzer/upnpscan ~x86
 net-analyzer/yersinia ~x86
+net-im/skype ~x86
+net-misc/karma ~x86
+net-misc/netsed ~x86
+net-misc/partysip ~x86
+net-misc/proxychains ~x86
+net-misc/raccess ~x86
+net-misc/rdesktop ~x86
+net-misc/rsync ~x86
+net-misc/sipbomber ~x86
+net-misc/sipp ~x86
+net-misc/siproxd ~x86
+net-misc/sipsak ~x86
+net-misc/tinc ~x86
+net-misc/voipong ~x86
+net-proxy/httpush ~x86
+net-proxy/3proxy ~x86
+net-proxy/httpush ~x86
+net-proxy/paros ~x86
+net-proxy/privoxy ~x86
+net-proxy/tsocks ~x86
+net-proxy/webscarab ~x86
+net-wireless/afrag ~x86
 net-wireless/acx ~x86
 net-wireless/aircrack ~x86
 net-wireless/aircrack-ng ~x86
@@ -88,10 +175,15 @@ net-wireless/linux-wlan-ng-utils ~x86
 net-wireless/madwifi-ng ~x86
 net-wireless/madwifi-ng ~x86
 net-wireless/madwifi-ng-tools ~x86
+net-wireless/mdk ~x86
 net-wireless/ndiswrapper ~x86
 net-wireless/prism54 ~x86
 net-wireless/rt2x00 -*
 net-wireless/rtl8180 ~x86
+net-wireless/ska ~x86
+net-wireless/waveselect ~x86
+net-wireless/wifiscanner ~x86
+net-wireless/wepdecrypt ~x86
 net-wireless/wifi-radar ~x86
 net-wireless/wifitap ~x86
 net-wireless/zd1201 ~x86
@@ -116,3 +208,4 @@ x11-libs/cairo ~x86
 dev-ruby/wxruby ~x86
 sys-apps/pciutils ~x86
 sys-fs/fuse ~x86
+dev-libs/libconfig ~x86

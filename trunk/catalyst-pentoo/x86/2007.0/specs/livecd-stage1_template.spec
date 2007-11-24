@@ -2,9 +2,9 @@ subarch: i686
 version_stamp: 2007.0
 target: livecd-stage1
 rel_type: default
-profile: default-linux/x86/2006.1
-snapshot: 2007.0
-source_subpath: default/stage3-i686-2006.2
+profile: default-linux/x86/2007.0
+snapshot: 2008.0
+source_subpath: default/stage3-i686-2007.0
 portage_confdir: /root/catalyst-pentoo/x86/portage
 portage_overlay: /usr/local/portage /usr/portage/local/layman/enlightenment
 
@@ -16,7 +16,7 @@ portage_overlay: /usr/local/portage /usr/portage/local/layman/enlightenment
 # pkgcache_path: /tmp/packages
 # pkgcache_path:
 
-livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime -qt -cups -spell png
+livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime -qt -qt3 -qt4 -cups -spell png jpeg gif dri opengl
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
@@ -32,11 +32,9 @@ app-arch/gzip
 app-crypt/chntpw
 app-crypt/plaintoo
 app-editors/hexedit
-app-editors/mp
 app-editors/nano
 app-forensics/cmospwd
 app-fuzz/bss
-app-misc/emelfm
 app-misc/examine
 app-misc/livecd-tools
 app-mobilephone/obexftp
@@ -52,7 +50,6 @@ dev-python/pygtk
 dev-util/dialog
 dev-util/e_utils
 dev-util/subversion
-media-gfx/entice
 media-gfx/scrot
 media-libs/edje
 media-libs/epeg
@@ -60,55 +57,145 @@ media-libs/epsilon
 media-libs/imlib2
 media-sound/alsa-utils
 media-sound/sox
+net-analyzer/absinthe
+net-analyzer/aimsniff
 net-analyzer/amap
 net-analyzer/arpwatch
+net-analyzer/authforce
+#net-analyzer/autoscan
+net-analyzer/dnsa
+net-analyzer/dnsenum
+#net-analyzer/driftnet
 net-analyzer/dsniff
-net-analyzer/wireshark
 net-analyzer/ettercap
+net-analyzer/firewalk
+net-analyzer/fragroute
+net-analyzer/ftester
+net-analyzer/gspoof
+net-analyzer/honeyd
 net-analyzer/hping
+net-analyzer/hunt
+#net-analyzer/hydra
 net-analyzer/ike-scan
+net-analyzer/isic
 net-analyzer/macchanger
-=net-analyzer/metasploit-2.6
+net-analyzer/mbrowse
+net-analyzer/metacoretex-ng
+net-analyzer/metasploit
+net-analyzer/metasploit
 net-analyzer/nbtscan
 net-analyzer/nessus
+net-analyzer/nessus-plugins
 net-analyzer/netcat
+net-analyzer/netdiscover
+#net-analyzer/netdude
+net-analyzer/net-snmp
+net-analyzer/netwag
+net-analyzer/netwox
+net-analyzer/ngrep
 net-analyzer/nikto
 net-analyzer/nmap
+net-analyzer/nmbscan
+net-analyzer/ntop
+net-analyzer/ntp-fingerprint
 net-analyzer/p0f
+net-analyzer/packit
+net-analyzer/paketto
+net-analyzer/rain
+net-analyzer/sara
+net-analyzer/scanssh
+net-analyzer/siphon
+net-analyzer/smtpmap
+net-analyzer/sniffit
+net-analyzer/snmpenum
+net-analyzer/snort
+#net-analyzer/sqlat
+net-analyzer/sqlbf
+net-analyzer/tcpdump
+net-analyzer/tcptraceroute
 net-analyzer/thcrut
 net-analyzer/traceroute
-net-analyzer/xprobe
-net-analyzer/yersinia
+net-analyzer/upnpscan
+net-analyzer/wireshark
+net-dialup/linux-atm
+net-dialup/lrzsz
 net-dialup/minicom
 net-dns/bind-tools
+net-dns/c-ares
+#net-firewall/fwbuilder
+net-fs/nfs-utils
+net-fs/samba
 net-ftp/ftp
+net-ftp/netkit-ftpd
 net-ftp/oftpd
 net-im/gaim
+net-im/skype
+#net-im/ekiga
 net-irc/irssi
 net-irc/xchat
+net-mail/mailbase
+net-misc/bridge-utils
+net-misc/curl
+net-misc/dhcp
 net-misc/dhcpcd
 net-misc/ipsorcery
+net-misc/iputils
+net-misc/karma
+net-misc/nemesis
+net-misc/neon
+net-misc/netkit-fingerd
+net-misc/netkit-rsh
+net-misc/netsed
+net-misc/ntp
+net-misc/openssh
+net-misc/partysip
+net-misc/proxychains
+net-misc/raccess
 net-misc/rdesktop
+net-misc/rsync
+#net-misc/sipbomber
+net-misc/sipp
+net-misc/siproxd
+net-misc/sipsak
+net-misc/socat
+net-misc/stunnel
 net-misc/telnet-bsd
+net-misc/tightvnc
+net-misc/tor
+net-misc/voipong
+net-misc/wget
+net-misc/whois
+net-p2p/bittorrent
+net-proxy/3proxy
+net-proxy/httpush
+net-proxy/paros
+net-proxy/privoxy
+net-proxy/tsocks
+net-proxy/webscarab
+net-wireless/afrag
 net-wireless/aircrack-ng
 net-wireless/airsnort
-net-wireless/bluez-firmware
+net-wireless/airtraf
 net-wireless/bluez-libs
 net-wireless/bluez-utils
-#net-wireless/btscanner commented due to compile problem
-net-wireless/hostapd
-net-wireless/hostap-utils
-net-wireless/ipw3945d
+#net-wireless/btscanner
+net-wireless/mdk
+net-wireless/ska
+#net-wireless/waveselect
+net-wireless/wepattack
+net-wireless/wepdecrypt
 net-wireless/wifi-radar
+net-wireless/wifiscanner
 net-wireless/wifitap
 net-wireless/wireless-tools
+net-wireless/wpa_supplicant
+net-www/netscape-flash
 sys-apps/baselayout
 sys-apps/eject
 sys-apps/hwdata-gentoo
 sys-apps/hwsetup
 sys-apps/iproute2
 sys-apps/less
-sys-apps/parted
 sys-apps/pciutils
 sys-apps/portage
 sys-apps/slocate
@@ -132,10 +219,8 @@ x11-libs/esmart
 x11-libs/evas
 x11-libs/ewl
 x11-libs/gtk+
-x11-misc/xdialog
 x11-terms/eterm
 x11-terms/xterm
 x11-wm/e
 
 # x11-plugins/e_modules
-

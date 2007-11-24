@@ -2,8 +2,8 @@ subarch: i686
 version_stamp: 2007.0
 target: livecd-stage2
 rel_type: default
-profile: default-linux/x86/2006.1
-snapshot: 2007.0
+profile: default-linux/x86/2007.0
+snapshot: 2008.0
 source_subpath: default/livecd-stage1-i686-2007.0
 portage_confdir: /root/catalyst-pentoo/x86/portage
 portage_overlay: /usr/local/portage /usr/portage/local/enlightenment
@@ -67,7 +67,7 @@ livecd/iso: /tmp/pentoo-2007.0.iso
 # are not otherwise available via the livecd-stage2 spec file.
 # example:
 # livecd/gk_mainargs: --lvm2 --dmraid
-livecd/gk_mainargs: --unionfs-dev
+livecd/gk_mainargs: --no-clean --no-mrproper
 
 # This option allows you to specify your own linuxrc script for genkernel to use
 # when building your CD.  This is not checked for functionality, so it is up to
@@ -191,7 +191,7 @@ livecd/rcadd: autoconfig
 # This option sets the volume ID of the CD created.
 # example:
 # livecd/volid: Gentoo Linux 2005.0 X86
-livecd/volid: Pentoo 2007.0
+livecd/volid: Pentoo 2008.0
 
 # This option is only used when creating a GameCD.  This specifies the file that
 # contains the definitions for GAME_NAME and GAME_EXECUTABLE, which are used by
@@ -213,7 +213,8 @@ boot/kernel/gentoo/sources: gentoo-sources
 # used by genkernel to compile the kernel this label applies to.
 # example:
 # boot/kernel/gentoo/config: /tmp/2.6.11-smp.config
-boot/kernel/gentoo/config: /root/catalyst-pentoo/x86/2007.0/kernel/config-2.6.17
+boot/kernel/gentoo/config: /usr/share/genkernel/x86/kernel-config-2.6
+#/root/catalyst-pentoo/x86/2007.0/kernel/config-2.6.17
 
 # This option sets genkernel parameters on a per-kernel basis and applies only
 # to this kernel label.  This can be used for building options into only a
@@ -229,7 +230,7 @@ boot/kernel/gentoo/config: /root/catalyst-pentoo/x86/2007.0/kernel/config-2.6.17
 # the default USE for the specified profile.
 # example:
 # boot/kernel/gentoo/use: pcmcia usb -X
-boot/kernel/gentoo/use: pcmcia usb madwifi
+boot/kernel/gentoo/use: pcmcia usb madwifi injection
 
 # This option appends an extension to the name of your kernel, as viewed by a
 # uname -r/  This also affects any modules built under this kernel label.  This
@@ -249,12 +250,12 @@ boot/kernel/gentoo/packages:
 net-wireless/acx
 net-wireless/at76c503a
 #net-wireless/ieee80211
-#net-wireless/ipw2100
-#net-wireless/ipw2200
-#net-wireless/ipw3945
-net-wireless/linux-wlan-ng
-#net-wireless/madwifi-ng
-net-wireless/prism54
+net-wireless/ipw2100-firmware
+net-wireless/ipw2200-firmware
+net-wireless/ipw3945
+#net-wireless/linux-wlan-ng
+net-wireless/madwifi-ng
+#net-wireless/prism54
 #net-wireless/rt2x00
 #net-wireless/rtl8180
 #net-wireless/zd1211

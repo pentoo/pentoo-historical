@@ -23,3 +23,5 @@ dev-perl/gtk-perl -opengl
 sys-apps/pmount -crypt
 # dep required from e
 x11-libs/ecore dbus
+dev-db/freetds mssql odbc
+net-im/skype qt-static
