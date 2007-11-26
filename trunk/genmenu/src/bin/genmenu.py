@@ -171,6 +171,8 @@ def genxml(root_menu):
         #menu = etree.parse(root_menu)
         print etree.tostring(root_menu, pretty_print=True)
     if not options.simulate:
+        if not os.path.exists(CONFIGDIR):
+            shutil.os.mkdir(CONFIGDIR)
         root_menu.write(CONFIGDIR + '/applications.menu')
 
 def main():
