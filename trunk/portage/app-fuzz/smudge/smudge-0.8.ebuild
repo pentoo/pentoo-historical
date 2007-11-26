@@ -6,7 +6,7 @@ inherit distutils python
 
 DESCRIPTION="Smudge is basically a port of SPIKE into python scripts"
 HOMEPAGE="http://www.pentoo.ch/"
-SRC_URI="http://10.1.33.200/divers/${PN}.tar.gz"
+SRC_URI="http://www.pentoo.ch/distfiles/${PN}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"

@@ -4,7 +4,7 @@
 
 DESCRIPTION="A very complete snmp fuzzer"
 HOMEPAGE="http://www.arhont.com/"
-SRC_URI="http://10.1.33.200/divers/snmp-fuzzer-0.1.1.tar.gz"
+SRC_URI="http://www.pentoo.ch/distfiles/snmp-fuzzer-0.1.1.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86"

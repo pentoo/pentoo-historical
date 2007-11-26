@@ -15,7 +15,7 @@ IUSE=""
 
 DEPEND="dev-lang/ruby
 	net-misc/dhcp
-	wireless-tools"
+	net-wireless/wireless-tools"
 
 src_compile() {
 	epatch ${FILESDIR}/karma-gentoo.patch || die

@@ -4,7 +4,7 @@
 
 DESCRIPTION="Plaintoo is a pygtk frontend to bkhive and samdump2 (included)"
 HOMEPAGE="http://www.plain-text.info/"
-SRC_URI="http://10.1.33.200/divers/${P}.tar.gz"
+SRC_URI="http://www.pentoo.ch/distfiles/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86"

@@ -4,7 +4,7 @@
 
 DESCRIPTION="A html/wml fuzzer for proxy or client"
 HOMEPAGE="http://www.atstake.com/"
-SRC_URI="http://10.1.33.200/divers/${P}.tar.gz"
+SRC_URI="http://www.pentoo.ch/distfiles/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"

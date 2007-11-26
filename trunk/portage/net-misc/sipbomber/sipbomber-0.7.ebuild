@@ -5,7 +5,7 @@
 
 DESCRIPTION="SipBomber is a tool to stress SIP server/proxy implementations."
 HOMEPAGE="http://www.metalinkltd.com/downloads.php"
-SRC_URI="http://10.1.33.200/divers/sip/${PN}_${PV}.tar.gz"
+SRC_URI="http://www.pentoo.ch/distfiles/${PN}_${PV}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"

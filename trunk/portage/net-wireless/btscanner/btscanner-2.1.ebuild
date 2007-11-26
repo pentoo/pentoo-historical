@@ -16,7 +16,7 @@ IUSE=""
 DEPEND=">=net-wireless/bluez-utils-2.15
 	>=net-wireless/bluez-libs-2.15
 	>=dev-libs/libxml2-2.6
-	>sys-libs/ncurses-5.4*"
+	>sys-libs/ncurses-5.4"
 
 src_install() {
 	einstall || die "install failed"
