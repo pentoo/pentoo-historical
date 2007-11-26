@@ -41,7 +41,7 @@ livecd/iso: /tmp/pentoo-2007.0.iso
 # into the chroot by catalyst automatically.
 # example:
 # livecd/fsscript:
-# livecd/fsscript:
+# livecd/fsscript: localepurge
 
 # The splash type determines the automatic arguments for the bootloader on
 # supported architectures.  The possible options are gensplash and bootsplash.
@@ -120,7 +120,7 @@ livecd/type: generic-livecd
 # This option will automatically create missing runlevels
 # example:
 # livecd/rcadd:
-livecd/rcadd: autoconfig
+livecd/rcadd: autoconfig|default
 
 # This is for removing init script from runlevels.  It is executed after the
 # defaults shipped with catalyst, so it is possible to remove the defaults using
@@ -255,6 +255,7 @@ net-wireless/ipw2200-firmware
 net-wireless/ipw3945
 #net-wireless/linux-wlan-ng
 net-wireless/madwifi-ng
+net-wireless/wpa_supplicant
 #net-wireless/prism54
 #net-wireless/rt2x00
 #net-wireless/rtl8180
@@ -283,7 +284,7 @@ sys-apps/pmount
 # add here.  They can potentially break your CD.
 # example:
 # livecd/unmerge: acl attr autoconf automake bin86 binutils libtool m4 bison ld.so make perl patch linux-headers man-pages sash bison flex gettext texinfo ccache distcc addpatches man groff lib-compat miscfiles rsync sysklogd bc lcms libmng genkernel diffutils libperl gnuconfig gcc-config gcc bin86 cpio cronbase ed expat grub lilo help2man libtool gentoo-sources
-# livecd/unmerge:
+# livecd/unmerge: ant
 
 # This option is used to empty the directories listed.  It is useful for getting
 # rid of files that don't belong to a particular package, or removing files from
