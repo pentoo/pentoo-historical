@@ -2,3 +2,4 @@
 Name=Anti Sniffer
 Exec=$E17TERM -e /opt/pentoo/scripts/antisniff.sh
 Icon=/usr/share/genmenu/pixmaps/gnome-fs-web.png
+Type=Application

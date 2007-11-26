@@ -6,3 +6,4 @@ StartupNotify=false
 X-Enlightenment-WaitExit=false
 StartupWMClass=xmms
 Icon=xmms
+Type=Application

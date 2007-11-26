@@ -2,3 +2,4 @@
 Name=HTTP- Httprint
 Exec=$E17TERM -e /opt/pentoo/scripts/httprint.sh
 Icon=/usr/share/genmenu/pixmaps/apacheconf.png
+Type=Application

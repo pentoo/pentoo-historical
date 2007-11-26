@@ -2,3 +2,4 @@
 Name=Nikto
 Exec=$E17TERM -e /opt/pentoo/scripts/nikto.sh
 Icon=/usr/share/genmenu/pixmaps/apacheconf.png
+Type=Application

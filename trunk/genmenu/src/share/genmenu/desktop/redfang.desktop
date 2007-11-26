@@ -2,3 +2,4 @@
 Name=RedFang
 Exec=$E17TERM -e /opt/pentoo/scripts/redfang.sh
 Icon=/usr/share/genmenu/pixmaps/stock_bluetooth.png
+Type=Application

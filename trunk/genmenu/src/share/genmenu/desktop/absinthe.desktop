@@ -2,3 +2,4 @@
 Name=Absinthe
 Exec=$E17TERM -e absinthe
 Icon=/usr/share/genmenu/pixmaps/absinthe.png
+Type=Application

@@ -4,3 +4,4 @@ Exec= launch ike-scan
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 Icon=/usr/share/genmenu/pixmaps/stock_keyring.png
+Type=Application

@@ -5,3 +5,4 @@ StartupNotify=false
 X-Enlightenment-WaitExit=false
 StartupWMClass=mp
 Icon=mp
+Type=Application

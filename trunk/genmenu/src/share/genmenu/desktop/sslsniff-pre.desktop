@@ -2,3 +2,4 @@
 Name=SSL Sniff - Preconfigured
 Exec=$E17TERM -e /opt/pentoo/bin/sslsniff/sniff.sh
 Icon=/usr/share/genmenu/pixmaps/stock_signature-bad.png
+Type=Application

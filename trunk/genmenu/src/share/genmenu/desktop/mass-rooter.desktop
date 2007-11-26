@@ -2,3 +2,4 @@
 Name=Mass Rooter
 Exec=$E17TERM -e /opt/pentoo/scripts/massrooter.sh
 Icon=/usr/share/genmenu/pixmaps/metasploit.png
+Type=Application

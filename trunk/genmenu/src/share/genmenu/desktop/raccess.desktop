@@ -2,3 +2,4 @@
 Name=Raccess
 Exec=$E17TERM -e /opt/pentoo/scripts/raccess.sh
 Icon=/usr/share/genmenu/pixmaps/metasploit.png
+Type=Application

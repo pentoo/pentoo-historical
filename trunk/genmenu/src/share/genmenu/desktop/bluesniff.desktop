@@ -4,3 +4,4 @@ Exec=$E17TERM -e /opt/pentoo/bin/bluesniff/bluesniff.pl
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 Icon=/usr/share/genmenu/pixmaps/stock_bluetooth.png
+Type=Application

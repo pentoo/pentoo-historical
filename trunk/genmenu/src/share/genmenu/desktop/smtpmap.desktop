@@ -2,3 +2,4 @@
 Name=FTP, POP, SMTP - Smtpmap
 Exec=$E17TERM -e /opt/pentoo/scripts/smtpmap.sh
 Icon=/usr/share/genmenu/pixmaps/apacheconf.png
+Type=Application

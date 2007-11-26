@@ -6,3 +6,4 @@ StartupNotify=true
 X-Enlightenment-WaitExit=false
 StartupWMClass=Xchat
 Icon=/usr/share/pixmaps/xchat.png
+Type=Application

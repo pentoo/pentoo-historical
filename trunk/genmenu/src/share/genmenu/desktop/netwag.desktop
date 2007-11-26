@@ -2,3 +2,4 @@
 Name=NetWag
 Exec=$E17TERM -e netwag
 Icon=/usr/share/genmenu/pixmaps/netwag.png
+Type=Application

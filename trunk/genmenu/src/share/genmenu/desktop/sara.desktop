@@ -4,3 +4,4 @@ Exec=sara
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 Icon=sara
+Type=Application

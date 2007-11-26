@@ -8,3 +8,4 @@ X-Enlightenment-WaitExit=false
 X-Enlightenment-WindowName=epiphany
 StartupWMClass=Epiphany
 Icon=epiphany
+Type=Application

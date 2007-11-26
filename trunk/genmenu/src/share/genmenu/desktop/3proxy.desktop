@@ -2,3 +2,4 @@
 Name=3Proxy
 Exec=$E17TERM -e /opt/pentoo/scripts/3proxy.sh
 Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png
+Type=Application

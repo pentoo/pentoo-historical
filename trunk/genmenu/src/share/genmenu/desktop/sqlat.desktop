@@ -2,3 +2,4 @@
 Name=SQL Attack Toolkit
 Exec=$E17TERM -e /opt/pentoo/scripts/sqlat.sh
 Icon=/usr/share/genmenu/pixmaps/advanced-directory.png
+Type=Application

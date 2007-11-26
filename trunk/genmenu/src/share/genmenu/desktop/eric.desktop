@@ -5,3 +5,4 @@ Exec=eric3 --nosplash
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 Icon=eric
+Type=Application

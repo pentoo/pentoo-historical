@@ -2,3 +2,4 @@
 Name=HTTP-Fuzz
 Exec=$E17TERM -e launch http-fuzz -h
 Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png
+Type=Application

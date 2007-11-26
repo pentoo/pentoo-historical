@@ -2,3 +2,4 @@
 Name=Firewall Builder
 Exec=$E17TERM -e /usr/bin/fwbuilder
 Icon=/usr/share/genmenu/pixmaps/network-config.png
+Type=Application

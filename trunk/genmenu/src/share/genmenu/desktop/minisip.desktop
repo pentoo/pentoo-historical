@@ -2,3 +2,4 @@
 Name=MiniSIP
 Exec=$E17TERM -e minisip
 Icon=/usr/share/genmenu/pixmaps/tray_icon.png
+Type=Application

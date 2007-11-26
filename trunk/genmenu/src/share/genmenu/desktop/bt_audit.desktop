@@ -2,3 +2,4 @@
 Name=BT_Audit
 Exec=$E17TERM -e /opt/pentoo/scripts/bt_audit.sh
 Icon=/usr/share/genmenu/pixmaps/stock_bluetooth.png
+Type=Application

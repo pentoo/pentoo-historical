@@ -5,3 +5,4 @@ StartupNotify=false
 X-Enlightenment-WaitExit=false
 StartupWMClass=Gaim
 Icon=/usr/share/pixmaps/gaim.png
+Type=Application

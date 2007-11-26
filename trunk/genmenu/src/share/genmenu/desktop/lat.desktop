@@ -4,3 +4,4 @@ Exec=lat
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 Icon=/usr/share/genmenu/pixmaps/lat.png
+Type=Application

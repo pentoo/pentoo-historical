@@ -2,3 +2,4 @@
 Name=BluePrint
 Exec=$E17TERM -e /opt/pentoo/scripts/blueprint.sh
 Icon=/usr/share/genmenu/pixmaps/stock_bluetooth.png
+Type=Application

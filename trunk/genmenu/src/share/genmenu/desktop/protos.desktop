@@ -2,3 +2,4 @@
 Name=Protos
 Exec=$E17TERM -e launch protos
 Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png
+Type=Application

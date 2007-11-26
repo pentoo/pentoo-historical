@@ -2,3 +2,4 @@
 Name=Burp Suite
 Exec=$E17TERM -e burpsuite
 Icon=/usr/share/genmenu/pixmaps/web-browser.png
+Type=Application

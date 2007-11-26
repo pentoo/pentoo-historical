@@ -2,3 +2,4 @@
 Name=SIP Bomber
 Exec=$E17TERM -e sipbomber
 Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png
+Type=Application

@@ -7,3 +7,4 @@ StartupNotify=true
 X-Enlightenment-WaitExit=false
 StartupWMClass=Gimp
 Icon=gimp
+Type=Application

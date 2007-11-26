@@ -4,3 +4,4 @@ Exec=netdude
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 Icon=/usr/share/genmenu/pixmaps/netdude-icon.png
+Type=Application

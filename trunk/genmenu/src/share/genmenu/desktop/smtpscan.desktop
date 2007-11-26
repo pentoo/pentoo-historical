@@ -2,3 +2,4 @@
 Name=SMTP - Smtpscan
 Exec=$E17TERM -e /opt/pentoo/scripts/smtpscan.sh
 Icon=/usr/share/genmenu/pixmaps/apacheconf.png
+Type=Application
