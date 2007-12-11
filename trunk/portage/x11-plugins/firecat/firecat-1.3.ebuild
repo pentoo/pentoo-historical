@@ -10,7 +10,12 @@ SRC_URI="recon? (https://addons.mozilla.org/en-US/firefox/downloads/file/17470/s
 				https://addons.mozilla.org/fr/firefox/downloads/file/7473/domainfinder-0.3-fx.xpi
 				https://addons.mozilla.org/en-US/firefox/downloads/file/15850/hostip.info_geolocation_plugin-0.4.3.3-fx+mz+ns+sm+fl.xpi
 				https://addons.mozilla.org/en-US/firefox/downloads/file/2875/showip-0.8.05-fx+mz.xpi
-				https://addons.mozilla.org/en-US/firefox/downloads/file/8145/asnumber-1.0-beta-8-fx.xpi)"
+				https://addons.mozilla.org/en-US/firefox/downloads/file/8145/asnumber-1.0-beta-8-fx.xpi)
+		    security? (https://addons.mozilla.org/en-US/firefox/downloads/file/15350/hackbar-1.1.1-fx.xpi
+					https://addons.mozilla.org/en-US/firefox/downloads/file/4681/tamper_data-9.8.1-fx.xpi
+					https://addons.mozilla.org/en-US/firefox/downloads/file/12448/live_http_headers-0.13.1-fx.xpi
+					https://addons.mozilla.org/en-US/firefox/downloads/file/2826/header_monitor-0.3.4.1-fx.xpi
+					https://addons.mozilla.org/en-US/firefox/downloads/file/2819/add_n_edit_cookies-0.2.1.2-fx+mz.xpi)"
 
 LICENSE="GPL-2"
 SLOT="0"
