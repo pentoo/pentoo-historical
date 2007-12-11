@@ -261,7 +261,7 @@ net-wireless/wpa_supplicant
 #net-wireless/rtl8180
 #net-wireless/zd1211
 sys-fs/fuse
-#sys-fs/ntfs3g
+sys-fs/ntfs3g
 net-firewall/firehol
 sys-apps/pmount
 net-wireless/kismet

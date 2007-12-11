@@ -104,6 +104,7 @@ app-fuzz/bss ~x86
 app-fuzz/fuzzer ~x86
 app-fuzz/fuzzer-server ~x86
 app-fuzz/http-fuzz ~x86
+app-fuzz/ohrwurm ~x86
 app-fuzz/protos ~x86
 app-fuzz/scapy ~x86
 app-fuzz/sftf ~x86
@@ -216,6 +217,7 @@ net-wireless/madwifi-ng ~x86
 dev-libs/nspr ~x86
 net-wireless/btscanner ~x86
 x11-libs/cairo ~x86
+x11-plugins/firecat ~x86
 dev-ruby/wxruby ~x86
 sys-apps/pciutils ~x86
 sys-fs/fuse ~x86

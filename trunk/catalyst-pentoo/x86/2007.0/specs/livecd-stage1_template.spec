@@ -44,6 +44,7 @@ app-fuzz/scapy
 app-fuzz/smtp-fuzz
 app-fuzz/smudge
 app-fuzz/snmp-fuzzer
+app-fuzz/ohrwurm
 app-misc/examine
 app-misc/livecd-tools
 app-mobilephone/obexftp
@@ -74,7 +75,7 @@ net-analyzer/amap
 net-analyzer/angst
 net-analyzer/arpwatch
 net-analyzer/authforce
-net-analyzer/autoscan
+net-analyzer/autoscan-network
 net-analyzer/dnsa
 net-analyzer/dnsenum
 #net-analyzer/driftnet
@@ -128,6 +129,7 @@ net-analyzer/tcptraceroute
 net-analyzer/thcrut
 net-analyzer/traceroute
 net-analyzer/upnpscan
+net-analyzer/voiphopper
 net-analyzer/wireshark
 net-dialup/linux-atm
 net-dialup/lrzsz
@@ -232,6 +234,7 @@ x11-libs/esmart
 x11-libs/evas
 x11-libs/ewl
 x11-libs/gtk+
+x11-plugins/firecat
 x11-terms/eterm
 x11-terms/xterm
 x11-wm/e
