@@ -37,12 +37,10 @@ app-forensics/cmospwd
 app-fuzz/Peach
 app-fuzz/bed
 app-fuzz/bss
-app-fuzz/fuzzer
 app-fuzz/fuzzer-server
 app-fuzz/http-fuzz
 app-fuzz/protos
 app-fuzz/scapy
-app-fuzz/sftf
 app-fuzz/smtp-fuzz
 app-fuzz/smudge
 app-fuzz/snmp-fuzzer
@@ -58,9 +56,11 @@ dev-libs/engrave
 dev-libs/libxslt
 dev-libs/openobex
 dev-python/pygtk
+dev-python/lxml
 dev-util/dialog
 dev-util/e_utils
 dev-util/subversion
+gnome-base/gnome-menus
 media-gfx/scrot
 media-libs/edje
 media-libs/epeg
@@ -71,9 +71,10 @@ media-sound/sox
 net-analyzer/absinthe
 net-analyzer/aimsniff
 net-analyzer/amap
+net-analyzer/angst
 net-analyzer/arpwatch
 net-analyzer/authforce
-#net-analyzer/autoscan
+net-analyzer/autoscan
 net-analyzer/dnsa
 net-analyzer/dnsenum
 #net-analyzer/driftnet
@@ -224,6 +225,7 @@ sys-libs/gpm
 sys-libs/libkudzu
 sys-power/acpid
 www-client/mozilla-firefox-bin
+x11-base/xorg-server
 x11-base/xorg-x11
 x11-libs/ecore
 x11-libs/esmart

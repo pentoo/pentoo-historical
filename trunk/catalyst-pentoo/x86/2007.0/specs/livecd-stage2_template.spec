@@ -41,7 +41,7 @@ livecd/iso: /tmp/pentoo-2007.0.iso
 # into the chroot by catalyst automatically.
 # example:
 # livecd/fsscript:
-# livecd/fsscript: localepurge
+livecd/fsscript: /root/catalyst-pentoo/x86/2007.0/fsscript
 
 # The splash type determines the automatic arguments for the bootloader on
 # supported architectures.  The possible options are gensplash and bootsplash.
@@ -146,7 +146,7 @@ livecd/rcadd: autoconfig|default
 # it blank below.
 # example:
 # livecd/root_overlay:
-# livecd/root_overlay:
+livecd/root_overlay: /root/catalyst-pentoo/x86/2007.0/root_overlay
 
 # This is here to enable udev support in both catalyst and genkernel.  This
 # option requires genkernel >= 3.1.0, and is not needed with genkernel >=3.2.0,
@@ -261,9 +261,11 @@ net-wireless/wpa_supplicant
 #net-wireless/rtl8180
 #net-wireless/zd1211
 sys-fs/fuse
-sys-fs/ntfs3g
+#sys-fs/ntfs3g
 net-firewall/firehol
 sys-apps/pmount
+net-wireless/kismet
+dev-python/lxml
 
 # This option is only for ppc64 machines.  If used it will create the /etc/yaboot.conf
 # entry used for booting a ibm powerpc machine.
