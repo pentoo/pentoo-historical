@@ -1,0 +1,5 @@
+#/bin/sh!
+
+localepurge
+cd /usr/bin
+python genmenu.py -v
