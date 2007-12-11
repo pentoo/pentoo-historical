@@ -25,3 +25,4 @@ sys-apps/pmount -crypt
 x11-libs/ecore dbus
 dev-db/freetds mssql odbc
 net-im/skype qt-static
+app-fuzz/protos http ldap snmp sip h2250 isakmp
