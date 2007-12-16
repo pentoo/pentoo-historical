@@ -119,7 +119,7 @@ def add_menu_entry(root_menu, category):
         if not options.simulate:
             if not os.path.exists(LOCALDIR):
                 try:
-                    os.mkdir(LOCALDIR)
+                    os.makedirs(LOCALDIR)
                 except:
                     sys.stderr.write("Unable to copy " + category + ".directory" + " to " + LOCALDIR + "\n")
                     sys.stderr.write("Verify that you have write permissions in " + LOCALDIR + "\n")
@@ -149,7 +149,7 @@ def make_menu_entry(root_menu, iconfile, category):
         if not options.simulate:
         # Copy the file
             if not os.path.exists(ICONDIR):
-                os.mkdir(ICONDIR)
+                os.makedirs(ICONDIR)
             try:
                 shutil.copyfile(file, ICONDIR + iconfile)
             except:
@@ -172,7 +172,7 @@ def genxml(root_menu):
         print etree.tostring(root_menu, pretty_print=True)
     if not options.simulate:
         if not os.path.exists(CONFIGDIR):
-            shutil.os.mkdir(CONFIGDIR)
+            os.makedirs(CONFIGDIR)
         root_menu.write(CONFIGDIR + '/applications.menu')
 
 def main():
