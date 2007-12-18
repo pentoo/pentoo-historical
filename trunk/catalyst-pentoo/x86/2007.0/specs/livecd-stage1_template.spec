@@ -33,6 +33,7 @@ app-crypt/chntpw
 app-crypt/plaintoo
 app-editors/hexedit
 app-editors/nano
+app-text/epdf
 app-forensics/cmospwd
 app-fuzz/Peach
 app-fuzz/bed
@@ -218,6 +219,7 @@ sys-block/gparted
 sys-boot/grub
 sys-boot/syslinux
 sys-devel/gettext
+sys-fs/device-mapper
 sys-fs/jfsutils
 sys-fs/reiserfsprogs
 sys-fs/reiser4progs
