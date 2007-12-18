@@ -92,7 +92,6 @@ x11-libs/xcb -* ~x86
 x11-libs/xcb-proto -* ~x86
 x11-libs/xcb-util -* ~x86
 x11-libs/xproto -* ~x86
-
 app-misc/emelfm2 ~x86
 app-crypt/chntpw ~x86
 app-crypt/johntheripper ~x86
@@ -112,6 +111,7 @@ app-fuzz/smtp-fuzz ~x86
 app-fuzz/snmp-fuzzer ~x86
 app-fuzz/smudge ~x86
 app-misc/emelfm2 ~x86
+app-text/poppler ~x86
 dev-libs/nss ~x86
 dev-python/pycrypto ~x86
 dev-python/lxml ~x86
@@ -119,7 +119,7 @@ net-analyser/nmap ~x86
 net-analyser/sara ~x86
 net-analyzer/amap ~x86
 net-analyzer/absinthe ~x86
-net-analyzer/autoscan ~x86
+net-analyzer/autoscan-network ~x86
 net-analyzer/dnsa ~x86
 net-analyzer/dsniff ~x86
 net-analyzer/hping ~x86
