@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Paketto- Scanrand
-Exec=$E17TERM -e launch scanrand
+Exec=$P2TERM -e launch scanrand
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 Icon=/usr/share/genmenu/pixmaps/gnome-term.png

@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=HTTPush
-Exec=$E17TERM -e /opt/pentoo/scripts/httpush.sh
+Exec=$P2TERM -e /opt/pentoo/scripts/httpush.sh
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 Icon=/usr/share/genmenu/pixmaps/web-browser.png

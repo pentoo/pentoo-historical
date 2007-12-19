@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Wifitap
-Exec=$E17TERM -e launch wifitap
+Exec=$P2TERM -e launch wifitap
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 Icon=/usr/share/genmenu/pixmaps/wifi-radar.png

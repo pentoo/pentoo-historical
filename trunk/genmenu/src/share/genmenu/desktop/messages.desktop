@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=Messages
-Exec=$E17TERM -e /opt/pentoo/bin/kernel/tail.sh
+Exec=$P2TERM -e /opt/pentoo/bin/kernel/tail.sh
 Icon=/usr/share/genmenu/pixmaps/gnome-term.png
 Type=Application

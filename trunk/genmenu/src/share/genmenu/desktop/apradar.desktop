@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=APRadar
-Exec=$E17TERM -e /usr/local/bin/apradar
+Exec=$P2TERM -e /usr/local/bin/apradar
 Icon=/usr/share/genmenu/pixmaps/logo.png
 Type=Application

@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Airodump-ng
-Exec=$E17TERM -e launch airodump-ng -h
+Exec=$P2TERM -e launch airodump-ng -h
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 StartupWMClass=Eterm

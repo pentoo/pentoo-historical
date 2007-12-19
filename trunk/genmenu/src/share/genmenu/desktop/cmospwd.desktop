@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=Change / Reset CMOS Password
-Exec=$E17TERM -e /opt/pentoo/scripts/cmospwd.sh
+Exec=$P2TERM -e /opt/pentoo/scripts/cmospwd.sh
 Icon=/usr/share/genmenu/pixmaps/gnome-fs-chardev.png
 Type=Application

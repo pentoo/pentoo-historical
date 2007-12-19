@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Aircrack-ng
-Exec=$E17TERM -e launch aircrack-ng -h
+Exec=$P2TERM -e launch aircrack-ng -h
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 StartupWMClass=Eterm

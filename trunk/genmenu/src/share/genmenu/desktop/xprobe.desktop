@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Xprobe
-Exec=$E17TERM -e /opt/pentoo/scripts/xprobe.sh
+Exec=$P2TERM -e /opt/pentoo/scripts/xprobe.sh
 StartupNotify=false
 X-Enlightenment-WaitExit=false
 Icon=/usr/share/genmenu/pixmaps/stock_directory-server.png

@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=Hunt
-Exec=$E17TERM -e /usr/bin/hunt
+Exec=$P2TERM -e /usr/bin/hunt
 Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png
 Type=Application

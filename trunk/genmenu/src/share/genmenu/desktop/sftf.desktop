@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=SFTF
-Exec=$E17TERM -e launch sftf
+Exec=$P2TERM -e launch sftf
 Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png
 Type=Application

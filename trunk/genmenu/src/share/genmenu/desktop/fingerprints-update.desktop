@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=Fingerprints Update
-Exec=$E17TERM -e /opt/pentoo/scripts/update-all.sh
+Exec=$P2TERM -e /opt/pentoo/scripts/update-all.sh
 Icon=/usr/share/genmenu/pixmaps/gnome-netstatus-tx.png
 Type=Application
