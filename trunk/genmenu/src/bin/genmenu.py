@@ -3,16 +3,17 @@
 import sys,os,re,shutil
 
 #from output import red, green, blue, bold
-import genmenudb
+import csv
 
 from lxml import etree
 from StringIO import StringIO
 
-db = genmenudb.getdb()
+db = []
 
 PORTDIR="/var/db/pkg/"
 #PORTDIR = 'V:/Linux/portage/db'
 # Move to applications
+BASEDIR = '/usr/share/genmenu/'
 APPSDIR = '/usr/share/genmenu/desktop'
 MENUDIR = '/usr/share/genmenu/directory'
 ENVDIR = '/etc/env.d/'
@@ -50,6 +51,18 @@ ICONDIR = HOME + '/.local/share/applications/'
 LOCALDIR = HOME + '/.local/share/desktop-directories/'
 CONFIGDIR = HOME + '/.config/menus/'
 
+def readcsv():
+    '''Reads the db from the csv file'''
+    reader = csv.reader(open(BASEDIR + "db.csv", "rb"))
+    for row in reader:
+        db.append(row)
+
+def appendcsv():
+    '''Appends a line in the csv file'''
+    writer = csv.writer
+    reader = csv.reader(open(BASEDIR + "db.csv", "rb"))
+    for row in reader:
+        DB.append(row)
 
 #REM Almost done, need to sanitize tabbed output
 def listdb():
@@ -62,7 +75,7 @@ def listdb():
             tab="\t\t"
         else:
             tab="\t"
-        print blue(db[y][0]) + tab + db[y][1] + "\t\t" + db[y][2] + "\t"
+        print db[y][0] + tab + db[y][1] + "\t\t" + db[y][2] + "\t"
 
 
 #REM Function done
@@ -82,7 +95,7 @@ def listpackages(pkgdir):
 def settermenv():
     """This function creates the apropriate environment variable for the $E17TERM"""
     file = open(ENVDIR + "99pentoo-term" , "w")
-    file.write("E17TERM=\"" + options.e17term + "\"")
+    file.write("P2TERM=\"" + options.e17term + "\"")
     file.newlines
     file.close()
 
@@ -180,6 +193,12 @@ def main():
     This program is used to generate the menu in enlightenment for the pentoo livecd
     Future version _might_ support other VM like gnome or others but kde :-)
     """
+    try:
+        readcsv()
+    except:
+        print >> sys.stderr, "cannot read csv file"
+        return -1
+
     if options.listsupported:
         listdb()
         return 0
