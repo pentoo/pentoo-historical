@@ -53,7 +53,10 @@ CONFIGDIR = HOME + '/.config/menus/'
 
 def readcsv():
     '''Reads the db from the csv file'''
-    reader = csv.reader(open(BASEDIR + "db.csv", "rb"))
+    try:
+        reader = csv.reader(open(BASEDIR + "db.csv", "rb"))
+    except:
+        return -1
     for row in reader:
         db.append(row)
 
@@ -75,7 +78,7 @@ def listdb():
             tab="\t\t"
         else:
             tab="\t"
-        print db[y][0] + tab + db[y][1] + "\t\t" + db[y][2] + "\t"
+        print db[y][0] + tab + db[y][2] + "\t\t" + db[y][1] + "\t"
 
 
 #REM Function done
@@ -219,12 +222,12 @@ def main():
     for y in range(db.__len__()):
         if pkginstalled.__contains__(db[y][0]):
             if options.listonly:
-                print db[y][0] + "\t" + db[y][1] + "\t\t" + db[y][2] + "\t"
+                print db[y][0] + "\t" + db[y][2] + "\t\t" + db[y][1] + "\t"
             else:
                 # calls makemenuentry file.eap, menu category
-                for single_entry in db[y][1].split(" "):
+                for single_entry in db[y][2].split(" "):
                     try:
-                        make_menu_entry(root_menu, single_entry, db[y][2])
+                        make_menu_entry(root_menu, single_entry, db[y][1])
                     except:
                         print >> sys.stderr, "Can't find " + single_entry + " in " + APPSDIR
                         return -1
