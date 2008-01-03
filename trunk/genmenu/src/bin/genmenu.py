@@ -62,6 +62,7 @@ def readcsv():
 
 def appendcsv():
     '''Appends a line in the csv file'''
+    '''Structure is as follow : cat-portage/appname,cat-pentoo,bin1[ bin2]'''
     writer = csv.writer
     reader = csv.reader(open(BASEDIR + "db.csv", "rb"))
     for row in reader:
@@ -72,13 +73,13 @@ def listdb():
     print green("*****************************************")
     print green("    Listing all supported packages ")
     print green("*****************************************")
-    print "Package\t\t\tIcon file\t\tMenu category"
+    print "Package\t\tMenu category"
     for y in range(db.__len__()):
         if db[y][0].__len__() < 15:
             tab="\t\t"
         else:
             tab="\t"
-        print db[y][0] + tab + db[y][2] + "\t\t" + db[y][1] + "\t"
+        print db[y][0] + tab + db[y][1]
 
 
 #REM Function done
@@ -98,7 +99,7 @@ def listpackages(pkgdir):
 def settermenv():
     """This function creates the apropriate environment variable for the $E17TERM"""
     file = open(ENVDIR + "99pentoo-term" , "w")
-    file.write("P2TERM=\"" + options.e17term + "\"")
+    file.write("P2TERM=\"" + options.p2term + "\"")
     file.newlines
     file.close()
 
@@ -229,7 +230,7 @@ def main():
                     try:
                         make_menu_entry(root_menu, single_entry, db[y][1])
                     except:
-                        print >> sys.stderr, "Can't find " + single_entry + " in " + APPSDIR
+                        print >> sys.stderr, "Something went wrong, obviously..."
                         return -1
         else:
             notthere.append(db[y][0])
@@ -250,7 +251,7 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-l", "--list", action="store_true", dest="listonly", default=False,
                       help="Show supported installed packages")
-    parser.add_option("-x", "--xml", action="store_true", dest="simxml", default=False,
+    parser.add_option("-a", "--add", action="store_true", dest="addcsventry", default=False,
                       help="Test xml")
     parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False,
                       help="Show what's going on")
@@ -258,11 +259,11 @@ if __name__ == "__main__":
                       help="Show supported installed packages")
     parser.add_option("-L", "--list-supported", action="store_true", dest="listsupported", default=False,
                       help="Show supported installed packages")
-    parser.add_option("-t", "--term", dest="e17term", default="Eterm",
-                      help="Sets the terminal used by e17 for cli-only tools")
+    parser.add_option("-t", "--term", dest="p2term", default="xterm",
+                      help="Sets the terminal used for cli-only tools")
     parser.add_option("-n", "--dry-run", action="store_true", dest="simulate", default=False,
-                      help="Simulate only, show missing eap files and show"
-                           "what will be done")
+                      help="Simulate only, show missing desktop files"
+                           " and show what will be done")
     (options, args) = parser.parse_args()
 
     try:
