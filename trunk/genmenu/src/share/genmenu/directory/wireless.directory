@@ -8,5 +8,5 @@ Terminal=false
 GenericName=
 Version=1.0
 Type=Directory
-Icon=/opt/pentoo/artwork/wifi.png
+Icon=/usr/share/genmenu/pixmaps/wifi.png
 
