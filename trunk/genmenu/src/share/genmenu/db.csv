@@ -42,7 +42,7 @@ net-analyzer/nmbscan,scanner,nmbscan
 net-analyzer/ntop,analyzer,ntop.desktop
 net-analyzer/ntp-fingerprint,fingerprint,ntp-fingerprint
 net-analyzer/p0f,fingerprint,p0f
-net-analyzer/packit,forging-spoofing,packit.desktop
+net-analyzer/packit,forging-spoofing,packit
 net-analyzer/paketto,forging-spoofing,paketto-linkcat.desktop paketto-minewt.desktop paketto-paratrace.desktop paketto-scanrand.desktop
 net-analyzer/rain,forging-spoofing,rain.desktop
 net-analyzer/sara,scanner,sara.desktop
