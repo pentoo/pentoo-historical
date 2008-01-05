@@ -1,5 +1,5 @@
 [Desktop Entry]
-Icon=/usr/share/icons/gnome/48x48/apps/gnome-devel.png
+Icon=/usr/share/genmenu/pixmaps/fuzzers.png
 Type=Directory
 Name=Fuzzers
 Encoding=UTF-8
