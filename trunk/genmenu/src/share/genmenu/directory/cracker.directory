@@ -8,5 +8,4 @@ Terminal=false
 GenericName=
 Version=1.0
 X-GNOME-DocPath=
-Icon=/usr/share/icons/gnome/48x48/stock/data/stock_lock-broken.png
-
+Icon=/usr/share/genmenu/pixmaps/cracker.png
