@@ -42,10 +42,19 @@ class desktopfile:
         self.Exec += Exec
 
     def getDesktopFile(self):
-        
         return self.Header, self.Name, self.Exec, self.Icon, self.Type
-        #for x in self.Header, self.Name, self.Exec, self.Icon, self.Type:
-        #    print x
+
+    def writeDesktopFile(self, dest):
+        try:
+            file = open(dest , "w")
+        except:
+            sys.stderr.write("Unable to open " + dest + " for writing\n")
+            sys.stderr.write("Verify that you have write permissions")
+            return -1
+        for x in self.Header, self.Name, self.Exec, self.Icon, self.Type:
+            file.write(x + "\n")
+        file.close()
+
 
 def getHomeDir():
     ''' Try to find user's home directory, otherwise return /root.'''
@@ -88,9 +97,9 @@ def appendcsv():
     '''Appends a line in the csv file'''
     '''Structure is as follow : cat-portage/appname,cat-pentoo,bin1[ bin2]'''
     writer = csv.writer
-    reader = csv.reader(open(BASEDIR + "db.csv", "rb"))
-    for row in reader:
-        DB.append(row)
+    #reader = csv.reader(open(BASEDIR + "db.csv", "rb"))
+    #for row in reader:
+    #    DB.append(row)
 
 #REM Almost done, need to sanitize tabbed output
 def listdb():
@@ -106,7 +115,6 @@ def listdb():
         print db[y][0] + tab + db[y][1]
 
 
-#REM Function done
 def listpackages(pkgdir):
     """List packages installed as in the portage database directory (usually /var/db/pkg)"""
     packages = []
@@ -119,7 +127,6 @@ def listpackages(pkgdir):
     packages.sort()
     return packages
  
-#REM Function done       
 def settermenv():
     """This function creates the apropriate environment variable for the $E17TERM"""
     file = open(ENVDIR + "99pentoo-term" , "w")
@@ -177,32 +184,42 @@ def append_desktop_entry(menu, iconfile):
 
 def create_desktop_entry(name, category, binname):
     '''This function creates a simple .desktop entry'''
-    
+    de = desktopfile()
+    de.setName(name.capitalize())
+    de.setIcon(category + ".png")
+    de.setExec("$P2TERM -e launch " + binname + " -h")
+    return de
 
 def make_menu_entry(root_menu, iconfile, category):
-    file = os.path.join(APPSDIR, iconfile)
-    if os.path.exists(file):
-        # Check if dry-run
-        menu = find_menu_entry(root_menu, category, "Include")
-        if menu == None:
-            menu = add_menu_entry(root_menu, category)
-        append_desktop_entry(menu, iconfile)
-
-        if options.verbose:
-            print arrow + "Copying " + iconfile + " to " + ICONDIR
-        if not options.simulate:
-        # Copy the file
-            if not os.path.exists(ICONDIR):
-                os.makedirs(ICONDIR)
-            try:
-                shutil.copyfile(file, ICONDIR + iconfile)
-            except:
-                sys.stderr.write(red("Unable to copy " + iconfile + " to " + ICONDIR + "\n"))
-                sys.stderr.write(red("Verify that you have write permissions in " + ICONDIR + "\n"))
-                return -1
-        return 0
+    if not iconfile.endswith(".desktop"):
+        nde = create_desktop_entry(iconfile, category, iconfile)
+        file = os.path.join(ICONDIR, iconfile + ".desktop")
+        nde.writeDesktopFile(file)
+        iconfile += ".desktop"
     else:
-        return 1
+        file = os.path.join(APPSDIR, iconfile)
+        if os.path.exists(file):
+            # Check if dry-run
+            if options.verbose:
+                print arrow + "Copying " + iconfile + " to " + ICONDIR
+            if not options.simulate:
+            # Copy the file
+                if not os.path.exists(ICONDIR):
+                    os.makedirs(ICONDIR)
+                try:
+                    shutil.copyfile(file, ICONDIR + iconfile)
+                except:
+                    sys.stderr.write("Unable to copy " + iconfile + " to " + ICONDIR + "\n")
+                    sys.stderr.write("Verify that you have write permissions in " + ICONDIR + "\n")
+                    return -1
+        else:
+            sys.stderr.write("File " + file + "does not exists \n")
+            return -1
+    menu = find_menu_entry(root_menu, category, "Include")
+    if menu == None:
+        menu = add_menu_entry(root_menu, category)
+    append_desktop_entry(menu, iconfile)
+        
 
 
 def genxml(root_menu):
@@ -220,10 +237,9 @@ def genxml(root_menu):
         root_menu.write(CONFIGDIR + '/applications.menu')
 
 def main():
-    """
+    '''
     This program is used to generate the menu in enlightenment for the pentoo livecd
-    Future version _might_ support other VM like gnome or others but kde :-)
-    """
+    '''
     try:
         readcsv()
     except:
@@ -235,8 +251,7 @@ def main():
         a.setName("Toto")
         a.setExec("toto")
         a.setIcon("toto.png")
-        for x in a.getDesktopFile():
-            print x
+        a.writeDesktopFile("./toto.desktop")
         return 0
     
     if options.listsupported:

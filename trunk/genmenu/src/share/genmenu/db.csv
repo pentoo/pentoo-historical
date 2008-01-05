@@ -1,3 +1,4 @@
+app-fuzz/scapy,fuzzers,scapy
 net-analyzer/absinthe,database,absinthe.desktop
 net-analyzer/aimsniff,analyzer,aimsniff.desktop
 net-analyzer/amap,fingerprint,amap.desktop
