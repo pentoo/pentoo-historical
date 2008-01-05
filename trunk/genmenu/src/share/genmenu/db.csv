@@ -77,7 +77,7 @@ net-misc/nemesis,forging-spoofing,nemesis.desktop
 net-misc/partysip,sip-voip,partysip
 net-misc/proxychains,proxy,proxychains
 net-misc/raccess,exploit,raccess.desktop
-net-misc/rdesktop,misc,rdesktop.desktop
+net-misc/rdesktop,misc,rdesktop
 net-misc/sipbomber,sip-voip,sipbomber
 net-misc/sipp,sip-voip,sipp
 net-misc/siproxd,sip-voip,siproxd

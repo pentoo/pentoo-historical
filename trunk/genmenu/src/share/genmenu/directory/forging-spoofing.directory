@@ -5,8 +5,8 @@ Type=Directory
 Exec=
 X-GNOME-DocPath=
 Terminal=false
-Icon=gnome-run.png
-Name=Forging / Spoofing
+Icon=/usr/share/genmenu/pixmaps/forging.png
+Name=Forging
 GenericName=
 Comment=
 
