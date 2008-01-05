@@ -22,6 +22,30 @@ star = "  *  "
 arrow = " >>> "
 warn = " !!! "
 
+class desktopfile:
+
+    Header = "[Desktop Entry]"
+    Name = "Name="
+    Exec = "Exec="
+    Icon = "Icon=/usr/share/genmenu/pixmaps/"
+    Type = "Type=Application"
+
+#    def __init__(self):
+
+    def setName(self, Name):
+        self.Name += Name
+
+    def setIcon(self, Icon):
+        self.Icon += Icon
+
+    def setExec(self, Exec):
+        self.Exec += Exec
+
+    def getDesktopFile(self):
+        
+        return self.Header, self.Name, self.Exec, self.Icon, self.Type
+        #for x in self.Header, self.Name, self.Exec, self.Icon, self.Type:
+        #    print x
 
 def getHomeDir():
     ''' Try to find user's home directory, otherwise return /root.'''
@@ -147,10 +171,13 @@ def add_menu_entry(root_menu, category):
         new_includelist = etree.SubElement(new_menu_entry, "Include")
         return new_includelist
 
-def add_desktop_entry(menu, iconfile):
+def append_desktop_entry(menu, iconfile):
     new_desktop_entry = etree.SubElement(menu, "Filename")
     new_desktop_entry.text = iconfile
 
+def create_desktop_entry(name, category, binname):
+    '''This function creates a simple .desktop entry'''
+    
 
 def make_menu_entry(root_menu, iconfile, category):
     file = os.path.join(APPSDIR, iconfile)
@@ -159,7 +186,7 @@ def make_menu_entry(root_menu, iconfile, category):
         menu = find_menu_entry(root_menu, category, "Include")
         if menu == None:
             menu = add_menu_entry(root_menu, category)
-        add_desktop_entry(menu, iconfile)
+        append_desktop_entry(menu, iconfile)
 
         if options.verbose:
             print arrow + "Copying " + iconfile + " to " + ICONDIR
@@ -203,6 +230,15 @@ def main():
         print >> sys.stderr, "cannot read csv file"
         return -1
 
+    if options.testmodule:
+        a = desktopfile()
+        a.setName("Toto")
+        a.setExec("toto")
+        a.setIcon("toto.png")
+        for x in a.getDesktopFile():
+            print x
+        return 0
+    
     if options.listsupported:
         listdb()
         return 0
@@ -251,6 +287,8 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-l", "--list", action="store_true", dest="listonly", default=False,
                       help="Show supported installed packages")
+    parser.add_option("-T", "--test", action="store_true", dest="testmodule", default=False,
+                      help="Testing module during dev")
     parser.add_option("-a", "--add", action="store_true", dest="addcsventry", default=False,
                       help="Test xml")
     parser.add_option("-v", "--verbose", action="store_true", dest="verbose", default=False,
