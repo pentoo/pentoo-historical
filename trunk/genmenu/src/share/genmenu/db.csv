@@ -56,7 +56,6 @@ net-analyzer/sqlbf,database,sqlbf
 net-analyzer/sqlinject,database,sqlinject.desktop
 net-analyzer/tcptraceroute,analyzer,tcptraceroute
 net-analyzer/thcrut,analyzer,thcrut.desktop
-net-analyzer/traceroute,analyzer,traceroute.desktop
 net-analyzer/upnpscan,scanner,upnpscan.desktop
 net-analyzer/xprobe,fingerprint,xprobe.desktop
 net-analyzer/yersinia,exploit,yersinia.desktop
@@ -64,14 +63,13 @@ net-analyzer/zodiac,analyzer,zodiac.desktop
 net-firewall/firehol,misc,firehol.desktop
 net-firewall/fwbuilder,misc,fwbuilder.desktop
 net-ftp/ftpd,misc,ftpd.desktop
-net-ftp/oftpd,misc,oftpd.desktop
+net-ftp/oftpd,misc,oftpd
 net-im/gaim,misc,gaim.desktop
-net-im/skype,misc,skype.desktop
 net-irc/irssi,misc,irssi
 net-irc/xchat,misc,xchat.desktop
-net-misc/bridge-utils,mitm,bridge-utils.desktop
-net-misc/curl,analyzer,curl.desktop
-net-misc/dhcpcd,misc,dhcpcd.desktop
+net-misc/bridge-utils,mitm,brctl
+net-misc/curl,misc,curl
+net-misc/dhcpcd,misc,dhcpcd
 net-misc/etherwake,misc,etherwake.desktop
 net-misc/ipsorcery,forging-spoofing,ipsorcery.desktop
 net-misc/minisip,sip-voip,minisip.desktop
@@ -86,7 +84,6 @@ net-misc/siproxd,sip-voip,siproxd.desktop
 net-misc/sipsak,sip-voip,sipsak.desktop
 net-misc/tightvnc,misc,vncviewer
 net-misc/tinc,misc,tinc.desktop
-net-misc/tor,proxy,tor.desktop
 net-misc/tsclient,misc,tsclient.desktop
 net-misc/voipong,sip-voip,voipong.desktop
 net-nds/gq,analyzer,gq.desktop
@@ -94,21 +91,20 @@ net-nds/lat,analyzer,lat.desktop
 net-proxy/3proxy,proxy,3proxy.desktop
 net-proxy/httpush,proxy,httpush.desktop
 net-proxy/paros,proxy,paros.desktop
-net-proxy/privoxy,proxy,privoxy.desktop
+net-proxy/privoxy-tor,proxy,privoxy-tor.desktop
 net-proxy/webscarab,proxy,webscarab.desktop
-net-wireless/aircrack-ng,wireless,aircrack-ng.desktop airdecap-ng.desktop aireplay-ng.desktop airodump-ng.desktop
+net-wireless/aircrack-ng,wireless,aircrack-ng airdecap-ng aireplay-ng airodump-ng
 net-wireless/airsnort,wireless,airsnort.desktop
-net-wireless/airtraf,wireless,airtraf.desktop
+net-wireless/airtraf,wireless,airtraf
 net-wireless/btscanner,bluetooth,btscanner.desktop
 net-wireless/gkismet,wireless,gkismet.desktop gkismetauto.desktop
 net-wireless/gnome-bluetooth,bluetooth,gnome-bluetooth.desktop
 net-wireless/kismet,wireless,kismet.desktop kismetauto.desktop
 net-wireless/wavemon,wireless,wavemon.desktop
-net-wireless/waveselect,wireless,waveselect.desktop
-net-wireless/wepattack,wireless,wepattack.desktop
-net-wireless/wepdecrypt,wireless,wepdecrypt.desktop
-net-wireless/wifi-radar,wireless,wifi-radar.desktop
-net-wireless/wifiscanner,wireless,wifiscanner.desktop
-net-wireless/wifitap,wireless,wifitap.desktop
-net-wireless/wpa_supplicant,wireless,wpa_supplicant.desktop
+net-wireless/waveselect,wireless,waveselect
+net-wireless/wepattack,wireless,wepattack
+net-wireless/wepdecrypt,wireless,wepdecrypt
+net-wireless/wifiscanner,wireless,wifiscanner
+net-wireless/wifitap,wireless,wifitap
+net-wireless/wpa_supplicant,wireless,wpa_supplicant
 net-www/apache,misc,apache.desktop
