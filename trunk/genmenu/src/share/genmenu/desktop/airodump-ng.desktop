@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Airodump-ng
-Exec=$P2TERM -e launch airodump-ng -h
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-StartupWMClass=Eterm
-Icon=/usr/share/genmenu/pixmaps/gnome-term.png
-Type=Application

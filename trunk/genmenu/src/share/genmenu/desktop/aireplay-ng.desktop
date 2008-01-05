@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Aireplay-ng
-Exec=$P2TERM -e launch aireplay-ng -h
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-StartupWMClass=Eterm
-Icon=/usr/share/genmenu/pixmaps/gnome-term.png
-Type=Application

@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=ArpWatch
-Exec=$P2TERM -e launch arpwatch -h
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=/usr/share/genmenu/pixmaps/gnome-searchtool-animation.png
-Type=Application

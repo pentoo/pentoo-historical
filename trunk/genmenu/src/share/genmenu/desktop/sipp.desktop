@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=SIPp
-Exec=$P2TERM -e launch sipp -h
-Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png
-Type=Application

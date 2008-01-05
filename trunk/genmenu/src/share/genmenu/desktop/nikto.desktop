@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Nikto
-Exec=$P2TERM -e /opt/pentoo/scripts/nikto.sh
-Icon=/usr/share/genmenu/pixmaps/apacheconf.png
-Type=Application

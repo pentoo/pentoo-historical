@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=NmbScan
-Exec=$P2TERM -e /opt/pentoo/scripts/nmbscan.sh
-Icon=/usr/share/genmenu/pixmaps/gnome-fs-network.png
-Type=Application

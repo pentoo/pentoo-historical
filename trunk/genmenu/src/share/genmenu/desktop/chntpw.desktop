@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Change Windows password
-Exec=$P2TERM -e launch chntpw
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=/usr/share/genmenu/pixmaps/windows.png
-Type=Application

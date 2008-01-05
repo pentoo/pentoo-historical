@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=SQL BruteForce
-Exec=$P2TERM -e launch sqlbf -h
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=/usr/share/genmenu/pixmaps/stock_print-duplex-no-tumble.png
-Type=Application

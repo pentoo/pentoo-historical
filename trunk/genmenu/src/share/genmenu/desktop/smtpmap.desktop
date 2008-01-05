@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=FTP, POP, SMTP - Smtpmap
-Exec=$P2TERM -e /opt/pentoo/scripts/smtpmap.sh
-Icon=/usr/share/genmenu/pixmaps/apacheconf.png
-Type=Application

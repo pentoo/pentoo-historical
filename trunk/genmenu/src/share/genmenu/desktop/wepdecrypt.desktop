@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=WepDecrypt
-Exec=$P2TERM -e /opt/pentoo/scripts/wepdecrypt.sh
-Icon=/usr/share/genmenu/pixmaps/stock_lock-open.png
-Type=Application

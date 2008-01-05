@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Wifitap
-Exec=$P2TERM -e launch wifitap
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=/usr/share/genmenu/pixmaps/wifi-radar.png
-Type=Application

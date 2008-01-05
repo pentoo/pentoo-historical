@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=SMTP - Smtpscan
-Exec=$P2TERM -e /opt/pentoo/scripts/smtpscan.sh
-Icon=/usr/share/genmenu/pixmaps/apacheconf.png
-Type=Application

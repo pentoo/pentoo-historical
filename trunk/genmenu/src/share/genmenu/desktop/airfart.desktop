@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Airfart
-Exec=$P2TERM -e /usr/bin/airfart
-Icon=/usr/share/genmenu/pixmaps/stock_channel.png
-Type=Application
