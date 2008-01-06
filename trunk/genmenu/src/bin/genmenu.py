@@ -169,10 +169,15 @@ def add_menu_entry(root_menu, category):
                 try:
                     os.makedirs(LOCALDIR)
                 except:
-                    sys.stderr.write("Unable to copy " + category + ".directory" + " to " + LOCALDIR + "\n")
+                    sys.stderr.write("Unable to create " + LOCALDIR + "\n")
                     sys.stderr.write("Verify that you have write permissions in " + LOCALDIR + "\n")
                     return -1
-            shutil.copyfile(os.path.join(MENUDIR, category + ".directory"), file)
+            try:
+                shutil.copyfile(os.path.join(MENUDIR, category + ".directory"), file)
+            except:
+                sys.stderr.write("Unable to copy " + category + ".directory" + " to " + LOCALDIR + "\n")
+                sys.stderr.write("Verify that you have write permissions in " + LOCALDIR + "\n")
+                return -1
         new_directory_entry = etree.SubElement(new_menu_entry, "Directory")
         new_directory_entry.text = category + ".directory"
         new_includelist = etree.SubElement(new_menu_entry, "Include")
