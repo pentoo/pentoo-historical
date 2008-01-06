@@ -35,7 +35,7 @@ net-analyzer/honeyd,misc,honeyd.desktop
 net-analyzer/hping,forging,hping.desktop
 net-analyzer/hunt,forging,hunt.desktop
 net-analyzer/hydra,cracker,hydra.desktop
-net-analyzer/medusa,cracker,medusa
+net-analyzer/inguma,exploit,inguma
 net-analyzer/ike-scan,scanner,ike-scan
 net-analyzer/isic,forging,isic
 net-analyzer/macchanger,misc,macchanger
