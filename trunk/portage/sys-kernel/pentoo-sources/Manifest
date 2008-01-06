@@ -1,0 +1,8 @@
+DIST pentoo-sources-2.6.23-r1.tbz2 46271693 RMD160 5bf5ae89facf53bc81e27587ad6127319c5dba36 SHA1 6b33cde006d31e529c6cffebb9e7408245f03f03 SHA256 2eecca49c911844b710a6d0e65a773386e2e23eb9cb8c370e5ec22c202e55d4c
+EBUILD pentoo-sources-2.6.23-r1.ebuild 468 RMD160 bf9fb74678cbb2dd26ad970374d1f1f0e808cfab SHA1 30ba54ea13bf70338c20f92da6bcc00db85c9eee SHA256 7dddf360ac460821544ae8a157fa5ccad04b73b3a6d214fb42bd31738738547d
+MD5 14fee01d76ebea65c9c15f98a3472e57 pentoo-sources-2.6.23-r1.ebuild 468
+RMD160 bf9fb74678cbb2dd26ad970374d1f1f0e808cfab pentoo-sources-2.6.23-r1.ebuild 468
+SHA256 7dddf360ac460821544ae8a157fa5ccad04b73b3a6d214fb42bd31738738547d pentoo-sources-2.6.23-r1.ebuild 468
+MD5 cfa55bb406ccfb8e6be9cfe20ac023f2 files/digest-pentoo-sources-2.6.23-r1 274
+RMD160 ddbb6f8919f6d8a9ce93aeeb10a52db1bbe76757 files/digest-pentoo-sources-2.6.23-r1 274
+SHA256 6f0ae64766de93b219527c3c2e73c29d9c4cbaf6cf7e50e5b3069f2a426f853a files/digest-pentoo-sources-2.6.23-r1 274
