@@ -1,5 +1,5 @@
 subarch: i686
-version_stamp: 2007.0
+version_stamp: 2008.0
 target: livecd-stage2
 rel_type: default
 profile: default-linux/x86/2007.0
@@ -29,7 +29,7 @@ portage_overlay: /usr/local/portage /usr/portage/local/enlightenment
 livecd/fstype: squashfs
 livecd/fsops: -root-owned
 livecd/cdtar: /usr/lib/catalyst/livecd/cdtar/isolinux-3.09-memtest86+-cdtar.tar.bz2
-livecd/iso: /tmp/pentoo-2007.0.iso
+livecd/iso: /tmp/pentoo-2008.0_alpha1.iso
 
 # A fsscript is simply a shell script that is copied into the chroot of the CD
 # after the kernel(s) and any external modules have been compiled and is 
@@ -60,14 +60,14 @@ livecd/fsscript: /root/catalyst-pentoo/x86/2007.0/fsscript
 # is used on the x86/amd64 release media to enable keymap selection.
 # example:
 # livecd/bootargs: dokeymap
-# livecd/bootargs:
+livecd/bootargs: dokeymap unionfs
 
 # This is a set of arguments that will be passed to genkernel for all kernels
 # defined in this target.  It is useful for passing arguments to genkernel that
 # are not otherwise available via the livecd-stage2 spec file.
 # example:
 # livecd/gk_mainargs: --lvm2 --dmraid
-livecd/gk_mainargs: --no-clean --no-mrproper
+livecd/gk_mainargs: --no-clean --no-mrproper --unionfs
 
 # This option allows you to specify your own linuxrc script for genkernel to use
 # when building your CD.  This is not checked for functionality, so it is up to
@@ -191,7 +191,7 @@ livecd/root_overlay: /root/catalyst-pentoo/x86/2007.0/root_overlay
 # This option sets the volume ID of the CD created.
 # example:
 # livecd/volid: Gentoo Linux 2005.0 X86
-livecd/volid: Pentoo 2008.0
+livecd/volid: 2008.0_alpha1
 
 # This option is only used when creating a GameCD.  This specifies the file that
 # contains the definitions for GAME_NAME and GAME_EXECUTABLE, which are used by
@@ -213,8 +213,8 @@ boot/kernel/gentoo/sources: gentoo-sources
 # used by genkernel to compile the kernel this label applies to.
 # example:
 # boot/kernel/gentoo/config: /tmp/2.6.11-smp.config
-boot/kernel/gentoo/config: /usr/share/genkernel/x86/kernel-config-2.6
-#/root/catalyst-pentoo/x86/2007.0/kernel/config-2.6.17
+boot/kernel/gentoo/config: /root/catalyst-pentoo/x86/2007.0/kernel/config-2.6.23
+#/usr/share/genkernel/x86/kernel-config-2.6
 
 # This option sets genkernel parameters on a per-kernel basis and applies only
 # to this kernel label.  This can be used for building options into only a
@@ -223,7 +223,7 @@ boot/kernel/gentoo/config: /usr/share/genkernel/x86/kernel-config-2.6
 # syntax as livecd/gk_mainargs.
 # example:
 # boot/kernel/gentoo/gk_kernargs:
-# boot/kernel/gentoo/gk_kernargs: --unionfs-dev
+boot/kernel/gentoo/gk_kernargs: --unionfs
 
 # This option sets the USE flags used to build the kernel and also any packages
 # which are defined under this kernel label.  These USE flags are additive from
