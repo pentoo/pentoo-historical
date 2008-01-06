@@ -1,3 +1,4 @@
+app-forensics/cmospwd,cracking,cmospwd
 app-fuzz/Peach,fuzzers,peach
 app-fuzz/bed,fuzzers,bed
 app-fuzz/bss,fuzzers,bss
@@ -15,6 +16,7 @@ app-crypt/chntpw,cracker,chntpw
 net-analyzer/absinthe,database,absinthe.desktop
 net-analyzer/aimsniff,analyzer,aimsniff
 net-analyzer/amap,fingerprint,amap
+net-analyzer/angst,analyzer,angst
 net-analyzer/arpwatch,analyzer,arpwatch
 net-analyzer/authforce,cracker,authforce
 net-analyzer/autoscan,scanner,autoscan.desktop
@@ -25,21 +27,21 @@ net-analyzer/dnsenum,analyzer,dnsenum
 net-analyzer/driftnet,analyzer,driftnet.desktop
 net-analyzer/dsniff,mitm,dnsspoof filesnarf macof sshow tcpkill tcpnice sshmitm dsniff webspy urlsnarf arpspoof webmitm mailsnarf msgsnarf
 net-analyzer/ethereal,analyzer,ethereal.desktop
-net-analyzer/ettercap,mitm,ettercap.desktop
+net-analyzer/ettercap,mitm,ettercap,-G
 net-analyzer/firewalk,scanner,firewalk
 net-analyzer/fragroute,forging,fragroute
 net-analyzer/ftester,analyzer,ftest
 net-analyzer/gnome-nettool,analyzer,gnome-nettool.desktop
-net-analyzer/gspoof,forging,gspoof.desktop
-net-analyzer/honeyd,misc,honeyd.desktop
-net-analyzer/hping,forging,hping.desktop
-net-analyzer/hunt,forging,hunt.desktop
+net-analyzer/gspoof,forging,gspoof,-g
+net-analyzer/honeyd,misc,honeyd
+net-analyzer/hping,forging,hping2 hping3
+net-analyzer/hunt,scanner,hunt
 net-analyzer/hydra,cracker,hydra.desktop
 net-analyzer/inguma,exploit,inguma
 net-analyzer/ike-scan,scanner,ike-scan
 net-analyzer/isic,forging,isic
 net-analyzer/macchanger,misc,macchanger
-net-analyzer/mbrowse,analyzer,mbrowse.desktop
+net-analyzer/mbrowse,analyzer,mbrowse,
 net-analyzer/medusa,analyzer,medusa
 net-analyzer/metacoretex-ng,database,metacoretex-ng.desktop
 net-analyzer/metasploit,exploit,msf-console.desktop msf-web.desktop
@@ -53,13 +55,15 @@ net-analyzer/nmbscan,scanner,nmbscan
 net-analyzer/ntop,analyzer,ntop.desktop
 net-analyzer/ntp-fingerprint,fingerprint,ntp-fingerprint
 net-analyzer/p0f,fingerprint,p0f
-net-analyzer/packit,forging,packit
-net-analyzer/paketto,forging,paketto-linkcat.desktop paketto-minewt.desktop paketto-paratrace.desktop paketto-scanrand.desktop
-net-analyzer/rain,forging,rain.desktop
+net-analyzer/packit,forging,packit,
+net-analyzer/paketto,analyzer,lc minewt paratrace
+net-analyzer/paketto,scanner,scanrand
+net-analyzer/rain,forging,rain,--help
 net-analyzer/sara,scanner,sara.desktop
 net-analyzer/scanssh,fingerprint,scanssh
 net-analyzer/siphon,fingerprint,siphon
 net-analyzer/smtpmap,fingerprint,smtpmap
+net-analyzer/sniffit,analyzer,sniffit
 net-analyzer/snmpenum,analyzer,snmpenum
 net-analyzer/snort,misc,snort
 net-analyzer/sqlat,database,sqlat
@@ -68,9 +72,10 @@ net-analyzer/sqlinject,database,sqlinject
 net-analyzer/tcptraceroute,analyzer,tcptraceroute
 net-analyzer/thcrut,analyzer,thcrut
 net-analyzer/upnpscan,scanner,upnpscan
+net-analyzer/voiphopper,sip-voip,voiphopper
+net-analyzer/w3af,exploit,w3af
 net-analyzer/xprobe,fingerprint,xprobe
 net-analyzer/yersinia,exploit,yersinia.desktop
-net-analyzer/w3af,exploit,w3af
 net-analyzer/zodiac,analyzer,zodiac.desktop
 net-firewall/firehol,misc,firehol.desktop
 net-firewall/fwbuilder,misc,fwbuilder.desktop
@@ -94,6 +99,8 @@ net-misc/sipbomber,sip-voip,sipbomber
 net-misc/sipp,sip-voip,sipp
 net-misc/siproxd,sip-voip,siproxd
 net-misc/sipsak,sip-voip,sipsak
+net-misc/socat,analyzer,socat
+net-misc/stunnel,misc,stunnel
 net-misc/tightvnc,misc,vncviewer
 net-misc/tinc,misc,tinc.desktop
 net-misc/tsclient,misc,tsclient.desktop
@@ -112,6 +119,8 @@ net-wireless/btscanner,bluetooth,btscanner.desktop
 net-wireless/gkismet,wireless,gkismet.desktop gkismetauto.desktop
 net-wireless/gnome-bluetooth,bluetooth,gnome-bluetooth.desktop
 net-wireless/kismet,wireless,kismet.desktop kismetauto.desktop
+net-wireless/mdk,wireless,mdk
+net-wireless/ska,wireless,ska
 net-wireless/wavemon,wireless,wavemon.desktop
 net-wireless/waveselect,wireless,waveselect
 net-wireless/wepattack,wireless,wepattack
