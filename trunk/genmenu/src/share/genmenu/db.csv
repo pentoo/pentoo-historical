@@ -1,4 +1,4 @@
-app-forensics/cmospwd,cracking,cmospwd
+app-forensics/cmospwd,cracker,cmospwd
 app-fuzz/Peach,fuzzers,peach
 app-fuzz/bed,fuzzers,bed
 app-fuzz/bss,fuzzers,bss
@@ -90,7 +90,7 @@ net-misc/dhcpcd,misc,dhcpcd
 net-misc/etherwake,misc,etherwake.desktop
 net-misc/ipsorcery,forging,ipsorcery.desktop
 net-misc/minisip,sip-voip,minisip.desktop
-net-misc/nemesis,forging,nemesis.desktop
+net-misc/nemesis,forging,nemesis
 net-misc/partysip,sip-voip,partysip
 net-misc/proxychains,proxy,proxychains
 net-misc/raccess,exploit,raccess.desktop
