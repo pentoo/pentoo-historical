@@ -30,8 +30,6 @@ class desktopfile:
     Icon = "Icon=/usr/share/genmenu/pixmaps/"
     Type = "Type=Application"
 
-#    def __init__(self):
-
     def setName(self, Name):
         self.Name += Name
 
@@ -229,7 +227,7 @@ def make_menu_entry(root_menu, iconfile, category):
 
 def genxml(root_menu):
     '''Generate the applications.menu XMl file in the user's directory.'''
-    dtd = etree.DTD("menu-1.0.dtd")
+    dtd = etree.DTD(os.path.join(BASEDIR, "lib", "menu-1.0.dtd"))
     if dtd.validate(root_menu) == 0:
         print dtd.error_log.filter_from_errors()
         return -1
@@ -273,7 +271,7 @@ def main():
     pkginstalled = []
     pkginstalled = listpackages(PORTDIR)
     notthere = []
-    menu = etree.parse("applications.menu")
+    menu = etree.parse(os.path.join(BASEDIR, "lib", "applications.menu"))
     root_menu = menu.getroot()
 
     for y in range(db.__len__()):
