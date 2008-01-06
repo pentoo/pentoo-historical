@@ -301,7 +301,9 @@ def main():
         for i in range(notthere.__len__()):
             print arrow + notthere[i]
     #print etree.tostring(root_menu, pretty_print=True)
-    genxml(menu)
+    if not options.simulate:
+        settermenv()
+        genxml(menu)
 
 if __name__ == "__main__":
 
