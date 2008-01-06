@@ -185,17 +185,17 @@ def append_desktop_entry(menu, iconfile):
     new_desktop_entry = etree.SubElement(menu, "Filename")
     new_desktop_entry.text = iconfile
 
-def create_desktop_entry(name, category, binname):
+def create_desktop_entry(name, category, binname, params):
     '''This function creates a simple .desktop entry'''
     de = desktopfile()
     de.setName(name.capitalize())
     de.setIcon(category + ".png")
-    de.setExec("$P2TERM -e launch " + binname + " -h")
+    de.setExec("$P2TERM -e launch " + binname + " " + params)
     return de
 
-def make_menu_entry(root_menu, iconfile, category):
+def make_menu_entry(root_menu, iconfile, category, params):
     if not iconfile.endswith(".desktop"):
-        nde = create_desktop_entry(iconfile, category, iconfile)
+        nde = create_desktop_entry(iconfile, category, iconfile, params)
         file = os.path.join(ICONDIR, iconfile + ".desktop")
         nde.writeDesktopFile(file)
         iconfile += ".desktop"
@@ -282,7 +282,11 @@ def main():
                 # calls makemenuentry file.eap, menu category
                 for single_entry in db[y][2].split(" "):
                     try:
-                        make_menu_entry(root_menu, single_entry, db[y][1])
+                        if db[y].__len__() == 4:
+                            params = db[y][3]
+                        else:
+                            params = "-h"
+                        make_menu_entry(root_menu, single_entry, db[y][1], params)
                     except:
                         print >> sys.stderr, "Something went wrong, obviously..."
                         return -1
