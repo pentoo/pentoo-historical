@@ -16,7 +16,7 @@ portage_overlay: /usr/local/portage /usr/portage/local/layman/enlightenment
 # pkgcache_path: /tmp/packages
 # pkgcache_path:
 
-livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime -qt -qt3 -qt4 -cups -spell png jpeg gif dri opengl
+livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime qt -qt3 -qt4 -cups -spell png jpeg gif dri opengl
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
@@ -79,7 +79,7 @@ net-analyzer/authforce
 net-analyzer/autoscan-network
 net-analyzer/dnsa
 net-analyzer/dnsenum
-#net-analyzer/driftnet
+net-analyzer/driftnet
 net-analyzer/dsniff
 net-analyzer/ettercap
 net-analyzer/firewalk
@@ -90,10 +90,12 @@ net-analyzer/honeyd
 net-analyzer/hping
 net-analyzer/hunt
 #net-analyzer/hydra
+net-analyzer/inguma
 net-analyzer/ike-scan
 net-analyzer/isic
 net-analyzer/macchanger
 net-analyzer/mbrowse
+net-analyzer/medusa
 net-analyzer/metacoretex-ng
 net-analyzer/metasploit
 net-analyzer/metasploit
@@ -102,7 +104,7 @@ net-analyzer/nessus
 net-analyzer/nessus-plugins
 net-analyzer/netcat
 net-analyzer/netdiscover
-#net-analyzer/netdude
+net-analyzer/netdude
 net-analyzer/net-snmp
 net-analyzer/netwag
 net-analyzer/netwox
@@ -123,7 +125,7 @@ net-analyzer/smtpmap
 net-analyzer/sniffit
 net-analyzer/snmpenum
 net-analyzer/snort
-#net-analyzer/sqlat
+net-analyzer/sqlat
 net-analyzer/sqlbf
 net-analyzer/tcpdump
 net-analyzer/tcptraceroute
@@ -131,6 +133,7 @@ net-analyzer/thcrut
 net-analyzer/traceroute
 net-analyzer/upnpscan
 net-analyzer/voiphopper
+net-analyzer/w3af
 net-analyzer/wireshark
 net-dialup/linux-atm
 net-dialup/lrzsz
@@ -143,7 +146,7 @@ net-fs/samba
 net-ftp/ftp
 net-ftp/netkit-ftpd
 net-ftp/oftpd
-net-im/gaim
+#net-im/gaim
 net-im/skype
 #net-im/ekiga
 net-irc/irssi
@@ -168,7 +171,7 @@ net-misc/proxychains
 net-misc/raccess
 net-misc/rdesktop
 net-misc/rsync
-#net-misc/sipbomber
+net-misc/sipbomber
 net-misc/sipp
 net-misc/siproxd
 net-misc/sipsak
@@ -193,7 +196,8 @@ net-wireless/airsnort
 net-wireless/airtraf
 net-wireless/bluez-libs
 net-wireless/bluez-utils
-#net-wireless/btscanner
+net-wireless/btscanner
+net-wireless/kismet
 net-wireless/mdk
 net-wireless/ska
 #net-wireless/waveselect
@@ -237,8 +241,7 @@ x11-libs/evas
 x11-libs/ewl
 x11-libs/gtk+
 x11-plugins/firecat
+x11-plugins/e_modules
 x11-terms/eterm
 x11-terms/xterm
 x11-wm/e
-
-# x11-plugins/e_modules
