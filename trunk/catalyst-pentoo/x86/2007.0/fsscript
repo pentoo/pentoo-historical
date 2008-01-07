@@ -10,7 +10,7 @@ genmenu.py -v
 sed -i -e 's/^root:\*:/root::/' /etc/shadow
 
 # compile mingw32
-#crossdev i686-mingw32
+crossdev i686-mingw32
 
 #clean out kernel and make prepare for future modules support
 cd /usr/src/linux
