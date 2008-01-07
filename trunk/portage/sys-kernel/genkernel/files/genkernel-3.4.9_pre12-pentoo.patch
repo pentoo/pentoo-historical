@@ -112,8 +112,20 @@ diff -Naur genkernel-3.4.9_pre12.orig/generic/initrd.defaults genkernel-3.4.9_pr
  # are not module groups need to be defined here...
 diff -Naur genkernel-3.4.9_pre12.orig/generic/initrd.scripts genkernel-3.4.9_pre12/generic/initrd.scripts
 --- genkernel-3.4.9_pre12.orig/generic/initrd.scripts	2007-12-27 19:04:26.000000000 +0000
-+++ genkernel-3.4.9_pre12/generic/initrd.scripts	2008-01-06 22:30:43.000000000 +0000
-@@ -210,6 +210,18 @@
++++ genkernel-3.4.9_pre12/generic/initrd.scripts	2008-01-07 00:47:12.000000000 +0000
+@@ -202,14 +202,27 @@
+ #
+ union_insert_dir() {
+ 	# detect branch 0 because newer unionfs doesn't support "0,1,2"
+-	BRANCH_0="/"$(/sbin/unionctl $1 --list | cut -d/ -f2- | cut -d'(' -f1)
+-	/sbin/unionctl $1 --add --after $BRANCH_0 --mode ro $2
++	# BRANCH_0="/"$(/sbin/unionctl $1 --list | cut -d/ -f2- | cut -d'(' -f1)
++	#/sbin/unionctl $1 --add --after $BRANCH_0 --mode ro $2
++	mount -t unionfs -o remount,add=:$2 unionfs $1
+ 	if [ $? = '0' ]
+ 	then
+-		good_msg "Addition of $2 to $1 after branch $BRANCH_0 successful"
++		good_msg "Addition of $2 to $1 successful"
  	fi
  }
  
@@ -132,7 +144,7 @@ diff -Naur genkernel-3.4.9_pre12.orig/generic/initrd.scripts genkernel-3.4.9_pre
  findnfsmount() {
  
  	if [ "${IP}" != '' ] || busybox udhcpc -R rootpath -n -s /bin/udhcpc.scripts
-@@ -934,8 +946,8 @@
+@@ -934,8 +947,8 @@
  
  		mkdir -p ${MEMORY}
  		mkdir -p ${UNION}
