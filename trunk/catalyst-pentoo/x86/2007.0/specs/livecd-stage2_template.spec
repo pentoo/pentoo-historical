@@ -5,7 +5,7 @@ rel_type: default
 profile: default-linux/x86/2007.0
 snapshot: 2008.0
 source_subpath: default/livecd-stage1-i686-2007.0
-portage_confdir: /root/catalyst-pentoo/x86/portage
+portage_confdir: /root/pentoo/x86/portage
 portage_overlay: /usr/local/portage /usr/portage/local/enlightenment
 
 # This allows the optional directory containing the output packages for
@@ -41,7 +41,7 @@ livecd/iso: /tmp/pentoo-2008.0_alpha1.iso
 # into the chroot by catalyst automatically.
 # example:
 # livecd/fsscript:
-livecd/fsscript: /root/catalyst-pentoo/x86/2007.0/fsscript
+livecd/fsscript: /root/pentoo/x86/2007.0/fsscript
 
 # The splash type determines the automatic arguments for the bootloader on
 # supported architectures.  The possible options are gensplash and bootsplash.
@@ -67,7 +67,7 @@ livecd/bootargs: dokeymap unionfs
 # are not otherwise available via the livecd-stage2 spec file.
 # example:
 # livecd/gk_mainargs: --lvm2 --dmraid
-livecd/gk_mainargs: --no-clean --no-mrproper --unionfs
+livecd/gk_mainargs: --no-clean --no-mrproper --unionfs --makeopts=-j5
 
 # This option allows you to specify your own linuxrc script for genkernel to use
 # when building your CD.  This is not checked for functionality, so it is up to
@@ -146,7 +146,7 @@ livecd/rcadd: autoconfig|default
 # it blank below.
 # example:
 # livecd/root_overlay:
-livecd/root_overlay: /root/catalyst-pentoo/x86/2007.0/root_overlay
+livecd/root_overlay: /root/pentoo/x86/2007.0/root_overlay
 
 # This is here to enable udev support in both catalyst and genkernel.  This
 # option requires genkernel >= 3.1.0, and is not needed with genkernel >=3.2.0,
@@ -207,13 +207,13 @@ gamecd/conf:
 # boot/kernel: gentoo
 boot/kernel: gentoo
 
-boot/kernel/gentoo/sources: gentoo-sources
+boot/kernel/gentoo/sources: pentoo-sources
 
 # This option is the full path and filename to a kernel .config file that is
 # used by genkernel to compile the kernel this label applies to.
 # example:
 # boot/kernel/gentoo/config: /tmp/2.6.11-smp.config
-boot/kernel/gentoo/config: /root/catalyst-pentoo/x86/2007.0/kernel/config-2.6.23
+boot/kernel/gentoo/config: /root/pentoo/x86/2007.0/kernel/config-2.6.23
 #/usr/share/genkernel/x86/kernel-config-2.6
 
 # This option sets genkernel parameters on a per-kernel basis and applies only
@@ -264,8 +264,6 @@ sys-fs/fuse
 sys-fs/ntfs3g
 net-firewall/firehol
 sys-apps/pmount
-net-wireless/kismet
-dev-python/lxml
 
 # This option is only for ppc64 machines.  If used it will create the /etc/yaboot.conf
 # entry used for booting a ibm powerpc machine.
@@ -293,7 +291,7 @@ dev-python/lxml
 # a package that you wish to keep, but won't need the full functionality.
 # example:
 # livecd/empty: /var/tmp /var/cache /var/db /var/empty /var/lock /var/log /var/run /var/spool /var/state /tmp /usr/portage /usr/share/man /usr/share/info /usr/share/unimaps /usr/include /usr/share/zoneinfo /usr/share/dict /usr/share/doc /usr/share/ss /usr/share/state /usr/share/texinfo /usr/lib/python2.2 /usr/lib/portage /usr/share/gettext /usr/share/i18n /usr/share/rfc /usr/lib/X11/config /usr/lib/X11/etc /usr/lib/X11/doc /usr/src /usr/share/doc /usr/share/man /root/.ccache /etc/cron.daily /etc/cron.hourly /etc/cron.monthly /etc/cron.weekly /etc/logrotate.d /etc/rsync /usr/lib/awk /usr/lib/ccache /usr/lib/gcc-config /usr/lib/nfs /usr/local /usr/diet/include /usr/diet/man /usr/share/consolefonts/partialfonts /usr/share/consoletrans /usr/share/emacs /usr/share/gcc-data /usr/share/genkernel /etc/bootsplash/gentoo /etc/bootsplash/gentoo-highquality /etc/splash/gentoo /etc/splash/emergence /usr/share/gnuconfig /usr/share/lcms /usr/share/locale /etc/skel
-livecd/empty: /usr/src /var/empty /var/lock /var/log /var/tmp /var/spool /var/state /tmp
+livecd/empty: /var/empty /var/lock /var/log /var/tmp /var/spool /var/state /tmp
 
 # This option tells catalyst to clean specific files from the filesystem and is
 # very usefu in cleaning up stray files in /etc left over after livecd/unmerge.
