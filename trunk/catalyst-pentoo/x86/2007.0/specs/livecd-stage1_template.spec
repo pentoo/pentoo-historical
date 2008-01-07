@@ -5,7 +5,7 @@ rel_type: default
 profile: default-linux/x86/2007.0
 snapshot: 2008.0
 source_subpath: default/stage3-i686-2007.0
-portage_confdir: /root/catalyst-pentoo/x86/portage
+portage_confdir: /root/pentoo/x86/portage
 portage_overlay: /usr/local/portage /usr/portage/local/layman/enlightenment
 
 # This allows the optional directory containing the output packages for
@@ -26,6 +26,7 @@ livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr 
 # livecd/packages: livecd-tools dhcpcd acpid apmd gentoo-sources coldplug fxload irssi gpm syslog-ng parted links raidtools dosfstools nfs-utils jfsutils xfsprogs e2fsprogs reiserfsprogs ntfsprogs pwgen rp-pppoe screen mirrorselect penggy iputils hwdata-knoppix hwsetup lvm2 evms vim pptpclient mdadm ethtool wireless-tools prism54-firmware wpa_supplicant
 livecd/packages:
 app-admin/gamin
+app-admin/genmenu
 app-admin/localepurge
 app-admin/syslog-ng
 app-arch/gzip
@@ -104,7 +105,7 @@ net-analyzer/nessus
 net-analyzer/nessus-plugins
 net-analyzer/netcat
 net-analyzer/netdiscover
-net-analyzer/netdude
+#net-analyzer/netdude
 net-analyzer/net-snmp
 net-analyzer/netwag
 net-analyzer/netwox
@@ -125,7 +126,7 @@ net-analyzer/smtpmap
 net-analyzer/sniffit
 net-analyzer/snmpenum
 net-analyzer/snort
-net-analyzer/sqlat
+#net-analyzer/sqlat
 net-analyzer/sqlbf
 net-analyzer/tcpdump
 net-analyzer/tcptraceroute
@@ -135,6 +136,8 @@ net-analyzer/upnpscan
 net-analyzer/voiphopper
 net-analyzer/w3af
 net-analyzer/wireshark
+net-analyzer/xprobe
+net-analyzer/yersinia
 net-dialup/linux-atm
 net-dialup/lrzsz
 net-dialup/minicom
@@ -196,7 +199,7 @@ net-wireless/airsnort
 net-wireless/airtraf
 net-wireless/bluez-libs
 net-wireless/bluez-utils
-net-wireless/btscanner
+#net-wireless/btscanner
 net-wireless/kismet
 net-wireless/mdk
 net-wireless/ska
@@ -223,6 +226,7 @@ sys-block/gparted
 sys-boot/grub
 sys-boot/syslinux
 sys-devel/gettext
+sys-devel/crossdev
 sys-fs/device-mapper
 sys-fs/jfsutils
 sys-fs/reiserfsprogs
