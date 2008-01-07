@@ -28,3 +28,4 @@ net-im/skype qt-static
 app-fuzz/protos http ldap snmp sip h2250 isakmp
 x11-plugins/firecat recon security
 net-analyzer/autoscan-network samba gnome snmp nessus
+gnome-menus/gnome-menus -kernel_linux
