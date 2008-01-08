@@ -27,7 +27,7 @@ portage_overlay: /usr/local/portage /usr/portage/local/enlightenment
 #kerncache_path:
 
 livecd/fstype: squashfs
-livecd/fsops: -root-owned
+livecd/fsops: -root-owned -b 1048576
 livecd/cdtar: /usr/lib/catalyst/livecd/cdtar/isolinux-3.09-memtest86+-cdtar.tar.bz2
 livecd/iso: /tmp/pentoo-2008.0_alpha1.iso
 
@@ -67,7 +67,8 @@ livecd/bootargs: dokeymap unionfs
 # are not otherwise available via the livecd-stage2 spec file.
 # example:
 # livecd/gk_mainargs: --lvm2 --dmraid
-livecd/gk_mainargs: --no-clean --no-mrproper --unionfs --makeopts=-j5
+#livecd/gk_mainargs: --no-clean --no-mrproper --unionfs --makeopts=-j5
+livecd/gk_mainargs: --unionfs --makeopts=-j5
 
 # This option allows you to specify your own linuxrc script for genkernel to use
 # when building your CD.  This is not checked for functionality, so it is up to
