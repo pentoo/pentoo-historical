@@ -1,7 +1,7 @@
 # Copyright 1999-2007 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
-
+inherit eutils
 DESCRIPTION="Genmenu is a tool for generating freedesktop-compliant menus"
 
 # Homepage, not used by Portage directly but handy for developer reference
@@ -14,6 +14,13 @@ IUSE=""
 DEPEND=">=dev-python/lxml-1.3
 	gnome-base/gnome-menus"
 RDEPEND="${DEPEND}"
+
+src_unpack() {
+	unpack ${A}
+	cd ${S}
+	epatch ${FILESDIR}/${PN}-term-fix.patch
+}
+
 src_compile() {
 	einfo "Nothing to compile"
 }
