@@ -96,6 +96,7 @@ app-misc/emelfm2 ~x86
 app-crypt/chntpw ~x86
 app-crypt/johntheripper ~x86
 app-crypt/plaintoo ~x86
+app-crypt/SIPcrack ~x86
 app-forensics/cmospwd ~x86
 app-fuzz/Peach ~x86
 app-fuzz/bed ~x86
@@ -127,6 +128,7 @@ net-analyzer/ike-scan ~x86
 net-analyzer/libnasl ~x86
 net-analyzer/metacoretex-ng -*
 net-analyzer/metasploit ~x86
+net-analyzer/mosref ~x86
 net-analyzer/nbtscan ~x86
 net-analyzer/nessus ~x86
 net-analyzer/nessus-core ~x86
@@ -138,6 +140,7 @@ net-analyzer/nmap ~x86
 net-analyzer/ntp-fingerprint ~x86
 net-analyzer/p0f ~x86
 net-analyzer/sara ~x86
+net-analyzer/sipvicious ~x86
 net-analyzer/smtpmap ~x86
 net-analyzer/sqlat ~x86
 net-analyzer/sqlbf ~x86
@@ -145,8 +148,10 @@ net-analyzer/thcrut ~x86
 net-analyzer/upnpscan ~x86
 net-analyzer/yersinia ~x86
 net-im/skype ~x86
+net-libs/libnetdude ~x86
 net-misc/karma ~x86
 net-misc/netsed ~x86
+net-misc/netdude ~x86
 net-misc/partysip ~x86
 net-misc/proxychains ~x86
 net-misc/raccess ~x86

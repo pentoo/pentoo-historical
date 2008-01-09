@@ -25,6 +25,7 @@ livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr 
 # example:
 # livecd/packages: livecd-tools dhcpcd acpid apmd gentoo-sources coldplug fxload irssi gpm syslog-ng parted links raidtools dosfstools nfs-utils jfsutils xfsprogs e2fsprogs reiserfsprogs ntfsprogs pwgen rp-pppoe screen mirrorselect penggy iputils hwdata-knoppix hwsetup lvm2 evms vim pptpclient mdadm ethtool wireless-tools prism54-firmware wpa_supplicant
 livecd/packages:
+sys-kernel/pentoo-sources
 app-admin/gamin
 app-admin/genmenu
 app-admin/localepurge
@@ -32,6 +33,7 @@ app-admin/syslog-ng
 app-arch/gzip
 app-crypt/chntpw
 app-crypt/plaintoo
+app-crypt/SIPcrack
 app-editors/hexedit
 app-editors/nano
 app-text/epdf
@@ -80,7 +82,7 @@ net-analyzer/authforce
 net-analyzer/autoscan-network
 net-analyzer/dnsa
 net-analyzer/dnsenum
-net-analyzer/driftnet
+#net-analyzer/driftnet
 net-analyzer/dsniff
 net-analyzer/ettercap
 net-analyzer/firewalk
@@ -99,7 +101,7 @@ net-analyzer/mbrowse
 net-analyzer/medusa
 net-analyzer/metacoretex-ng
 net-analyzer/metasploit
-net-analyzer/metasploit
+net-analyzer/mosref
 net-analyzer/nbtscan
 net-analyzer/nessus
 net-analyzer/nessus-plugins
@@ -122,6 +124,7 @@ net-analyzer/rain
 net-analyzer/sara
 net-analyzer/scanssh
 net-analyzer/siphon
+net-analyzer/sipvicious
 net-analyzer/smtpmap
 net-analyzer/sniffit
 net-analyzer/snmpenum
@@ -237,6 +240,7 @@ sys-libs/gpm
 sys-libs/libkudzu
 sys-power/acpid
 www-client/mozilla-firefox-bin
+mail-client/mozilla-thunderbird-bin
 x11-base/xorg-server
 x11-base/xorg-x11
 x11-libs/ecore
