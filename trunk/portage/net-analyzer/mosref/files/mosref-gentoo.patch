@@ -8,7 +8,7 @@
 -  (define mod-dir #f)
 -  (define stub-dir #f)
 -  (define bin-dir #f)
-+  (define base-dir "%%PREFIX%%")
++  (define base-dir %%DESTDIR%%)
 +  (define mod-dir (string-append base-dir "/lib/mosvm"))
 +  (define stub-dir (string-append mod-dir "-stubs"))
 +  (define bin-dir (string-append base-dir "/bin"))
