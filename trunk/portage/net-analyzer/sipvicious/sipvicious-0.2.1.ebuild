@@ -20,11 +20,11 @@ src_compile() {
 src_install() {
         dodir /usr/lib/sipvicious
 	dodir /usr/sbin/
-	dodoc ChangeLog  README THANKS TODO
-	rm -f ChangeLog  README THANKS TODO
+	dodoc Changelog  README THANKS TODO
+	rm -f Changelog  README THANKS TODO
 	cp -pPR * ${D}usr/lib/sipvicious/ || die
 	chown -R root:0 ${D}
-	for file in `ls *.py`; do
+	for file in `ls sv*.py`; do
 		dosym /usr/lib/sipvicious/${file} /usr/bin/${file}
 	done
 }
