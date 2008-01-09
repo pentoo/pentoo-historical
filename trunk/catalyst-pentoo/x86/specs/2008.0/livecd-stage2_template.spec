@@ -4,7 +4,7 @@ target: livecd-stage2
 rel_type: default
 profile: default-linux/x86/2007.0
 snapshot: 2008.0
-source_subpath: default/livecd-stage1-i686-2007.0
+source_subpath: default/livecd-stage1-i686-2008.0
 portage_confdir: /root/pentoo/x86/portage
 portage_overlay: /usr/local/portage /usr/portage/local/enlightenment
 
@@ -41,7 +41,7 @@ livecd/iso: /tmp/pentoo-2008.0_alpha1.iso
 # into the chroot by catalyst automatically.
 # example:
 # livecd/fsscript:
-livecd/fsscript: /root/pentoo/x86/2007.0/fsscript
+livecd/fsscript: /root/pentoo/x86/scripts/2008.0/fsscript.sh
 
 # The splash type determines the automatic arguments for the bootloader on
 # supported architectures.  The possible options are gensplash and bootsplash.
@@ -147,7 +147,7 @@ livecd/rcadd: autoconfig|default
 # it blank below.
 # example:
 # livecd/root_overlay:
-livecd/root_overlay: /root/pentoo/x86/2007.0/root_overlay
+livecd/root_overlay: /root/pentoo/x86/root_overlay
 
 # This is here to enable udev support in both catalyst and genkernel.  This
 # option requires genkernel >= 3.1.0, and is not needed with genkernel >=3.2.0,
@@ -214,7 +214,7 @@ boot/kernel/gentoo/sources: pentoo-sources
 # used by genkernel to compile the kernel this label applies to.
 # example:
 # boot/kernel/gentoo/config: /tmp/2.6.11-smp.config
-boot/kernel/gentoo/config: /root/pentoo/x86/2007.0/kernel/config-2.6.23
+boot/kernel/gentoo/config: /root/pentoo/x86/kernel/config-2.6.23
 #/usr/share/genkernel/x86/kernel-config-2.6
 
 # This option sets genkernel parameters on a per-kernel basis and applies only
