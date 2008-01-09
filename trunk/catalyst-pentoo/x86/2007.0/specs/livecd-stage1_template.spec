@@ -1,5 +1,5 @@
 subarch: i686
-version_stamp: 2007.0
+version_stamp: 2008.0
 target: livecd-stage1
 rel_type: default
 profile: default-linux/x86/2007.0
@@ -16,7 +16,7 @@ portage_overlay: /usr/local/portage /usr/portage/local/layman/enlightenment
 # pkgcache_path: /tmp/packages
 # pkgcache_path:
 
-livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime qt -qt3 -qt4 -cups -spell png jpeg gif dri opengl
+livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime -qt -qt3 -qt4 -cups -spell png jpeg gif dri opengl
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
@@ -174,7 +174,7 @@ net-misc/proxychains
 net-misc/raccess
 net-misc/rdesktop
 net-misc/rsync
-net-misc/sipbomber
+#net-misc/sipbomber
 net-misc/sipp
 net-misc/siproxd
 net-misc/sipsak
