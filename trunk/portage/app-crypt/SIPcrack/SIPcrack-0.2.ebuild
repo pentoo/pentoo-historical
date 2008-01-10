@@ -5,8 +5,8 @@
 inherit toolchain-funcs eutils
 
 DESCRIPTION="SIPcrack is a SIP protocol login cracker"
-HOMEPAGE="http://www.remote-exploit.org/index.php/Sipcrack"
-SRC_URI="http://www.remote-exploit.org/images/7/7f/${P}.tar.gz"
+HOMEPAGE="http://www.remote-exploit.org/codes_sipcrack.html"
+SRC_URI="http://www.remote-exploit.org/codes/sipcrack/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
