@@ -9,30 +9,26 @@ DESCRIPTION="Absinthe is a gui-based tool that automates the process of download
 HOMEPAGE="http://www.0x90.org/releases/absinthe/"
 SRC_URI="http://www.0x90.org/releases/absinthe/${MY_P}.tar.gz"
 
-LICENSE="GPL-2, BSD"
+LICENSE="|| ( GPL-2 BSD )"
 SLOT="0"
 KEYWORDS="~x86"
 IUSE=""
 
-DEPEND=">=dev-lang/mono-1"
+DEPEND=">=dev-lang/mono-1
+	=dev-dotnet/wxnet-0.7.2"
 
 S=${WORKDIR}/${MY_P}
 
 src_compile() {
-	sed -i -e "s:BIN_DIR.*:BIN_DIR = ${D}usr/bin/:" -e "s:LIB_DIR.*:LIB_DIR = ${D}usr/lib/:" Makefile
-	sed -i -e "s:/usr/bin:${D}usr/bin:" \
-	       -e "s:/usr/lib:${D}usr/lib:" \
-               -e "s:/sbin:#/sbin:" \
-	       -e "s:^ln.*::" install.sh
 	einfo "Nothing to compile"
-
+	ewarn "We are using the binary dist of absinthe,"
+	ewarn "You can expect breakage..."
 }
 
 src_install() {
-	dodir /usr/lib/ 
-	dodir /usr/bin/
-	cp -a ${FILESDIR}/LiquorCabinet.Shared.dll ${D}/usr/lib/
-	./install.sh
-	dosym /usr/bin/runabsinthe.sh /usr/bin/absinthe
-	dodoc docs/*
+	dodir /usr/lib/"${PN}"
+	rm "${S}"/bin/Absinthe.ico "${S}"/bin/wxNET.tar "${S}"/bin/runabsinthe.sh
+	cp -R "${S}"/bin/* "${D}"/usr/lib/"${PN}"
+	dobin ${FILESDIR}/absinthe
+	dodoc README
 }
