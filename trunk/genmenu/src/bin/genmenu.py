@@ -190,7 +190,7 @@ def create_desktop_entry(name, category, binname, params):
     de = desktopfile()
     de.setName(name.capitalize())
     de.setIcon(category + ".png")
-    de.setExec("$P2TERM -e launch " + binname + " " + params)
+    de.setExec(options.p2term + " -e launch " + binname + " " + params)
     return de
 
 def make_menu_entry(root_menu, iconfile, category, params):
@@ -302,7 +302,7 @@ def main():
             print arrow + notthere[i]
     #print etree.tostring(root_menu, pretty_print=True)
     if not options.simulate:
-        settermenv()
+        # settermenv()
         genxml(menu)
 
 if __name__ == "__main__":
