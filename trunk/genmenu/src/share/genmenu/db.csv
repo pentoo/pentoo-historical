@@ -27,7 +27,7 @@ net-analyzer/cheops-ng,scanner,cheops-ng.desktop
 net-analyzer/dnsa,analyzer,dnsa
 net-analyzer/dnsenum,analyzer,dnsenum
 net-analyzer/driftnet,analyzer,driftnet.desktop
-net-analyzer/dsniff,mitm,dnsspoof filesnarf macof sshow tcpkill tcpnice sshmitm dsniff webspy urlsnarf arpspoof webmitm mailsnarf msgsnarf
+net-analyzer/dsniff,mitm Dsniff,dnsspoof filesnarf macof sshow tcpkill tcpnice sshmitm dsniff webspy urlsnarf arpspoof webmitm mailsnarf msgsnarf
 net-analyzer/ethereal,analyzer,ethereal.desktop
 net-analyzer/ettercap,mitm,ettercap,-G
 net-analyzer/firewalk,scanner,firewalk
@@ -47,8 +47,7 @@ net-analyzer/mbrowse,analyzer,mbrowse,
 net-analyzer/medusa,analyzer,medusa
 net-analyzer/metacoretex-ng,database,metacoretex-ng.desktop
 net-analyzer/metasploit,exploit,msf-console.desktop msf-web.desktop
-net-analyzer/mosref,exploit,mosref
-net-analyzer/mosref,exploit,cd /usr/src/mosref,,Sources
+net-analyzer/mosref,exploit,mosref,
 net-analyzer/nbtscan,scanner,nbtscan
 net-analyzer/nessus,scanner,nessus.desktop
 net-analyzer/netdude,analyzer,netdude.desktop
