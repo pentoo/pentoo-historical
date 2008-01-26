@@ -1,4 +1,11 @@
 #!/usr/bin/python
+#
+# This code in distributed under GPLv2
+# Copyright Michael Zanetta grimmlin@pentoo.ch
+#
+#
+# WARNING !!! UGLY CODE AHEAD !!!
+#
 
 import sys,os,re,shutil
 
@@ -22,25 +29,25 @@ star = "  *  "
 arrow = " >>> "
 warn = " !!! "
 
-class desktopfile:
+class directoryfile:
 
     Header = "[Desktop Entry]"
     Name = "Name="
-    Exec = "Exec="
+    Comment = "Comment="
     Icon = "Icon=/usr/share/genmenu/pixmaps/"
-    Type = "Type=Application"
+    Type = "Type=Directory"
 
     def setName(self, Name):
         self.Name += Name
 
+    def setComment(self, Comment):
+        self.Comment += Comment
+
     def setIcon(self, Icon):
         self.Icon += Icon
 
-    def setExec(self, Exec):
-        self.Exec += Exec
-
-    def getDesktopFile(self):
-        return self.Header, self.Name, self.Exec, self.Icon, self.Type
+    def getDirectoryFile(self):
+        return self.Header, self.Name, self.Comment, self.Icon, self.Type
 
     def writeDesktopFile(self, dest):
         try:
@@ -49,7 +56,42 @@ class desktopfile:
             sys.stderr.write("Unable to open " + dest + " for writing\n")
             sys.stderr.write("Verify that you have write permissions")
             return -1
-        for x in self.Header, self.Name, self.Exec, self.Icon, self.Type:
+        for x in self.Header, self.Name, self.Comment, self.Icon, self.Type:
+            file.write(x + "\n")
+        file.close()
+
+class desktopfile:
+
+    Header = "[Desktop Entry]"
+    Name = "Name="
+    Comment = "Comment="
+    Exec = "Exec="
+    Icon = "Icon=/usr/share/genmenu/pixmaps/"
+    Type = "Type=Application"
+
+    def setName(self, Name):
+        self.Name += Name
+
+    def setComment(self, Comment):
+        self.Comment += Comment
+
+    def setIcon(self, Icon):
+        self.Icon += Icon
+
+    def setExec(self, Exec):
+        self.Exec += Exec
+
+    def getDesktopFile(self):
+        return self.Header, self.Name, self.Comment, self.Exec, self.Icon, self.Type
+
+    def writeDesktopFile(self, dest):
+        try:
+            file = open(dest , "w")
+        except:
+            sys.stderr.write("Unable to open " + dest + " for writing\n")
+            sys.stderr.write("Verify that you have write permissions")
+            return -1
+        for x in self.Header, self.Name, self.Comment, self.Exec, self.Icon, self.Type:
             file.write(x + "\n")
         file.close()
 
@@ -155,10 +197,15 @@ def find_menu_entry(menu, submenu, option=None):
             if not tmp == None:
                 return tmp
 
-def add_menu_entry(root_menu, category):
+def add_menu_entry(root_menu, root_category, category):
+    '''This adds a menu element entry 'category' under the root_category menu'''
+    if category == root_category:
+        below = "Pentoo"
+    else:
+        below = root_category
     menu = find_menu_entry(root_menu, category)
     if menu == None:
-        new_menu_entry = etree.SubElement(find_menu_entry(root_menu, "Pentoo"), "Menu")
+        new_menu_entry = etree.SubElement(find_menu_entry(root_menu, below), "Menu")
         new_name_entry = etree.SubElement(new_menu_entry, "Name")
         new_name_entry.text = category
         file = os.path.join(LOCALDIR, category + ".directory")
@@ -171,7 +218,12 @@ def add_menu_entry(root_menu, category):
                     sys.stderr.write("Verify that you have write permissions in " + LOCALDIR + "\n")
                     return -1
             try:
-                shutil.copyfile(os.path.join(MENUDIR, category + ".directory"), file)
+                if os.path.exists(os.path.join(MENUDIR, category + ".directory")):
+                    shutil.copyfile(os.path.join(MENUDIR, category + ".directory"), file)
+                else:
+                    # We try to make it by hand
+                    nme = create_menu_entry(category, root_category)
+                    nme.writeDesktopFile(os.path.join(MENUDIR, category + ".directory"))
             except:
                 sys.stderr.write("Unable to copy " + category + ".directory" + " to " + LOCALDIR + "\n")
                 sys.stderr.write("Verify that you have write permissions in " + LOCALDIR + "\n")
@@ -185,24 +237,34 @@ def append_desktop_entry(menu, iconfile):
     new_desktop_entry = etree.SubElement(menu, "Filename")
     new_desktop_entry.text = iconfile
 
-def create_desktop_entry(name, category, binname, params):
+def create_menu_entry(name, category, comments = ""):
+    '''This function creates a simple .directory entry'''
+    me = directoryfile()
+    me.setName(name)
+    me.setIcon(category + ".png")
+    me.setComment(comments)
+    return me
+
+def create_desktop_entry(name, category, binname, params, comments):
     '''This function creates a simple .desktop entry'''
     de = desktopfile()
     de.setName(name.capitalize())
     de.setIcon(category + ".png")
+    de.setComment(comments)
     de.setExec(options.p2term + " -e launch " + binname + " " + params)
     return de
 
-def make_menu_entry(root_menu, iconfile, category, params):
+def make_menu_entry(root_menu, iconfile, category, params, comments):
     if not iconfile.endswith(".desktop"):
-        nde = create_desktop_entry(iconfile, category, iconfile, params)
+        # We need to create a new .desktop entry
+        nde = create_desktop_entry(iconfile, category.split(" ")[0], iconfile, params, comments)
         file = os.path.join(ICONDIR, iconfile + ".desktop")
         nde.writeDesktopFile(file)
         iconfile += ".desktop"
     else:
+        # We copy the .desktop file to the local desktop dir
         file = os.path.join(APPSDIR, iconfile)
         if os.path.exists(file):
-            # Check if dry-run
             if options.verbose:
                 print arrow + "Copying " + iconfile + " to " + ICONDIR
             if not options.simulate:
@@ -218,9 +280,14 @@ def make_menu_entry(root_menu, iconfile, category, params):
         else:
             sys.stderr.write("File " + file + "does not exists \n")
             return -1
-    menu = find_menu_entry(root_menu, category, "Include")
-    if menu == None:
-        menu = add_menu_entry(root_menu, category)
+    root_category = category.split(" ")[0]
+    # TODO 
+    for submenus in category.split(" "):
+        # Add the same here for the "all" subentry
+        menu = find_menu_entry(root_menu, submenus, "Include")
+        if menu == None:
+            menu = add_menu_entry(root_menu, root_category, submenus)
+    # Only adds the entry under specific category
     append_desktop_entry(menu, iconfile)
         
 
@@ -284,9 +351,13 @@ def main():
                     try:
                         if db[y].__len__() == 4:
                             params = db[y][3]
+                        elif db[y].__len__() == 5:
+                            params = db[y][3]
+                            comments = db[y][4]
                         else:
                             params = "-h"
-                        make_menu_entry(root_menu, single_entry, db[y][1], params)
+                            comments = ""
+                        make_menu_entry(root_menu, single_entry, db[y][1], params, comments)
                     except:
                         print >> sys.stderr, "Something went wrong, obviously..."
                         return -1
