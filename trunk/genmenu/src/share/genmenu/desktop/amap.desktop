@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Amap
-Exec=$P2TERM -e /opt/pentoo/scripts/amap.sh
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=/usr/share/genmenu/pixmaps/emblem-sales.png
-Type=Application

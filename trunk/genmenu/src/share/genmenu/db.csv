@@ -12,6 +12,8 @@ app-fuzz/snmp-fuzzer,fuzzers,snmp-fuzzer
 app-fuzz/ohrwurm,fuzzers,ohrwurm
 app-fuzz/scapy,fuzzers,scapy
 app-crypt/plaintoo,cracker,plaintoo.desktop
+app-crypt/SIPcrack,cracker,sipcrack
+app-crypt/SIPcrack,sip-voip,sipdump
 app-crypt/chntpw,cracker,chntpw
 net-analyzer/absinthe,database,absinthe.desktop
 net-analyzer/aimsniff,analyzer,aimsniff
@@ -19,7 +21,7 @@ net-analyzer/amap,fingerprint,amap
 net-analyzer/angst,analyzer,angst
 net-analyzer/arpwatch,analyzer,arpwatch
 net-analyzer/authforce,cracker,authforce
-net-analyzer/autoscan,scanner,autoscan.desktop
+net-analyzer/autoscan-network,scanner,autoscan.desktop
 net-analyzer/bmon,analyzer,bmon
 net-analyzer/cheops-ng,scanner,cheops-ng.desktop
 net-analyzer/dnsa,analyzer,dnsa
@@ -45,6 +47,8 @@ net-analyzer/mbrowse,analyzer,mbrowse,
 net-analyzer/medusa,analyzer,medusa
 net-analyzer/metacoretex-ng,database,metacoretex-ng.desktop
 net-analyzer/metasploit,exploit,msf-console.desktop msf-web.desktop
+net-analyzer/mosref,exploit,mosref
+net-analyzer/mosref,exploit,cd /usr/src/mosref,,Sources
 net-analyzer/nbtscan,scanner,nbtscan
 net-analyzer/nessus,scanner,nessus.desktop
 net-analyzer/netdude,analyzer,netdude.desktop
@@ -62,6 +66,7 @@ net-analyzer/rain,forging,rain,--help
 net-analyzer/sara,scanner,sara.desktop
 net-analyzer/scanssh,fingerprint,scanssh
 net-analyzer/siphon,fingerprint,siphon
+net-analyzer/sipvicious,sip-voip Sipvicious,svmap.py svreport.py svwar.py svcrack.py
 net-analyzer/smtpmap,fingerprint,smtpmap
 net-analyzer/sniffit,analyzer,sniffit
 net-analyzer/snmpenum,analyzer,snmpenum

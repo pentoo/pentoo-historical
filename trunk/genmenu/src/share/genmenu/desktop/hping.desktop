@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Hping
-Exec=$P2TERM -e launch hping2 -h
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=/usr/share/genmenu/pixmaps/gnome-term.png
-Type=Application
