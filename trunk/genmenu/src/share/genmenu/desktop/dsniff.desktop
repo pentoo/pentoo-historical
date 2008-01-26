@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=DSniff
-Exec=$P2TERM -e launch dsniff -h
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=/usr/share/genmenu/pixmaps/gnome-term.png
-Type=Application

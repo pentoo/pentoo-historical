@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=FragRoute
-Exec=$P2TERM -e launch fragroute -h
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=/usr/share/genmenu/pixmaps/gnome-term.png
-Type=Application

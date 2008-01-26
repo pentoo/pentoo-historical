@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Firewall Builder
-Exec=$P2TERM -e /usr/bin/fwbuilder
-Icon=/usr/share/genmenu/pixmaps/network-config.png
-Type=Application

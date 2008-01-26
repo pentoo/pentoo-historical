@@ -15,7 +15,8 @@ app-crypt/plaintoo,cracker,plaintoo.desktop
 app-crypt/SIPcrack,cracker,sipcrack
 app-crypt/SIPcrack,sip-voip,sipdump
 app-crypt/chntpw,cracker,chntpw
-net-analyzer/absinthe,database,absinthe.desktop
+app-crypt/johntheripper,cracker,john,
+net-analyzer/absinthe,database,absinthe,
 net-analyzer/aimsniff,analyzer,aimsniff
 net-analyzer/amap,fingerprint,amap
 net-analyzer/angst,analyzer,angst

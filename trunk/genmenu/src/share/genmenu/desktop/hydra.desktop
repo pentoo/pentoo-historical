@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Hydra
-Exec=$P2TERM -e /usr/bin/xhydra
-Icon=/usr/share/genmenu/pixmaps/thc.png
-Type=Application

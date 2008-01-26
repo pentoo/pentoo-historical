@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Text Editor
-Exec=$P2TERM -e /usr/bin/gedit
-Icon=/usr/share/genmenu/pixmaps/gedit-icon.png
-Type=Application

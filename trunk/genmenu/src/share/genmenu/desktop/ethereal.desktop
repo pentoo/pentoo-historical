@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Ethereal
-GenericName=Network Sniffer
-Exec=ethereal
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-StartupWMClass=Ethereal
-Icon=/usr/share/genmenu/pixmaps/ethereal.png
-Type=Application

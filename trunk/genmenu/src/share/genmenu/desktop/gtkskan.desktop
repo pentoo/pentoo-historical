@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=GtkSkan
-Exec=$P2TERM -e /usr/bin/gtkskan
-Icon=/usr/share/genmenu/pixmaps/stock_channel.png
-Type=Application

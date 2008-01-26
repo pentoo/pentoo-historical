@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Firewalk
-Exec=$P2TERM -e /opt/pentoo/scripts/firewalk.sh
-Icon=/usr/share/genmenu/pixmaps/apacheconf.png
-Type=Application

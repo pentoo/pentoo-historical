@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Absinthe
-Exec=$P2TERM -e absinthe
-Icon=/usr/share/genmenu/pixmaps/absinthe.png
-Type=Application

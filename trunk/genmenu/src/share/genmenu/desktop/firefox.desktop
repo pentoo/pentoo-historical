@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Firefox
-GenericName=Web Browser
-Exec=firefox
-StartupNotify=true
-X-Enlightenment-WaitExit=false
-StartupWMClass=Firefox-bin
-Icon=/usr/share/pixmaps/mozillafirefox-bin-icon.png
-Type=Application
