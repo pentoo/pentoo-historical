@@ -1,6 +1,6 @@
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-kernel/genkernel/genkernel-3.4.9_pre10.ebuild,v 1.1 2007/11/28 22:49:20 wolf31o2 Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-kernel/genkernel/genkernel-3.4.9.ebuild,v 1.2 2008/01/14 19:43:54 wolf31o2 Exp $
 
 inherit bash-completion eutils
 
@@ -15,7 +15,7 @@ DESCRIPTION="Gentoo automatic kernel building scripts"
 HOMEPAGE="http://www.gentoo.org"
 SRC_URI="mirror://gentoo/${P}.tar.bz2
 	mirror://gentoo/${PN}-pkg-${VERSION_PKG}.tar.bz2
-	http://dev.gentoo.org/~wolf31o2/${P}.tar.bz2
+	http://dev.gentoo.org/~wolf31o2/sources/${PN}/${P}.tar.bz2
 	http://dev.gentoo.org/~wolf31o2/sources/${PN}/${PN}-pkg-${VERSION_PKG}.tar.bz2
 	http://people.redhat.com/~heinzm/sw/dmraid/src/dmraid-${VERSION_DMRAID}.tar.bz2
 	http://people.redhat.com/~heinzm/sw/dmraid/src/old/dmraid-${VERSION_DMRAID}.tar.bz2
@@ -24,16 +24,15 @@ SRC_URI="mirror://gentoo/${P}.tar.bz2
 	ftp://sources.redhat.com/pub/dm/device-mapper.${VERSION_DMAP}.tgz
 	ftp://sources.redhat.com/pub/dm/old/device-mapper.${VERSION_DMAP}.tgz
 	ftp://ftp.fsl.cs.sunysb.edu/pub/unionfs/unionfs-1.x/snapshots/unionfs-${VERSION_UNIONFS}.tar.gz
-	mirror://sourceforge/e2fsprogs/e2fsprogs-${VERSION_E2FSPROGS}.tar.gz
-	http://www.pentoo.ch/distfiles/aufs-20071126.tar.bz2"
+	mirror://sourceforge/e2fsprogs/e2fsprogs-${VERSION_E2FSPROGS}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 RESTRICT=""
 # Please don't touch individual KEYWORDS.  Since this is maintained/tested by
 # Release Engineering, it's easier for us to deal with all arches at once.
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sparc ~x86"
-#KEYWORDS="alpha amd64 arm hppa ia64 mips ppc ppc64 s390 sparc x86"
+#KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sparc ~x86"
+KEYWORDS="alpha amd64 arm hppa ia64 mips ppc ppc64 s390 sparc x86"
 IUSE="ibm selinux"
 
 DEPEND="sys-fs/e2fsprogs
@@ -45,13 +44,19 @@ src_unpack() {
 	cd "${S}"
 	unpack ${PN}-pkg-${VERSION_PKG}.tar.bz2
 	use selinux && sed -i 's/###//g' gen_compile.sh
-	epatch "${FILESDIR}"/${P}-aufs.patch
+	epatch "${FILESDIR}"/${P}-modules.patch
 }
 
 src_install() {
 	dodir /etc
 	cp "${S}"/genkernel.conf "${D}"/etc
 	# This block updates genkernel.conf
+	sed -i -e "s:VERSION_DMAP:$VERSION_DMAP:" \
+		-e "s:VERSION_DMRAID:$VERSION_DMRAID:" \
+		-e "s:VERSION_E2FSPROGS:$VERSION_E2FSPROGS:" \
+		-e "s:VERSION_LVM:$VERSION_LVM:" \
+		-e "s:VERSION_UNIONFS:$VERSION_UNIONFS:" \
+		"${D}"/etc/genkernel.conf || die "Could not adjust versions"
 
 	dodir /usr/share/genkernel
 	use ibm && cp "${S}"/ppc64/kernel-2.6-pSeries "${S}"/ppc64/kernel-2.6 || \
@@ -70,7 +75,7 @@ src_install() {
 	cp "${DISTDIR}"/dmraid-${VERSION_DMRAID}.tar.bz2 \
 	"${DISTDIR}"/LVM2.${VERSION_LVM}.tgz \
 	"${DISTDIR}"/device-mapper.${VERSION_DMAP}.tgz \
-	"${DISTDIR}"/aufs-20071126.tar.bz2 \
+	"${DISTDIR}"/unionfs-${VERSION_UNIONFS}.tar.gz \
 	"${DISTDIR}"/e2fsprogs-${VERSION_E2FSPROGS}.tar.gz \
 	"${D}"/usr/share/genkernel/pkg
 
