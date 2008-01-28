@@ -1,6 +1,6 @@
-diff -Naur genkernel-3.4.9_pre12.orig/gen_compile.sh genkernel-3.4.9_pre12/gen_compile.sh
---- genkernel-3.4.9_pre12.orig/gen_compile.sh	2007-12-27 19:04:26.000000000 +0000
-+++ genkernel-3.4.9_pre12/gen_compile.sh	2008-01-06 22:19:52.000000000 +0000
+diff -Naur genkernel-3.4.9/gen_compile.sh genkernel-3.4.9.modules/gen_compile.sh
+--- genkernel-3.4.9/gen_compile.sh	2008-01-12 00:44:19.000000000 +0100
++++ genkernel-3.4.9.modules/gen_compile.sh	2008-01-28 22:07:43.000000000 +0100
 @@ -325,65 +325,7 @@
  }
  
@@ -68,10 +68,10 @@ diff -Naur genkernel-3.4.9_pre12.orig/gen_compile.sh genkernel-3.4.9_pre12/gen_c
  }
  
  compile_unionfs_utils() {
-diff -Naur genkernel-3.4.9_pre12.orig/gen_initramfs.sh genkernel-3.4.9_pre12/gen_initramfs.sh
---- genkernel-3.4.9_pre12.orig/gen_initramfs.sh	2007-12-27 19:04:26.000000000 +0000
-+++ genkernel-3.4.9_pre12/gen_initramfs.sh	2008-01-06 22:20:55.000000000 +0000
-@@ -75,18 +75,7 @@
+diff -Naur genkernel-3.4.9/gen_initramfs.sh genkernel-3.4.9.modules/gen_initramfs.sh
+--- genkernel-3.4.9/gen_initramfs.sh	2008-01-12 00:44:19.000000000 +0100
++++ genkernel-3.4.9.modules/gen_initramfs.sh	2008-01-28 22:07:43.000000000 +0100
+@@ -73,18 +73,7 @@
  }
  
  append_unionfs_modules(){
@@ -90,7 +90,7 @@ diff -Naur genkernel-3.4.9_pre12.orig/gen_initramfs.sh genkernel-3.4.9_pre12/gen
  }
  
  append_unionfs_tools(){
-@@ -456,7 +445,7 @@
+@@ -454,7 +443,7 @@
  	append_data 'auxilary'
  	append_data 'busybox' "${BUSYBOX}"
  #	append_data 'devfs' "${DEVFS}"
@@ -99,20 +99,20 @@ diff -Naur genkernel-3.4.9_pre12.orig/gen_initramfs.sh genkernel-3.4.9_pre12/gen
  	append_data 'unionfs_tools' "${UNIONFS}"
  	append_data 'lvm' "${LVM}"
  	append_data 'dmraid' "${DMRAID}"
-diff -Naur genkernel-3.4.9_pre12.orig/generic/initrd.defaults genkernel-3.4.9_pre12/generic/initrd.defaults
---- genkernel-3.4.9_pre12.orig/generic/initrd.defaults	2007-12-27 19:04:26.000000000 +0000
-+++ genkernel-3.4.9_pre12/generic/initrd.defaults	2008-01-06 22:26:23.000000000 +0000
-@@ -75,6 +75,7 @@
- CDROOT_DEV=''
+diff -Naur genkernel-3.4.9/generic/initrd.defaults genkernel-3.4.9.modules/generic/initrd.defaults
+--- genkernel-3.4.9/generic/initrd.defaults	2008-01-12 00:44:19.000000000 +0100
++++ genkernel-3.4.9.modules/generic/initrd.defaults	2008-01-28 22:07:43.000000000 +0100
+@@ -76,6 +76,7 @@
+ CDROOT_TYPE='auto'
  NEW_ROOT="/newroot"
  CONSOLE="/dev/console"
 +MODULESD="mnt/cdrom"
  
  # Only sections that are in by default or those that
  # are not module groups need to be defined here...
-diff -Naur genkernel-3.4.9_pre12.orig/generic/initrd.scripts genkernel-3.4.9_pre12/generic/initrd.scripts
---- genkernel-3.4.9_pre12.orig/generic/initrd.scripts	2007-12-27 19:04:26.000000000 +0000
-+++ genkernel-3.4.9_pre12/generic/initrd.scripts	2008-01-07 00:47:12.000000000 +0000
+diff -Naur genkernel-3.4.9/generic/initrd.scripts genkernel-3.4.9.modules/generic/initrd.scripts
+--- genkernel-3.4.9/generic/initrd.scripts	2008-01-12 00:44:19.000000000 +0100
++++ genkernel-3.4.9.modules/generic/initrd.scripts	2008-01-28 22:07:43.000000000 +0100
 @@ -202,14 +202,27 @@
  #
  union_insert_dir() {
@@ -155,10 +155,10 @@ diff -Naur genkernel-3.4.9_pre12.orig/generic/initrd.scripts genkernel-3.4.9_pre
  		if [ -n "${UNIONFS}" ]
  		then
  			CHANGESDEV=${UNIONFS}
-diff -Naur genkernel-3.4.9_pre12.orig/generic/linuxrc genkernel-3.4.9_pre12/generic/linuxrc
---- genkernel-3.4.9_pre12.orig/generic/linuxrc	2007-12-27 19:04:26.000000000 +0000
-+++ genkernel-3.4.9_pre12/generic/linuxrc	2008-01-06 22:30:41.000000000 +0000
-@@ -105,6 +105,10 @@
+diff -Naur genkernel-3.4.9/generic/linuxrc genkernel-3.4.9.modules/generic/linuxrc
+--- genkernel-3.4.9/generic/linuxrc	2008-01-12 00:44:19.000000000 +0100
++++ genkernel-3.4.9.modules/generic/linuxrc	2008-01-28 22:07:43.000000000 +0100
+@@ -108,6 +108,10 @@
  				fi
  			fi
  		;;
@@ -169,7 +169,7 @@ diff -Naur genkernel-3.4.9_pre12.orig/generic/linuxrc genkernel-3.4.9_pre12/gene
  		# Start Volume manager options 
  		dolvm)
  			USE_LVM_NORMAL=1
-@@ -610,7 +614,16 @@
+@@ -613,7 +617,16 @@
  		# Make sure fstab notes livecd is mounted ro.  Makes system skip remount which fails on unionfs dirs.
  		sed -e 's|\(.*\s/\s*tmpfs\s*\)defaults\(.*\)|\1defaults,ro\2|' /${UNION}/etc/fstab > /${UNION}/etc/fstab.new
  		mv /${UNION}/etc/fstab.new /${UNION}/etc/fstab
