@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /root/portage/app-fuzz/protos/protos-1.0.ebuild,v 1.1.1.1 2006/03/08 18:55:18 grimmlin Exp $
+# $Header: $
 
 inherit mozextension multilib
 
@@ -15,12 +15,17 @@ SRC_URI="recon? (https://addons.mozilla.org/en-US/firefox/downloads/file/17470/s
 					https://addons.mozilla.org/en-US/firefox/downloads/file/4681/tamper_data-9.8.1-fx.xpi
 					https://addons.mozilla.org/en-US/firefox/downloads/file/12448/live_http_headers-0.13.1-fx.xpi
 					https://addons.mozilla.org/en-US/firefox/downloads/file/2826/header_monitor-0.3.4.1-fx.xpi
-					https://addons.mozilla.org/en-US/firefox/downloads/file/2819/add_n_edit_cookies-0.2.1.2-fx+mz.xpi)"
+					https://addons.mozilla.org/en-US/firefox/downloads/file/2819/add_n_edit_cookies-0.2.1.2-fx+mz.xpi)
+		 proxy? (https://addons.mozilla.org/en-US/firefox/downloads/file/530/switchproxy_tool-1.4.1-fx+mz+tb.xpi
+			https://addons.mozilla.org/en-US/firefox/downloads/file/21971/foxyproxy-2.6.2-fx.xpi
+			https://addons.mozilla.org/en-US/firefox/downloads/file/22831/pow_--_plain_old_webserver-0.1.7-fx+tb+sb.xpi)
+		mining? (http://bibirmer.ourtoolbar.com/Storage/22/27/CT273922/Downloads/firefox/Bibirmer.xpi)
+		editors? (https://addons.mozilla.org/en-US/firefox/downloads/file/15109/firebug-1.05-fx+fl.xpi)"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86"
-IUSE="recon proxy editors security network misc"
+IUSE="recon proxy editors security network misc mining"
 
 RDEPEND="|| (
 	>=www-client/mozilla-firefox-bin-1.5.0.7
