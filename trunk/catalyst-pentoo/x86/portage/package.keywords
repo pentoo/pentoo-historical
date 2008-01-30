@@ -94,6 +94,7 @@ x11-libs/xcb-util -* ~x86
 x11-libs/xproto -* ~x86
 app-misc/emelfm2 ~x86
 app-crypt/chntpw ~x86
+app-crypt/md5bf ~x86
 app-crypt/johntheripper ~x86
 app-crypt/plaintoo ~x86
 app-crypt/SIPcrack ~x86

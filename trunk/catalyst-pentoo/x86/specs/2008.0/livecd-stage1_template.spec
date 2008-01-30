@@ -32,6 +32,8 @@ app-admin/localepurge
 app-admin/syslog-ng
 app-arch/gzip
 app-crypt/chntpw
+app-crypt/johntheripper
+app-crypt/md5bf
 app-crypt/plaintoo
 app-crypt/SIPcrack
 app-editors/hexedit
