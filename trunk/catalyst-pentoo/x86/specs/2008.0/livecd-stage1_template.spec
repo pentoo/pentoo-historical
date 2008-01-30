@@ -90,6 +90,7 @@ net-analyzer/ettercap
 net-analyzer/firewalk
 net-analyzer/fragroute
 net-analyzer/ftester
+net-analyser/geoedge
 net-analyzer/gspoof
 net-analyzer/honeyd
 net-analyzer/hping
@@ -102,6 +103,7 @@ net-analyzer/macchanger
 net-analyzer/mbrowse
 net-analyzer/medusa
 net-analyzer/metacoretex-ng
+net-analyzer/metagoofil
 net-analyzer/metasploit
 net-analyzer/mosref
 net-analyzer/nbtscan
@@ -133,9 +135,11 @@ net-analyzer/snmpenum
 net-analyzer/snort
 #net-analyzer/sqlat
 net-analyzer/sqlbf
+net-analyser/subdomainer
 net-analyzer/tcpdump
 net-analyzer/tcptraceroute
 net-analyzer/thcrut
+net-analyser/theHarvester
 net-analyzer/traceroute
 net-analyzer/upnpscan
 net-analyzer/voiphopper

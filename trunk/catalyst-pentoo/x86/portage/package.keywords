@@ -117,7 +117,9 @@ app-text/poppler ~x86
 dev-libs/nss ~x86
 dev-python/pycrypto ~x86
 dev-python/lxml ~x86
-net-analyser/nmap ~x86
+net-analyser/theHarvester ~x86
+net-analyser/geoedge ~x86
+net-analyser/subdomainer ~x86
 net-analyser/sara ~x86
 net-analyzer/amap ~x86
 net-analyzer/absinthe ~x86
@@ -128,6 +130,7 @@ net-analyzer/hping ~x86
 net-analyzer/ike-scan ~x86
 net-analyzer/libnasl ~x86
 net-analyzer/metacoretex-ng -*
+net-analyzer/metagoofil ~x86
 net-analyzer/metasploit ~x86
 net-analyzer/mosref ~x86
 net-analyzer/nbtscan ~x86
