@@ -264,7 +264,7 @@ net-wireless/wpa_supplicant
 sys-fs/fuse
 sys-fs/ntfs3g
 net-firewall/firehol
-sys-apps/pmount
+#sys-apps/pmount
 
 # This option is only for ppc64 machines.  If used it will create the /etc/yaboot.conf
 # entry used for booting a ibm powerpc machine.
