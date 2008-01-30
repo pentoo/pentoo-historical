@@ -146,6 +146,7 @@ net-analyzer/sqlat ~x86
 net-analyzer/sqlbf ~x86
 net-analyzer/thcrut ~x86
 net-analyzer/upnpscan ~x86
+net-analyzer/wfuzz ~x86
 net-analyzer/yersinia ~x86
 net-im/skype ~x86
 net-libs/libnetdude ~x86

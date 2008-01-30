@@ -138,6 +138,7 @@ net-analyzer/traceroute
 net-analyzer/upnpscan
 net-analyzer/voiphopper
 net-analyzer/w3af
+net-analyzer/wfuzz
 net-analyzer/wireshark
 net-analyzer/xprobe
 net-analyzer/yersinia
