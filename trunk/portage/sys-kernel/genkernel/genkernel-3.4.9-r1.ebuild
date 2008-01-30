@@ -45,6 +45,7 @@ src_unpack() {
 	unpack ${PN}-pkg-${VERSION_PKG}.tar.bz2
 	use selinux && sed -i 's/###//g' gen_compile.sh
 	epatch "${FILESDIR}"/${P}-modules.patch
+	epatch "${FILESDIR}"/${P}-regress.patch
 }
 
 src_install() {
