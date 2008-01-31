@@ -64,7 +64,7 @@ class desktopfile:
 
     Header = "[Desktop Entry]"
     Name = "Name="
-    Comment = "Comment="
+    GenName = "GenericName="
     Exec = "Exec="
     Icon = "Icon=/usr/share/genmenu/pixmaps/"
     Type = "Type=Application"
@@ -72,8 +72,8 @@ class desktopfile:
     def setName(self, Name):
         self.Name += Name
 
-    def setComment(self, Comment):
-        self.Comment += Comment
+    def setGenName(self, GenName):
+        self.GenName += GenName
 
     def setIcon(self, Icon):
         self.Icon += Icon
@@ -82,7 +82,7 @@ class desktopfile:
         self.Exec += Exec
 
     def getDesktopFile(self):
-        return self.Header, self.Name, self.Comment, self.Exec, self.Icon, self.Type
+        return self.Header, self.Name, self.GenName, self.Exec, self.Icon, self.Type
 
     def writeDesktopFile(self, dest):
         try:
@@ -91,7 +91,7 @@ class desktopfile:
             sys.stderr.write("Unable to open " + dest + " for writing\n")
             sys.stderr.write("Verify that you have write permissions")
             return -1
-        for x in self.Header, self.Name, self.Comment, self.Exec, self.Icon, self.Type:
+        for x in self.Header, self.Name, self.GenName, self.Exec, self.Icon, self.Type:
             file.write(x + "\n")
         file.close()
 
@@ -223,7 +223,7 @@ def add_menu_entry(root_menu, root_category, category):
                 else:
                     # We try to make it by hand
                     nme = create_menu_entry(category, root_category)
-                    nme.writeDesktopFile(os.path.join(MENUDIR, category + ".directory"))
+                    nme.writeDesktopFile(file)
             except:
                 sys.stderr.write("Unable to copy " + category + ".directory" + " to " + LOCALDIR + "\n")
                 sys.stderr.write("Verify that you have write permissions in " + LOCALDIR + "\n")
@@ -245,19 +245,19 @@ def create_menu_entry(name, category, comments = ""):
     me.setComment(comments)
     return me
 
-def create_desktop_entry(name, category, binname, params, comments):
+def create_desktop_entry(name, category, binname, params, genname):
     '''This function creates a simple .desktop entry'''
     de = desktopfile()
     de.setName(name.capitalize())
     de.setIcon(category + ".png")
-    de.setComment(comments)
+    de.setGenName(genname)
     de.setExec(options.p2term + " -e launch " + binname + " " + params)
     return de
 
-def make_menu_entry(root_menu, iconfile, category, params, comments):
+def make_menu_entry(root_menu, iconfile, category, params, genname):
     if not iconfile.endswith(".desktop"):
         # We need to create a new .desktop entry
-        nde = create_desktop_entry(iconfile, category.split(" ")[0], iconfile, params, comments)
+        nde = create_desktop_entry(iconfile, category.split(" ")[0], iconfile, params, genname)
         file = os.path.join(ICONDIR, iconfile + ".desktop")
         nde.writeDesktopFile(file)
         iconfile += ".desktop"
@@ -353,11 +353,11 @@ def main():
                             params = db[y][3]
                         elif db[y].__len__() == 5:
                             params = db[y][3]
-                            comments = db[y][4]
+                            genname = db[y][4]
                         else:
                             params = "-h"
-                            comments = ""
-                        make_menu_entry(root_menu, single_entry, db[y][1], params, comments)
+                            genname = ""
+                        make_menu_entry(root_menu, single_entry, db[y][1], params, genname)
                     except:
                         print >> sys.stderr, "Something went wrong, obviously..."
                         return -1
