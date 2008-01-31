@@ -35,7 +35,7 @@ net-analyzer/ettercap,mitm,ettercap,-G
 net-analyzer/firewalk,scanner,firewalk
 net-analyzer/fragroute,forging,fragroute
 net-analyzer/ftester,analyzer,ftest
-net-analyzer/geoedge,footprint Geolocation,geoedge.py
+net-analyzer/geoedge,footprint Geolocation,geoedge.py,
 net-analyzer/gnome-nettool,analyzer,gnome-nettool.desktop
 net-analyzer/gspoof,forging,gspoof,-g
 net-analyzer/honeyd,misc,honeyd
@@ -77,7 +77,7 @@ net-analyzer/snort,misc,snort
 net-analyzer/sqlat,database,sqlat
 net-analyzer/sqlbf,database,sqlbf
 net-analyzer/sqlinject,database,sqlinject
-net-analyzer/subdomainer,footprint DNS,subdomainer
+net-analyzer/subdomainer,footprint DNS,subdomainer.py,
 net-analyzer/tcptraceroute,analyzer,tcptraceroute
 net-analyzer/thcrut,analyzer,thcrut
 net-analyzer/theHarvester,footprint Mail,theHarvester.py
