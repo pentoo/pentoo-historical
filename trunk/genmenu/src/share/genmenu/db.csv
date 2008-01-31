@@ -15,10 +15,11 @@ app-crypt/plaintoo,cracker,plaintoo.desktop
 app-crypt/SIPcrack,cracker,sipcrack
 app-crypt/SIPcrack,sip-voip,sipdump
 app-crypt/chntpw,cracker,chntpw
+app-crypt/md5bf,cracker,md5bf
 app-crypt/johntheripper,cracker,john,
 net-analyzer/absinthe,database,absinthe,
 net-analyzer/aimsniff,analyzer,aimsniff
-net-analyzer/amap,fingerprint,amap
+net-analyzer/amap,footprint fingerprint Services,amap
 net-analyzer/angst,analyzer,angst
 net-analyzer/arpwatch,analyzer,arpwatch
 net-analyzer/authforce,cracker,authforce
@@ -34,6 +35,7 @@ net-analyzer/ettercap,mitm,ettercap,-G
 net-analyzer/firewalk,scanner,firewalk
 net-analyzer/fragroute,forging,fragroute
 net-analyzer/ftester,analyzer,ftest
+net-analyzer/geoedge,footprint Geolocation,geoedge.py
 net-analyzer/gnome-nettool,analyzer,gnome-nettool.desktop
 net-analyzer/gspoof,forging,gspoof,-g
 net-analyzer/honeyd,misc,honeyd
@@ -47,6 +49,7 @@ net-analyzer/macchanger,misc,macchanger
 net-analyzer/mbrowse,analyzer,mbrowse,
 net-analyzer/medusa,analyzer,medusa
 net-analyzer/metacoretex-ng,database,metacoretex-ng.desktop
+net-analyzer/metagoofil,footprint Web,metagoofil.py
 net-analyzer/metasploit,exploit,msf-console.desktop msf-web.desktop
 net-analyzer/mosref,exploit,mosref,
 net-analyzer/nbtscan,scanner,nbtscan
@@ -57,29 +60,32 @@ net-analyzer/nikto,scanner,nikto
 net-analyzer/nmap,scanner,nmap.desktop
 net-analyzer/nmbscan,scanner,nmbscan
 net-analyzer/ntop,analyzer,ntop.desktop
-net-analyzer/ntp-fingerprint,fingerprint,ntp-fingerprint
-net-analyzer/p0f,fingerprint,p0f
+net-analyzer/ntp-fingerprint,footprint fingerprint Services,ntp-fingerprint
+net-analyzer/p0f,footprint fingerprint OS,p0f
 net-analyzer/packit,forging,packit,
 net-analyzer/paketto,analyzer,lc minewt paratrace
 net-analyzer/paketto,scanner,scanrand
 net-analyzer/rain,forging,rain,--help
 net-analyzer/sara,scanner,sara.desktop
-net-analyzer/scanssh,fingerprint,scanssh
-net-analyzer/siphon,fingerprint,siphon
+net-analyzer/scanssh,footprint fingerprint Services,scanssh
+net-analyzer/siphon,footprint fingerprint OS,siphon
 net-analyzer/sipvicious,sip-voip Sipvicious,svmap.py svreport.py svwar.py svcrack.py
-net-analyzer/smtpmap,fingerprint,smtpmap
+net-analyzer/smtpmap,footprint fingerprint Services,smtpmap
 net-analyzer/sniffit,analyzer,sniffit
 net-analyzer/snmpenum,analyzer,snmpenum
 net-analyzer/snort,misc,snort
 net-analyzer/sqlat,database,sqlat
 net-analyzer/sqlbf,database,sqlbf
 net-analyzer/sqlinject,database,sqlinject
+net-analyzer/subdomainer,footprint DNS,subdomainer
 net-analyzer/tcptraceroute,analyzer,tcptraceroute
 net-analyzer/thcrut,analyzer,thcrut
+net-analyzer/theHarvester,footprint Mail,theHarvester.py
 net-analyzer/upnpscan,scanner,upnpscan
 net-analyzer/voiphopper,sip-voip,voiphopper
 net-analyzer/w3af,exploit,w3af
-net-analyzer/xprobe,fingerprint,xprobe
+net-analyzer/wfuzz,footprint Http,wfuzz
+net-analyzer/xprobe,footprint fingerprint OS,xprobe
 net-analyzer/yersinia,exploit,yersinia.desktop
 net-analyzer/zodiac,analyzer,zodiac.desktop
 net-firewall/firehol,misc,firehol.desktop
