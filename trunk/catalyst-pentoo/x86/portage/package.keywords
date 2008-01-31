@@ -114,6 +114,10 @@ app-fuzz/snmp-fuzzer ~x86
 app-fuzz/smudge ~x86
 app-misc/emelfm2 ~x86
 app-text/poppler ~x86
+dev-db/absinthe ~x86
+dev-db/sqlat ~x86
+dev-db/sqlbf ~x86
+dev-db/sqlinject ~x86
 dev-libs/nss ~x86
 dev-python/pycrypto ~x86
 dev-python/lxml ~x86
@@ -122,10 +126,10 @@ net-analyser/geoedge ~x86
 net-analyser/subdomainer ~x86
 net-analyser/sara ~x86
 net-analyzer/amap ~x86
-net-analyzer/absinthe ~x86
 net-analyzer/autoscan-network ~x86
 net-analyzer/dnsa ~x86
 net-analyzer/dsniff ~x86
+net-analyzer/fierce ~x86
 net-analyzer/hping ~x86
 net-analyzer/ike-scan ~x86
 net-analyzer/libnasl ~x86
@@ -146,8 +150,6 @@ net-analyzer/p0f ~x86
 net-analyzer/sara ~x86
 net-analyzer/sipvicious ~x86
 net-analyzer/smtpmap ~x86
-net-analyzer/sqlat ~x86
-net-analyzer/sqlbf ~x86
 net-analyzer/thcrut ~x86
 net-analyzer/upnpscan ~x86
 net-analyzer/wfuzz ~x86

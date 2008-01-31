@@ -56,7 +56,11 @@ app-misc/livecd-tools
 app-mobilephone/obexftp
 app-portage/gentoolkit
 app-text/dos2unix
+dev-db/absinthe
 dev-db/edb
+dev-db/sqlat
+dev-db/sqlbf
+dev-db/sqlinject
 dev-libs/eet
 dev-libs/embryo
 dev-libs/engrave
@@ -75,7 +79,6 @@ media-libs/epsilon
 media-libs/imlib2
 media-sound/alsa-utils
 media-sound/sox
-net-analyzer/absinthe
 net-analyzer/aimsniff
 net-analyzer/amap
 net-analyzer/angst
@@ -87,6 +90,7 @@ net-analyzer/dnsenum
 #net-analyzer/driftnet
 net-analyzer/dsniff
 net-analyzer/ettercap
+net-analyzer/fierce
 net-analyzer/firewalk
 net-analyzer/fragroute
 net-analyzer/ftester
@@ -133,8 +137,6 @@ net-analyzer/smtpmap
 net-analyzer/sniffit
 net-analyzer/snmpenum
 net-analyzer/snort
-#net-analyzer/sqlat
-net-analyzer/sqlbf
 net-analyser/subdomainer
 net-analyzer/tcpdump
 net-analyzer/tcptraceroute
