@@ -17,7 +17,12 @@ app-crypt/SIPcrack,sip-voip,sipdump
 app-crypt/chntpw,cracker,chntpw
 app-crypt/md5bf,cracker,md5bf
 app-crypt/johntheripper,cracker,john,
-net-analyzer/absinthe,database,absinthe,
+dev-db/absinthe,database,absinthe,
+dev-db/mssqlscan,database MSSQL,mssqlscan,
+dev-db/oat,database Oracle,otnsctl.sh oquery.sh osd.sh ose.sh opwg.sh
+dev-db/sqlat,database MSSQL,sqldirtree sqlsamdump sqlanlz sqldict sqlquery sqlreggetvalue sqlupload sqldumplogins sqlregenumkey
+dev-db/sqlbf,database,sqlbf
+dev-db/sqlinject,database,sqlinject
 net-analyzer/aimsniff,analyzer,aimsniff
 net-analyzer/amap,footprint fingerprint Services,amap
 net-analyzer/angst,analyzer,angst
@@ -30,8 +35,8 @@ net-analyzer/dnsa,analyzer,dnsa
 net-analyzer/dnsenum,analyzer,dnsenum
 net-analyzer/driftnet,analyzer,driftnet.desktop
 net-analyzer/dsniff,mitm Dsniff,dnsspoof filesnarf macof sshow tcpkill tcpnice sshmitm dsniff webspy urlsnarf arpspoof webmitm mailsnarf msgsnarf
-net-analyzer/ethereal,analyzer,ethereal.desktop
 net-analyzer/ettercap,mitm,ettercap,-G
+net-analyzer/fierce,footprint DNS,fierce.pl
 net-analyzer/firewalk,scanner,firewalk
 net-analyzer/fragroute,forging,fragroute
 net-analyzer/ftester,analyzer,ftest
@@ -51,7 +56,7 @@ net-analyzer/medusa,analyzer,medusa
 net-analyzer/metacoretex-ng,database,metacoretex-ng.desktop
 net-analyzer/metagoofil,footprint Web,metagoofil.py
 net-analyzer/metasploit,exploit,msf-console.desktop msf-web.desktop
-net-analyzer/mosref,exploit,mosref,
+net-analyzer/mosref,exploit,mosref mosref-src.desktop,
 net-analyzer/nbtscan,scanner,nbtscan
 net-analyzer/nessus,scanner,nessus.desktop
 net-analyzer/netdude,analyzer,netdude.desktop
@@ -74,9 +79,6 @@ net-analyzer/smtpmap,footprint fingerprint Services,smtpmap
 net-analyzer/sniffit,analyzer,sniffit
 net-analyzer/snmpenum,analyzer,snmpenum
 net-analyzer/snort,misc,snort
-net-analyzer/sqlat,database,sqlat
-net-analyzer/sqlbf,database,sqlbf
-net-analyzer/sqlinject,database,sqlinject
 net-analyzer/subdomainer,footprint DNS,subdomainer.py,
 net-analyzer/tcptraceroute,analyzer,tcptraceroute
 net-analyzer/thcrut,analyzer,thcrut
@@ -92,7 +94,6 @@ net-firewall/firehol,misc,firehol.desktop
 net-firewall/fwbuilder,misc,fwbuilder.desktop
 net-ftp/ftpd,misc,ftpd.desktop
 net-ftp/oftpd,misc,oftpd
-net-im/gaim,misc,gaim.desktop
 net-irc/irssi,misc,irssi
 net-irc/xchat,misc,xchat.desktop
 net-misc/bridge-utils,mitm,brctl

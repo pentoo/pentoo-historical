@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=P0f
-Exec=$P2TERM -e launch p0f -h
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=/usr/share/genmenu/pixmaps/stock_directory-server.png
-Type=Application

@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=SSL Sniff
-Exec=$P2TERM -e /opt/pentoo/scripts/sslsniff.sh
-Icon=/usr/share/genmenu/pixmaps/stock_signature-bad.png
-Type=Application

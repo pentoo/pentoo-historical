@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Wellenreiter
-Exec=$P2TERM -e /usr/bin/wellenreiter
-Icon=/usr/share/genmenu/pixmaps/stock_channel.png
-Type=Application

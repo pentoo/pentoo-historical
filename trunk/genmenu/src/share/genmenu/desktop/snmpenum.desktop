@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=SNMPenum
-Exec=$P2TERM -e launch snmpenum
-Icon=/usr/share/genmenu/pixmaps/gnome-terminal.png
-Type=Application

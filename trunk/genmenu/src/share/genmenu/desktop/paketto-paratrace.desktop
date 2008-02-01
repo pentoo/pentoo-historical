@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Paketto- Paratrace
-Exec=$P2TERM -e launch paratrace
-StartupNotify=false
-X-Enlightenment-WaitExit=false
-Icon=/usr/share/genmenu/pixmaps/gnome-term.png
-Type=Application

@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Ldapenum
-Exec=$P2TERM -e /opt/pentoo/scripts/ldapenum.sh
-Icon=/usr/share/genmenu/pixmaps/stock_addressbook.png
-Type=Application

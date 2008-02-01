@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Zodiac
-Exec=$P2TERM -e /usr/bin/zodiac
-Icon=/usr/share/genmenu/pixmaps/apacheconf.png
-Type=Application

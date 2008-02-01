@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Sylpheed
-GenericName=E-Mail
-Exec=sylpheed
-StartupNotify=true
-X-Enlightenment-WaitExit=false
-StartupWMClass=Sylpheed
-Icon=sylpheed
-Type=Application

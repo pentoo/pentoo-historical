@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=John the Ripper
-Exec=$P2TERM -e /opt/pentoo/scripts/john.sh
-Icon=/usr/share/genmenu/pixmaps/stock_lock-open.png
-Type=Application
