@@ -23,7 +23,7 @@ dev-perl/gtk-perl -opengl
 sys-apps/pmount -crypt
 # dep required from e
 x11-libs/ecore dbus
-dev-db/freetds mssql odbc
+dev-db/freetds mssql
 net-im/skype qt-static
 app-fuzz/protos http ldap snmp sip h2250 isakmp
 x11-plugins/firecat recon security

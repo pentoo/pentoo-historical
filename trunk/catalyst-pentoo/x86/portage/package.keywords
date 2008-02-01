@@ -116,6 +116,7 @@ app-misc/emelfm2 ~x86
 app-text/poppler ~x86
 dev-db/absinthe ~x86
 dev-db/sqlat ~x86
+dev-db/mssqlscan ~x86
 dev-db/sqlbf ~x86
 dev-db/sqlinject ~x86
 dev-libs/nss ~x86

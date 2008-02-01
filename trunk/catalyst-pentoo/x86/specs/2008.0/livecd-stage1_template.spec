@@ -58,6 +58,7 @@ app-portage/gentoolkit
 app-text/dos2unix
 dev-db/absinthe
 dev-db/edb
+dev-db/mssqlscan
 dev-db/sqlat
 dev-db/sqlbf
 dev-db/sqlinject
