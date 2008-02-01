@@ -38,6 +38,8 @@ app-crypt/plaintoo
 app-crypt/SIPcrack
 app-editors/hexedit
 app-editors/nano
+app-editor/ghex
+app-editor/scite
 app-text/epdf
 app-forensics/cmospwd
 app-fuzz/Peach
@@ -187,6 +189,7 @@ net-misc/partysip
 net-misc/proxychains
 net-misc/raccess
 net-misc/rdesktop
+net-misc/grdesktop
 net-misc/rsync
 #net-misc/sipbomber
 net-misc/sipp
