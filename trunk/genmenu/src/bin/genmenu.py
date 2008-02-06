@@ -281,13 +281,23 @@ def make_menu_entry(root_menu, iconfile, category, params, genname):
             sys.stderr.write("File " + file + "does not exists \n")
             return -1
     root_category = category.split(" ")[0]
-    # TODO 
+    # TODO
+    # This adds/search the root category for correct submenus creatinos 
     for submenus in category.split(" "):
         # Add the same here for the "all" subentry
-        menu = find_menu_entry(root_menu, submenus, "Include")
-        if menu == None:
-            menu = add_menu_entry(root_menu, root_category, submenus)
+        if submenus == root_category:
+            base_menu = find_menu_entry(root_menu, root_category, "Include")
+            if base_menu == None:
+                base_menu = add_menu_entry(root_menu, root_category, root_category)
+            menu = base_menu
+        else:
+            menu = find_menu_entry(base_menu, submenus, "Include")
+            if menu == None:
+                menu = add_menu_entry(base_menu, root_category, submenus)
     # Only adds the entry under specific category
+    print etree.tostring(root_menu, pretty_print=True)
+    print iconfile + category
+    #print etree.tostring(menu, pretty_print=True)
     append_desktop_entry(menu, iconfile)
         
 
