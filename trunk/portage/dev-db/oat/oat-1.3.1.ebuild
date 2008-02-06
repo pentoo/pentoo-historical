@@ -21,7 +21,7 @@ src_compile(){
 src_install () {
 	insinto /usr/lib/"${PN}"
 	doins -r tftproot
-	doinf ork.jar
+	doins ork.jar accounts.default
 	dobin *.sh
 	dodoc README
 }
