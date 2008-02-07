@@ -121,7 +121,7 @@ diff -Naur genkernel-3.4.9/generic/initrd.scripts genkernel-3.4.9.modules/generi
 -	/sbin/unionctl $1 --add --after $BRANCH_0 --mode ro $2
 +	# BRANCH_0="/"$(/sbin/unionctl $1 --list | cut -d/ -f2- | cut -d'(' -f1)
 +	#/sbin/unionctl $1 --add --after $BRANCH_0 --mode ro $2
-+	mount -t unionfs -o remount,add=:$2 unionfs $1
++	mount -t unionfs -o remount,add=:$2=ro unionfs $1
  	if [ $? = '0' ]
  	then
 -		good_msg "Addition of $2 to $1 after branch $BRANCH_0 successful"

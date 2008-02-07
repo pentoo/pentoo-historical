@@ -1,7 +1,7 @@
-AUX genkernel-3.4.9-modules.patch 6921 RMD160 3a18dbf2c135e474952a0f9293d2541d670aa3ec SHA1 1ecd42cb771344a3fe4c3fcce32468a40c5ca444 SHA256 b20a3babad43357ac85b5e63d4f11e2c7d9725b6db3874cdb6ce61a5eff02375
-MD5 ddbcb5ff95ff25b1e8b89cc7409325fc files/genkernel-3.4.9-modules.patch 6921
-RMD160 3a18dbf2c135e474952a0f9293d2541d670aa3ec files/genkernel-3.4.9-modules.patch 6921
-SHA256 b20a3babad43357ac85b5e63d4f11e2c7d9725b6db3874cdb6ce61a5eff02375 files/genkernel-3.4.9-modules.patch 6921
+AUX genkernel-3.4.9-modules.patch 6924 RMD160 48e223ddb3cfedcccf8675ebb21a233d64a05a86 SHA1 5a0ddf09bf3480abee6f4f02a1b1db6ffb489c64 SHA256 4a0b387a68a2127e38e33324c6bb25ddaa73b2c2cb2b1433e47e6719c4353dfa
+MD5 38ad52e77acc09388c51866e936a33b8 files/genkernel-3.4.9-modules.patch 6924
+RMD160 48e223ddb3cfedcccf8675ebb21a233d64a05a86 files/genkernel-3.4.9-modules.patch 6924
+SHA256 4a0b387a68a2127e38e33324c6bb25ddaa73b2c2cb2b1433e47e6719c4353dfa files/genkernel-3.4.9-modules.patch 6924
 AUX genkernel-3.4.9-regress.patch 25477 RMD160 79baf6d8521ba4b070ba1713d764b1156d1c6603 SHA1 e1209a012613b5300cc3153f8d3a97e814d12e23 SHA256 a29e181a1b8e3fb764d6e186fe2c5493e5ae8580407078e1d7ee867f43b0fc3d
 MD5 e4f93ff56bdce92080e87c2bdbd4a37e files/genkernel-3.4.9-regress.patch 25477
 RMD160 79baf6d8521ba4b070ba1713d764b1156d1c6603 files/genkernel-3.4.9-regress.patch 25477

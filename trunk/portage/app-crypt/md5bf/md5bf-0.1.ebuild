@@ -10,11 +10,12 @@ SRC_URI="http://www.edge-security.com/soft/${MY_P}.tar"
 LICENSE="GPL-2"
 KEYWORDS="~amd64 ~ppc ~x86"
 IUSE=""
+DEPEND="dev-lang/nasm"
 RDEPEND=""
 
 src_compile() {
 	sed -i -e "s:gcc:gcc ${CFLAGS}:" Makefile
-	emake || die "emake failed"
+	emake -j1 || die "emake failed"
 }
 
 src_install() {
