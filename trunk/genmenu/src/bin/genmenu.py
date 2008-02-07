@@ -186,26 +186,25 @@ def find_option(submenu, tag):
                 return tmp
 
 def find_menu_entry(menu, submenu, option=None):
-    for x in menu.iterchildren():
-        if x.text == submenu:
-            if not option == None:
-                return find_option(x.getparent(), option)
+    try:
+        for x in menu.iterchildren():
+            if x.text == submenu:
+                if not option == None:
+                    return find_option(x.getparent(), option)
+                else:
+                    return x.getparent() 
             else:
-                return x.getparent() 
-        else:
-            tmp = find_menu_entry(x, submenu, option)
-            if not tmp == None:
-                return tmp
+                tmp = find_menu_entry(x, submenu, option)
+                if not tmp == None:
+                    return tmp
+    except:
+        return menu
 
 def add_menu_entry(root_menu, root_category, category):
     '''This adds a menu element entry 'category' under the root_category menu'''
-    if category == root_category:
-        below = "Pentoo"
-    else:
-        below = root_category
     menu = find_menu_entry(root_menu, category)
     if menu == None:
-        new_menu_entry = etree.SubElement(find_menu_entry(root_menu, below), "Menu")
+        new_menu_entry = etree.SubElement(root_menu, "Menu")
         new_name_entry = etree.SubElement(new_menu_entry, "Name")
         new_name_entry.text = category
         file = os.path.join(LOCALDIR, category + ".directory")
@@ -231,10 +230,11 @@ def add_menu_entry(root_menu, root_category, category):
         new_directory_entry = etree.SubElement(new_menu_entry, "Directory")
         new_directory_entry.text = category + ".directory"
         new_includelist = etree.SubElement(new_menu_entry, "Include")
-        return new_includelist
+        return new_menu_entry
 
 def append_desktop_entry(menu, iconfile):
-    new_desktop_entry = etree.SubElement(menu, "Filename")
+    entrypoint = find_option(menu, "Include")
+    new_desktop_entry = etree.SubElement(entrypoint, "Filename")
     new_desktop_entry.text = iconfile
 
 def create_menu_entry(name, category, comments = ""):
@@ -254,52 +254,59 @@ def create_desktop_entry(name, category, binname, params, genname):
     de.setExec(options.p2term + " -e launch " + binname + " " + params)
     return de
 
-def make_menu_entry(root_menu, iconfile, category, params, genname):
-    if not iconfile.endswith(".desktop"):
-        # We need to create a new .desktop entry
-        nde = create_desktop_entry(iconfile, category.split(" ")[0], iconfile, params, genname)
-        file = os.path.join(ICONDIR, iconfile + ".desktop")
-        nde.writeDesktopFile(file)
-        iconfile += ".desktop"
-    else:
-        # We copy the .desktop file to the local desktop dir
-        file = os.path.join(APPSDIR, iconfile)
-        if os.path.exists(file):
-            if options.verbose:
-                print arrow + "Copying " + iconfile + " to " + ICONDIR
-            if not options.simulate:
-            # Copy the file
-                if not os.path.exists(ICONDIR):
-                    os.makedirs(ICONDIR)
-                try:
-                    shutil.copyfile(file, ICONDIR + iconfile)
-                except:
-                    sys.stderr.write("Unable to copy " + iconfile + " to " + ICONDIR + "\n")
-                    sys.stderr.write("Verify that you have write permissions in " + ICONDIR + "\n")
-                    return -1
-        else:
-            sys.stderr.write("File " + file + "does not exists \n")
-            return -1
+def make_menu_entry(root_menu, iconfiles, category, params, genname):
     root_category = category.split(" ")[0]
     # TODO
     # This adds/search the root category for correct submenus creatinos 
     for submenus in category.split(" "):
         # Add the same here for the "all" subentry
         if submenus == root_category:
-            base_menu = find_menu_entry(root_menu, root_category, "Include")
+            base_menu = find_menu_entry(root_menu, root_category)
             if base_menu == None:
                 base_menu = add_menu_entry(root_menu, root_category, root_category)
             menu = base_menu
         else:
-            menu = find_menu_entry(base_menu, submenus, "Include")
+            if options.vverbose:
+                print submenus
+                #print etree.tostring(root_menu, pretty_print=True)
+                #print etree.tostring(menu, pretty_print=True)
+     
+            menu = find_menu_entry(base_menu.getparent(), submenus)
             if menu == None:
-                menu = add_menu_entry(base_menu, root_category, submenus)
+                menu = add_menu_entry(base_menu.getparent(), root_category, submenus)
+            base_menu = menu
     # Only adds the entry under specific category
-    print etree.tostring(root_menu, pretty_print=True)
-    print iconfile + category
     #print etree.tostring(menu, pretty_print=True)
-    append_desktop_entry(menu, iconfile)
-        
+    for iconfile in iconfiles.split(" "):
+        if not iconfile.endswith(".desktop"):
+            # We need to create a new .desktop entry
+            nde = create_desktop_entry(iconfile, category.split(" ")[0], iconfile, params, genname)
+            file = os.path.join(ICONDIR, iconfile + ".desktop")
+            nde.writeDesktopFile(file)
+            iconfile += ".desktop"
+        else:
+            # We copy the .desktop file to the local desktop dir
+            file = os.path.join(APPSDIR, iconfile)
+            if os.path.exists(file):
+                if options.verbose:
+                    print arrow + "Copying " + iconfile + " to " + ICONDIR
+                if not options.simulate:
+                # Copy the file
+                    if not os.path.exists(ICONDIR):
+                        os.makedirs(ICONDIR)
+                    try:
+                        shutil.copyfile(file, ICONDIR + iconfile)
+                    except:
+                        sys.stderr.write("Unable to copy " + iconfile + " to " + ICONDIR + "\n")
+                        sys.stderr.write("Verify that you have write permissions in " + ICONDIR + "\n")
+                        return -1
+            else:
+                sys.stderr.write("File " + file + "does not exists \n")
+                return -1
+        append_desktop_entry(menu, iconfile)
+        if options.vverbose:
+            print etree.tostring(root_menu, pretty_print=True)
+            print iconfile + " " + category
 
 
 def genxml(root_menu):
@@ -349,28 +356,28 @@ def main():
     pkginstalled = listpackages(PORTDIR)
     notthere = []
     menu = etree.parse(os.path.join(BASEDIR, "lib", "applications.menu"))
-    root_menu = menu.getroot()
-
+    below = "Pentoo"
+    root_menu = find_menu_entry(menu.getroot(),below)
+    
     for y in range(db.__len__()):
         if pkginstalled.__contains__(db[y][0]):
             if options.listonly:
                 print db[y][0] + "\t" + db[y][2] + "\t\t" + db[y][1] + "\t"
             else:
                 # calls makemenuentry file.eap, menu category
-                for single_entry in db[y][2].split(" "):
-                    try:
-                        if db[y].__len__() == 4:
-                            params = db[y][3]
-                        elif db[y].__len__() == 5:
-                            params = db[y][3]
-                            genname = db[y][4]
-                        else:
-                            params = "-h"
-                            genname = ""
-                        make_menu_entry(root_menu, single_entry, db[y][1], params, genname)
-                    except:
-                        print >> sys.stderr, "Something went wrong, obviously..."
-                        return -1
+                try:
+                    if db[y].__len__() == 4:
+                        params = db[y][3]
+                    elif db[y].__len__() == 5:
+                        params = db[y][3]
+                        genname = db[y][4]
+                    else:
+                        params = "-h"
+                        genname = ""
+                    make_menu_entry(root_menu, db[y][2], db[y][1], params, genname)
+                except:
+                    print >> sys.stderr, "Something went wrong, obviously..."
+                    return -1
         else:
             notthere.append(db[y][0])
 
