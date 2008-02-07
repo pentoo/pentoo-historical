@@ -20,14 +20,8 @@ src_compile() {
 
 src_install() {
         dodir /usr/lib/
-        dodir /usr/bin/
-
         # should be as simple as copying everything into the target...
         cp -pPR ${S} ${D}usr/lib/w3af || die
-
-        # and creating symlinks in the /usr/bin dir
-        cd ${D}/usr/bin
-       	ln -s ../lib/w3af/w3af ./w3af || die
-
+	dobin "${FILESDIR}"/w3af
         chown -R root:0 ${D}
 }
