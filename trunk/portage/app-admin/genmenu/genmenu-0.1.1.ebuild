@@ -15,12 +15,6 @@ DEPEND=">=dev-python/lxml-1.3
 	gnome-base/gnome-menus"
 RDEPEND="${DEPEND}"
 
-src_unpack() {
-	unpack ${A}
-	cd ${S}
-	epatch ${FILESDIR}/${PN}-term-fix.patch
-}
-
 src_compile() {
 	einfo "Nothing to compile"
 }
