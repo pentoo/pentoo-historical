@@ -271,13 +271,15 @@ def make_menu_entry(root_menu, iconfiles, category, params, genname):
                 #print etree.tostring(root_menu, pretty_print=True)
                 #print etree.tostring(menu, pretty_print=True)
      
-            menu = find_menu_entry(base_menu.getparent(), submenus)
+            menu = find_menu_entry(base_menu, submenus)
             if menu == None:
-                menu = add_menu_entry(base_menu.getparent(), root_category, submenus)
+                menu = add_menu_entry(base_menu, root_category, submenus)
             base_menu = menu
     # Only adds the entry under specific category
     #print etree.tostring(menu, pretty_print=True)
     for iconfile in iconfiles.split(" "):
+        if not os.path.exists(ICONDIR):
+            os.makedirs(ICONDIR)
         if not iconfile.endswith(".desktop"):
             # We need to create a new .desktop entry
             nde = create_desktop_entry(iconfile, category.split(" ")[0], iconfile, params, genname)
@@ -292,8 +294,6 @@ def make_menu_entry(root_menu, iconfiles, category, params, genname):
                     print arrow + "Copying " + iconfile + " to " + ICONDIR
                 if not options.simulate:
                 # Copy the file
-                    if not os.path.exists(ICONDIR):
-                        os.makedirs(ICONDIR)
                     try:
                         shutil.copyfile(file, ICONDIR + iconfile)
                     except:
