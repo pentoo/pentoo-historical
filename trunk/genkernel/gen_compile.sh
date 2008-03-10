@@ -1,7 +1,6 @@
 #!/bin/bash
 
-compile_kernel_args()
-{
+compile_kernel_args() {
 	local ARGS
 
 	ARGS=''
@@ -183,12 +182,15 @@ reset_args()
 	fi
 }
 
+
 compile_generic() {
 	local RET
 	[ "$#" -lt '2' ] &&
 		gen_die 'compile_generic(): improper usage!'
+	local target=${1}
+	local argstype=${2}
 
-	if [ "${2}" = 'kernel' ] || [ "${2}" = 'runtask' ]
+	if [ "${argstype}" = 'kernel' ] || [ "${argstype}" = 'runtask' ]
 	then
 		export_kernel_args
 		MAKE=${KERNEL_MAKE}
@@ -197,42 +199,42 @@ compile_generic() {
 		export_utils_args
 		MAKE=${UTILS_MAKE}
 	fi
-	case "$2" in
+	case "${argstype}" in
 		kernel) ARGS="`compile_kernel_args`" ;;
 		utils) ARGS="`compile_utils_args`" ;;
 		*) ARGS="" ;; # includes runtask
 	esac
-		
+	shift 2
 
 	# the eval usage is needed in the next set of code
 	# as ARGS can contain spaces and quotes, eg:
 	# ARGS='CC="ccache gcc"'
-	if [ "${2}" == 'runtask' ]
+	if [ "${argstype}" == 'runtask' ]
 	then
-		print_info 2 "COMMAND: ${MAKE} ${MAKEOPTS/-j?/j1} ${ARGS} ${1}" 1 0 1
-		eval ${MAKE} -s ${MAKEOPTS/-j?/-j1} "${ARGS}" ${1}
+		print_info 2 "COMMAND: ${MAKE} ${MAKEOPTS/-j?/j1} ${ARGS} ${target} $*" 1 0 1
+		eval ${MAKE} -s ${MAKEOPTS/-j?/-j1} "${ARGS}" ${target} $*
 		RET=$?
-	elif [ "${DEBUGLEVEL}" -gt "1" ]
+	elif [ "${LOGLEVEL}" -gt "1" ]
 	then
-		# Output to stdout and debugfile
-		print_info 2 "COMMAND: ${MAKE} ${MAKEOPTS} ${ARGS} ${1}" 1 0 1
-		eval ${MAKE} ${MAKEOPTS} ${ARGS} ${1} 2>&1 | tee -a ${DEBUGFILE}
+		# Output to stdout and logfile
+		print_info 2 "COMMAND: ${MAKE} ${MAKEOPTS} ${ARGS} ${target} $*" 1 0 1
+		eval ${MAKE} ${MAKEOPTS} ${ARGS} ${target} $* 2>&1 | tee -a ${LOGFILE}
 		RET=${PIPESTATUS[0]}
 	else
-		# Output to debugfile only
-		print_info 2 "COMMAND: ${MAKE} ${MAKEOPTS} ${ARGS} ${1}" 1 0 1
-		eval ${MAKE} ${MAKEOPTS} ${ARGS} ${1} >> ${DEBUGFILE} 2>&1
+		# Output to logfile only
+		print_info 2 "COMMAND: ${MAKE} ${MAKEOPTS} ${ARGS} ${1} $*" 1 0 1
+		eval ${MAKE} ${MAKEOPTS} ${ARGS} ${target} $* >> ${LOGFILE} 2>&1
 		RET=$?
 	fi
 	[ "${RET}" -ne '0' ] &&
-		gen_die "Failed to compile the \"${1}\" target..."
+		gen_die "Failed to compile the \"${target}\" target..."
 
 	unset MAKE
 	unset ARGS
-	if [ "${2}" = 'kernel' ]
+	if [ "${argstype}" = 'kernel' ]
 	then
 		unset_kernel_args
-	elif [ "${2}" = 'utils' ]
+	elif [ "${argstype}" = 'utils' ]
 	then
 		unset_utils_args
 	fi
@@ -295,21 +297,26 @@ compile_kernel() {
 	fi
 	if ! isTrue "${CMD_NOINSTALL}"
 	then
-		cp "${KERNEL_BINARY}" "/boot/kernel-${KNAME}-${ARCH}-${KV}" ||
-			gen_die 'Could not copy the kernel binary to /boot!'
-		cp "System.map" "/boot/System.map-${KNAME}-${ARCH}-${KV}" ||
-			gen_die 'Could not copy System.map to /boot!'
-		if [ "${KERNEL_BINARY_2}" != '' -a "${GENERATE_Z_IMAGE}" = '1' ]
+		copy_image_with_preserve "kernel" \
+			"${KERNEL_BINARY}" \
+			"kernel-${KNAME}-${ARCH}-${KV}"
+
+		copy_image_with_preserve "System.map" \
+			"System.map" \
+			"System.map-${KNAME}-${ARCH}-${KV}"
+
+		if [ "${ENABLE_PEGASOS_HACKS}" = 'yes' ]
 		then
-			cp "${KERNEL_BINARY_2}" "/boot/kernelz-${KV}" ||
-				gen_die 'Could not copy the kernelz binary to /boot!'
+			copy_image_with_preserve "kernelz" \
+				"${KERNEL_BINARY_2}" \
+				"kernelz-${KV}"
 		fi
 	else
 		cp "${KERNEL_BINARY}" "${TMPDIR}/kernel-${KNAME}-${ARCH}-${KV}" ||
 			gen_die "Could not copy the kernel binary to ${TMPDIR}!"
 		cp "System.map" "${TMPDIR}/System.map-${KNAME}-${ARCH}-${KV}" ||
 			gen_die "Could not copy System.map to ${TMPDIR}!"
-		if [ "${KERNEL_BINARY_2}" != '' -a "${GENERATE_Z_IMAGE}" = '1' ]
+		if [ "${ENABLE_PEGASOS_HACKS}" = 'yes' ]
 		then
 			cp "${KERNEL_BINARY_2}" "${TMPDIR}/kernelz-${KV}" ||
 				gen_die "Could not copy the kernelz binary to ${TMPDIR}!"
@@ -318,62 +325,7 @@ compile_kernel() {
 }
 
 compile_unionfs_modules() {
-	if [ ! -f "${UNIONFS_MODULES_BINCACHE}" ]
-	then
-		[ -f "${UNIONFS_SRCTAR}" ] ||
-			gen_die "Could not find unionfs source tarball: ${UNIONFS_SRCTAR}!"
-		cd "${TEMP}"
-		rm -rf ${UNIONFS_DIR} > /dev/null
-		rm -rf unionfs > /dev/null
-		mkdir -p unionfs
-		/bin/tar -zxpf ${UNIONFS_SRCTAR} ||
-			gen_die 'Could not extract unionfs source tarball!'
-		[ -d "${UNIONFS_DIR}" ] ||
-			gen_die 'Unionfs directory ${UNIONFS_DIR} is invalid!'
-		cd "${UNIONFS_DIR}"
-		print_info 1 'unionfs modules: >> Compiling...'
-		echo "LINUXSRC=${KERNEL_DIR}" >> fistdev.mk
-		echo 'TOPINC=-I$(LINUXSRC)/include' >> fistdev.mk
-		echo "MODDIR= /lib/modules/${KV}" >> fistdev.mk
-		echo "KERNELVERSION=${KV}" >> fistdev.mk
-		# Fix for hardened/selinux systems to have extened attributes
-		# per r2d2's request
-		echo "EXTRACFLAGS=-DUNIONFS_XATTR -DFIST_SETXATTR_CONSTVOID" \
-			>> fistdev.mk
-		# Here we do something really nasty and disable debugging, along with
-		# change our default CFLAGS
-		echo "UNIONFS_DEBUG_CFLAG=-DUNIONFS_NDEBUG" >> fistdev.mk
-		echo "UNIONFS_OPT_CFLAG= -O2 -pipe" >> fistdev.mk
-
-		if [ "${PAT}" -ge '6' ]
-		then
-			cd "${TEMP}"
-			cd "${UNIONFS_DIR}"
-			# Compile unionfs module within the unionfs
-			# environment not within the kernelsrc dir
-			make unionfs.ko
-		else
-			gen_die 'unionfs is only supported on 2.6 targets'
-		fi
-		print_info 1 'unionfs: >> Copying to cache...'
-	
-		mkdir -p ${TEMP}/unionfs/lib/modules/${KV}/kernel/fs
-		
-		if [ -f unionfs.ko ]
-		then 
-			cp unionfs.ko ${TEMP}/unionfs/lib/modules/${KV}/kernel/fs 
-		else 
-			cp unionfs.o ${TEMP}/unionfs/lib/modules/${KV}/kernel/fs 
- 		fi
-	
-		cd ${TEMP}/unionfs	
-		/bin/tar -cjf "${UNIONFS_MODULES_BINCACHE}" . ||
-			gen_die 'Could not create unionfs modules binary cache'
-	
-		cd "${TEMP}"
-		rm -rf "${UNIONFS_DIR}" > /dev/null
-		rm -rf unionfs > /dev/null
-	fi
+	echo "Nothing to compile, unionfs is in kernel now"
 }
 
 compile_unionfs_utils() {
@@ -383,7 +335,7 @@ compile_unionfs_utils() {
 			gen_die "Could not find unionfs source tarball: ${UNIONFS_SRCTAR}!"
 		cd "${TEMP}"
 		rm -rf ${UNIONFS_DIR} > /dev/null
-		rm -rf unionfs > /dev/null
+		rm -rf unionfs* > /dev/null
 		mkdir -p unionfs/sbin
 		/bin/tar -zxpf ${UNIONFS_SRCTAR} ||
 			gen_die 'Could not extract unionfs source tarball!'
@@ -391,16 +343,20 @@ compile_unionfs_utils() {
 			gen_die 'Unionfs directory ${UNIONFS_DIR} is invalid!'
 		cd "${UNIONFS_DIR}"
 		print_info 1 'unionfs tools: >> Compiling...'
+		sed -i utils/Makefile -e 's|${CC} -o|${CC} -static -o|g'
 		sed -i Makefile -e 's|${CC} -o|${CC} -static -o|g'
 		compile_generic utils utils
-		
+
+		if [ ! -e "uniondbg" ]; then
+			cd utils
+		fi
 		print_info 1 'unionfs: >> Copying to cache...'
 		strip uniondbg unionctl
 		cp uniondbg ${TEMP}/unionfs/sbin/ || 
 			gen_die 'Could not copy the uniondbg binary to the tmp directory'
 		cp unionctl ${TEMP}/unionfs/sbin/ ||
 			gen_die 'Could not copy the unionctl binary to the tmp directory'
-		cd ${TEMP}/unionfs	
+		cd ${TEMP}/unionfs
 		/bin/tar -cjf "${UNIONFS_BINCACHE}" . ||
 			gen_die 'Could not create unionfs tools binary cache'
 		
@@ -411,29 +367,40 @@ compile_unionfs_utils() {
 }
 
 compile_busybox() {
+	[ -f "${BUSYBOX_SRCTAR}" ] ||
+		gen_die "Could not find busybox source tarball: ${BUSYBOX_SRCTAR}!"
+	[ -f "${BUSYBOX_CONFIG}" ] ||
+		gen_die "Cound not find busybox config file: ${BUSYBOX_CONFIG}!"
+	cd "${TEMP}"
+	rm -rf "${BUSYBOX_DIR}" > /dev/null
+	/bin/tar -jxpf ${BUSYBOX_SRCTAR} ||
+		gen_die 'Could not extract busybox source tarball!'
+	[ -d "${BUSYBOX_DIR}" ] ||
+		gen_die 'Busybox directory ${BUSYBOX_DIR} is invalid!'
+	cp "${BUSYBOX_CONFIG}" "${BUSYBOX_DIR}/.config"
+	sed -i ${BUSYBOX_DIR}/.config -e 's/#\? \?CONFIG_FEATURE_INSTALLER[ =].*/CONFIG_FEATURE_INSTALLER=y/g'
+	cd "${BUSYBOX_DIR}"
+	patch -p1 < "${GK_SHARE}/pkg/busybox-1.1.3+gentoo-mdadm.patch"
+	patch -p1 < "${GK_SHARE}/pkg/busybox-1.1.3+gentoo-mdadm2.patch"
+	print_info 1 'busybox: >> Configuring...'
+	yes '' 2>/dev/null | compile_generic oldconfig utils
+
+	# Delete cache if stored config's MD5 does not match one to be used
+	if [ -f "${BUSYBOX_BINCACHE}" -a -f "${BUSYBOX_CONFIG}" ]
+	then
+		oldconfig_md5=$(tar -xjf "${BUSYBOX_BINCACHE}" -O .config | md5sum)
+		newconfig_md5=$(md5sum < .config)
+		if [ "${oldconfig_md5}" != "${newconfig_md5}" ]
+		then
+			print_info 1 "busybox: >> Removing stale cache..."
+			rm -rf "${BUSYBOX_BINCACHE}"
+		else
+			print_info 1 "busybox: >> Using cache"
+		fi
+	fi
+
 	if [ ! -f "${BUSYBOX_BINCACHE}" ]
 	then
-		[ -f "${BUSYBOX_SRCTAR}" ] ||
-			gen_die "Could not find busybox source tarball: ${BUSYBOX_SRCTAR}!"
-		[ -f "${BUSYBOX_CONFIG}" ] ||
-			gen_die "Cound not find busybox config file: ${BUSYBOX_CONFIG}!"
-		cd "${TEMP}"
-		rm -rf ${BUSYBOX_DIR} > /dev/null
-		/bin/tar -jxpf ${BUSYBOX_SRCTAR} ||
-			gen_die 'Could not extract busybox source tarball!'
-		[ -d "${BUSYBOX_DIR}" ] ||
-			gen_die 'Busybox directory ${BUSYBOX_DIR} is invalid!'
-		cp "${BUSYBOX_CONFIG}" "${BUSYBOX_DIR}/.config"
-		sed -i ${BUSYBOX_DIR}/.config -e 's/#\? \?CONFIG_FEATURE_INSTALLER[ =].*/CONFIG_FEATURE_INSTALLER=y/g'
-		cd "${BUSYBOX_DIR}"
-		if [ -f ${GK_SHARE}/pkg/busybox-1.00-headers_fix.patch ]
-		then
-			patch -p1 -i \
-				${GK_SHARE}/pkg/busybox-1.00-headers_fix.patch \
-				|| gen_die "Failed patching busybox"
-		fi
-		print_info 1 'busybox: >> Configuring...'
-		yes '' 2>/dev/null | compile_generic oldconfig utils
 		print_info 1 'busybox: >> Compiling...'
 		compile_generic all utils
 		print_info 1 'busybox: >> Copying to cache...'
@@ -441,53 +408,51 @@ compile_busybox() {
 			gen_die 'Busybox executable does not exist!'
 		strip "${TEMP}/${BUSYBOX_DIR}/busybox" ||
 			gen_die 'Could not strip busybox binary!'
-		bzip2 "${TEMP}/${BUSYBOX_DIR}/busybox" ||
-			gen_die 'bzip2 compression of busybox failed!'
-		mv "${TEMP}/${BUSYBOX_DIR}/busybox.bz2" "${BUSYBOX_BINCACHE}" ||
-			gen_die 'Could not copy the busybox binary to the package directory, does the directory exist?'
-
-		cd "${TEMP}"
-		rm -rf "${BUSYBOX_DIR}" > /dev/null
+		tar -cj -C "${TEMP}/${BUSYBOX_DIR}" -f "${BUSYBOX_BINCACHE}" busybox .config ||
+			gen_die 'Could not create the busybox bincache!'
 	fi
+
+	cd "${TEMP}"
+	rm -rf "${BUSYBOX_DIR}" > /dev/null
 }
 
-compile_lvm2() {
+compile_lvm() {
 	compile_device_mapper
-	if [ ! -f "${LVM2_BINCACHE}" ]
+	if [ ! -f "${LVM_BINCACHE}" ]
 	then
-		[ -f "${LVM2_SRCTAR}" ] ||
-			gen_die "Could not find LVM2 source tarball: ${LVM2_SRCTAR}! Please place it there, or place another version, changing /etc/genkernel.conf as necessary!"
+		[ -f "${LVM_SRCTAR}" ] ||
+			gen_die "Could not find LVM source tarball: ${LVM_SRCTAR}! Please place it there, or place another version, changing /etc/genkernel.conf as necessary!"
 		cd "${TEMP}"
-		rm -rf ${LVM2_DIR} > /dev/null
-		/bin/tar -zxpf ${LVM2_SRCTAR} ||
-			gen_die 'Could not extract LVM2 source tarball!'
-		[ -d "${LVM2_DIR}" ] ||
-			gen_die 'LVM2 directory ${LVM2_DIR} is invalid!'
+		rm -rf ${LVM_DIR} > /dev/null
+		/bin/tar -zxpf ${LVM_SRCTAR} ||
+			gen_die 'Could not extract LVM source tarball!'
+		[ -d "${LVM_DIR}" ] ||
+			gen_die 'LVM directory ${LVM_DIR} is invalid!'
 		rm -rf "${TEMP}/device-mapper" > /dev/null
 		/bin/tar -jxpf "${DEVICE_MAPPER_BINCACHE}" -C "${TEMP}" ||
 			gen_die "Could not extract device-mapper binary cache!";
 		
-		cd "${LVM2_DIR}"
-		print_info 1 'lvm2: >> Configuring...'
+		cd "${LVM_DIR}"
+		print_info 1 'lvm: >> Configuring...'
 			LDFLAGS="-L${TEMP}/device-mapper/lib" \
 			CFLAGS="-I${TEMP}/device-mapper/include" \
 			CPPFLAGS="-I${TEMP}/device-mapper/include" \
-			./configure --enable-static_link --prefix=${TEMP}/lvm2 >> ${DEBUGFILE} 2>&1 ||
-				gen_die 'Configure of lvm2 failed!'
-		print_info 1 'lvm2: >> Compiling...'
+			./configure --enable-static_link --prefix=${TEMP}/lvm >> ${LOGFILE} 2>&1 ||
+				gen_die 'Configure of lvm failed!'
+		print_info 1 'lvm: >> Compiling...'
 			compile_generic '' utils
 			compile_generic 'install' utils
 
-		cd "${TEMP}/lvm2"
+		cd "${TEMP}/lvm"
 		print_info 1 '      >> Copying to bincache...'
 		strip "sbin/lvm.static" ||
 			gen_die 'Could not strip lvm.static!'
-		/bin/tar -cjf "${LVM2_BINCACHE}" sbin/lvm.static ||
+		/bin/tar -cjf "${LVM_BINCACHE}" sbin/lvm.static ||
 			gen_die 'Could not create binary cache'
 
 		cd "${TEMP}"
 		rm -rf "${TEMP}/device-mapper" > /dev/null
-		rm -rf "${LVM2_DIR}" lvm2
+		rm -rf "${LVM_DIR}" lvm
 	fi
 }
 
@@ -510,20 +475,23 @@ compile_dmraid() {
 		cd "${DMRAID_DIR}"
 		print_info 1 'dmraid: >> Configuring...'
 		
-			LDFLAGS="-L${TEMP}/device-mapper/lib" \
-			CFLAGS="-I${TEMP}/device-mapper/include" \
-			CPPFLAGS="-I${TEMP}/device-mapper/include" \
-			./configure --enable-static_link --prefix=${TEMP}/dmraid >> ${DEBUGFILE} 2>&1 ||
-				gen_die 'Configure of dmraid failed!'
-				
-			#We dont necessarily have selinux installed yet .. look into selinux global support in the future.
-			sed -i tools/Makefile -e "s|DMRAIDLIBS += -lselinux||g"
+		LDFLAGS="-L${TEMP}/device-mapper/lib" \
+		CFLAGS="-I${TEMP}/device-mapper/include" \
+		CPPFLAGS="-I${TEMP}/device-mapper/include" \
+		./configure --enable-static_link --prefix=${TEMP}/dmraid >> ${LOGFILE} 2>&1 ||
+			gen_die 'Configure of dmraid failed!'
+
+		# We dont necessarily have selinux installed yet... look into
+		# selinux global support in the future.
+		sed -i tools/Makefile -e "s|DMRAIDLIBS += -lselinux||g"
+		###echo "DMRAIDLIBS += -lselinux -lsepol" >> tools/Makefile
 		mkdir -p "${TEMP}/dmraid"
 		print_info 1 'dmraid: >> Compiling...'
-			compile_generic '' utils
-			#compile_generic 'install' utils
-			mkdir ${TEMP}/dmraid/sbin
-			install -m 0755 -s tools/dmraid "${TEMP}/dmraid/sbin/dmraid"
+		# Force dmraid to be built with -j1 for bug #188273
+		MAKEOPTS=-j1 compile_generic '' utils
+		#compile_generic 'install' utils
+		mkdir ${TEMP}/dmraid/sbin
+		install -m 0755 -s tools/dmraid "${TEMP}/dmraid/sbin/dmraid"
 		print_info 1 '      >> Copying to bincache...'
 		cd "${TEMP}/dmraid"
 		/bin/tar -cjf "${DMRAID_BINCACHE}" sbin/dmraid ||
@@ -535,118 +503,7 @@ compile_dmraid() {
 	fi
 }
 
-compile_modutils() {
-	# I've disabled dietlibc support for the time being since the
-	# version we use misses a few needed system calls.
-
-	local ARGS
-	if [ ! -f "${MODUTILS_BINCACHE}" ]
-	then
-		[ ! -f "${MODUTILS_SRCTAR}" ] &&
-			gen_die "Could not find modutils source tarball: ${MODUTILS_SRCTAR}!"
-		cd "${TEMP}"
-		rm -rf "${MODUTILS_DIR}"
-		/bin/tar -jxpf "${MODUTILS_SRCTAR}"
-		[ ! -d "${MODUTILS_DIR}" ] &&
-			gen_die "Modutils directory ${MODUTILS_DIR} invalid!"
-		cd "${MODUTILS_DIR}"
-		print_info 1 "modutils: >> Configuring..."
-
-#		if [ "${USE_DIETLIBC}" -eq '1' ]
-#		then
-#			extract_dietlibc_bincache
-#			OLD_CC="${UTILS_CC}"
-#			UTILS_CC="${TEMP}/diet/bin/diet ${UTILS_CC}"
-#		fi
-
-		export_utils_args
-		export ARCH=${ARCH}
-		./configure --disable-combined --enable-insmod-static >> ${DEBUGFILE} 2>&1 ||
-			gen_die 'Configuring modutils failed!'
-		unset_utils_args
-
-		print_info 1 'modutils: >> Compiling...'
-		compile_generic all utils
-
-#		if [ "${USE_DIETLIBC}" -eq '1' ]
-#		then
-#			clean_dietlibc_bincache
-#			UTILS_CC="${OLD_CC}"
-#		fi
-
-		print_info 1 'modutils: >> Copying to cache...'
-		[ -f "${TEMP}/${MODUTILS_DIR}/insmod/insmod.static" ] ||
-			gen_die 'insmod.static does not exist after the compilation of modutils!'
-		strip "${TEMP}/${MODUTILS_DIR}/insmod/insmod.static" ||
-			gen_die 'Could not strip insmod.static!'
-		bzip2 "${TEMP}/${MODUTILS_DIR}/insmod/insmod.static" ||
-			gen_die 'Compression of insmod.static failed!'
-		mv "${TEMP}/${MODUTILS_DIR}/insmod/insmod.static.bz2" "${MODUTILS_BINCACHE}" ||
-			gen_die 'Could not move the compressed insmod binary to the package cache!'
-
-		cd "${TEMP}"
-		rm -rf "${MODULE_INIT_TOOLS_DIR}" > /dev/null
-	fi
-}
-
-compile_module_init_tools() {
-	# I've disabled dietlibc support for the time being since the
-	# version we use misses a few needed system calls.
-
-	local ARGS
-	if [ ! -f "${MODULE_INIT_TOOLS_BINCACHE}" ]
-	then
-		[ ! -f "${MODULE_INIT_TOOLS_SRCTAR}" ] &&
-			gen_die "Could not find module-init-tools source tarball: ${MODULE_INIT_TOOLS_SRCTAR}"
-		cd "${TEMP}"
-		rm -rf "${MODULE_INIT_TOOLS_DIR}"
-		/bin/tar -jxpf "${MODULE_INIT_TOOLS_SRCTAR}"
-		[ ! -d "${MODULE_INIT_TOOLS_DIR}" ] &&
-			gen_die "Module-init-tools directory ${MODULE_INIT_TOOLS_DIR} is invalid"
-		cd "${MODULE_INIT_TOOLS_DIR}"
-		print_info 1 'module-init-tools: >> Configuring'
-
-#		if [ "${USE_DIETLIBC}" -eq '1' ]
-#		then
-#			extract_dietlibc_bincache
-#			OLD_CC="${UTILS_CC}"
-#			UTILS_CC="${TEMP}/diet/bin/diet ${UTILS_CC}"
-#		fi
-
-		export_utils_args
-		./configure >> ${DEBUGFILE} 2>&1 ||
-			gen_die 'Configure of module-init-tools failed!'
-		unset_utils_args
-		print_info 1 '                   >> Compiling...'
-		compile_generic "all" utils
-
-# 		if [ "${USE_DIETLIBC}" -eq '1' ]
-#		then
-#			clean_dietlibc_bincache
-#			UTILS_CC="${OLD_CC}"
-#		fi
-
-		print_info 1 '                   >> Copying to cache...'
-		[ -f "${TEMP}/${MODULE_INIT_TOOLS_DIR}/insmod.static" ] ||
-			gen_die 'insmod.static does not exist after the compilation of module-init-tools!'
-		strip "${TEMP}/${MODULE_INIT_TOOLS_DIR}/insmod.static" ||
-			gen_die 'Could not strip insmod.static!'
-		bzip2 "${TEMP}/${MODULE_INIT_TOOLS_DIR}/insmod.static" ||
-			gen_die 'Compression of insmod.static failed!'
-		[ -f "${TEMP}/${MODULE_INIT_TOOLS_DIR}/insmod.static.bz2" ] ||
-			gen_die 'Could not find compressed insmod.static.bz2 binary!'
-		mv "${TEMP}/${MODULE_INIT_TOOLS_DIR}/insmod.static.bz2" "${MODULE_INIT_TOOLS_BINCACHE}" ||
-			gen_die 'Could not move the compressed insmod binary to the package cache!'
-
-		cd "${TEMP}"
-		rm -rf "${MODULE_INIT_TOOLS_DIR}" > /dev/null
-	fi
-}
-
 compile_devfsd() {
-	# I've disabled dietlibc support for the time being since the
-	# version we use misses a few needed system calls.
-
 	local ARGS
 	if [ ! -f "${DEVFSD_BINCACHE}" ]
 	then
@@ -659,26 +516,8 @@ compile_devfsd() {
 			gen_die "Devfsd directory ${DEVFSD_DIR} invalid"
 		cd "${DEVFSD_DIR}"
 
-#		if [ "${USE_DIETLIBC}" -eq '1' ]
-#		then
-#			extract_dietlibc_bincache
-#			OLD_CC="${UTILS_CC}"
-#			UTILS_CC="${TEMP}/diet/bin/diet ${UTILS_CC}"
-#		fi
-
 		print_info 1 'devfsd: >> Compiling...'
-#		if [ "${USE_DIETLIBC}" -eq '1' ]
-#		then
-#			compile_generic 'has_dlopen=0 has_rpcsvc=0' utils
-#		else
-			compile_generic 'LDFLAGS=-static' utils
-#		fi
-
-#		if [ "${USE_DIETLIBC}" -eq '1' ]
-#		then
-#			clean_dietlibc_bincache
-#			UTILS_CC="${OLD_CC}"
-#		fi
+		compile_generic 'LDFLAGS=-static' utils
 
 		print_info 1 '        >> Copying to cache...'
 		[ -f "${TEMP}/${DEVFSD_DIR}/devfsd" ] || gen_die 'The devfsd executable does not exist after the compilation of devfsd!'
@@ -686,10 +525,6 @@ compile_devfsd() {
 		bzip2 "${TEMP}/${DEVFSD_DIR}/devfsd" || gen_die 'Compression of devfsd failed!'
 		[ -f "${TEMP}/${DEVFSD_DIR}/devfsd.bz2" ] || gen_die 'Could not find compressed devfsd.bz2 binary!'
 		mv "${TEMP}/${DEVFSD_DIR}/devfsd.bz2" "${DEVFSD_BINCACHE}" || gen_die 'Could not move compressed binary to the package cache!'
-
-#		[ -f "${TEMP}/${DEVFSD_DIR}/devfsd.conf" ] || gen_die 'devfsd.conf does not exist after the compilation of devfsd!'
-#		bzip2 "${TEMP}/${DEVFSD_DIR}/devfsd.conf" || gen_die 'Compression of devfsd.conf failed!'
-#		mv "${TEMP}/${DEVFSD_DIR}/devfsd.conf.bz2" "${DEVFSD_CONF_BINCACHE}" || gen_die 'Could not move the compressed configuration to the package cache!'
 
 		cd "${TEMP}"
 		rm -rf "${DEVFSD_DIR}" > /dev/null
@@ -707,14 +542,15 @@ compile_device_mapper() {
 		[ ! -d "${DEVICE_MAPPER_DIR}" ] &&
 			gen_die "device-mapper directory ${DEVICE_MAPPER_DIR} invalid"
 		cd "${DEVICE_MAPPER_DIR}"
-		./configure  --prefix=${TEMP}/device-mapper --enable-static_link >> ${DEBUGFILE} 2>&1 ||
+		./configure --prefix=${TEMP}/device-mapper --enable-static_link \
+			--disable-selinux >> ${LOGFILE} 2>&1 ||
 			gen_die 'Configuring device-mapper failed!'
 		print_info 1 'device-mapper: >> Compiling...'
 		compile_generic '' utils
 		compile_generic 'install' utils
 		print_info 1 '        >> Copying to cache...'
 		cd "${TEMP}"
-		rm -r "${TEMP}/device-mapper/man" ||
+		rm -rf "${TEMP}/device-mapper/man" ||
 			gen_die 'Could not remove manual pages!'
 		strip "${TEMP}/device-mapper/sbin/dmsetup" ||
 			gen_die 'Could not strip dmsetup binary!'
@@ -725,188 +561,6 @@ compile_device_mapper() {
 		cd "${TEMP}"
 		rm -rf "${DEVICE_MAPPER_DIR}" > /dev/null
 		rm -rf "${TEMP}/device-mapper" > /dev/null
-	fi
-}
-
-compile_dietlibc() {
-	local BUILD_DIETLIBC
-	local ORIGTEMP
-
-	BUILD_DIETLIBC=0
-	[ ! -f "${DIETLIBC_BINCACHE}" ] && BUILD_DIETLIBC=1
-	[ ! -f "${DIETLIBC_BINCACHE_TEMP}" ] && BUILD_DIETLIBC=1
-	if ! isTrue "${BUILD_DIETLIBC}"
-	then
-		ORIGTEMP=`cat "${DIETLIBC_BINCACHE_TEMP}"`
-		if [ "${TEMP}" != "${ORIGTEMP}" ]
-		then
-			print_warning 1 'dietlibc: Bincache exists, but the current temporary directory'
-			print_warning 1 '          is different to the original. Rebuilding.'
-			BUILD_DIETLIBC=1
-		fi
-	fi
-
-	if [ "${BUILD_DIETLIBC}" -eq '1' ]
-	then
-		[ -f "${DIETLIBC_SRCTAR}" ] ||
-			gen_die "Could not find dietlibc source tarball: ${DIETLIBC_SRCTAR}"
-		cd "${TEMP}"
-		rm -rf "${DIETLIBC_DIR}" > /dev/null
-		/bin/tar -jxpf "${DIETLIBC_SRCTAR}" ||
-			gen_die 'Could not extract dietlibc source tarball'
-		[ -d "${DIETLIBC_DIR}" ] ||
-			gen_die "Dietlibc directory ${DIETLIBC_DIR} is invalid!"
-		cd "${DIETLIBC_DIR}"
-		print_info 1 "dietlibc: >> Compiling..."
-		compile_generic "prefix=${TEMP}/diet" utils
-		print_info 1 "          >> Installing..."
-		compile_generic "prefix=${TEMP}/diet install" utils
-		print_info 1 "          >> Copying to bincache..."
-		cd ${TEMP}
-		/bin/tar -jcpf "${DIETLIBC_BINCACHE}" diet ||
-			gen_die 'Could not tar up the dietlibc binary!'
-		[ -f "${DIETLIBC_BINCACHE}" ] ||
-			gen_die 'Dietlibc cache not created!'
-		echo "${TEMP}" > "${DIETLIBC_BINCACHE_TEMP}"
-
-		cd "${TEMP}"
-		rm -rf "${DIETLIBC_DIR}" > /dev/null
-		rm -rf "${TEMP}/diet" > /dev/null
-	fi
-}
-compile_klibc() {
-	cd "${TEMP}"
-	rm -rf "${KLIBC_DIR}" klibc-build
-	[ ! -f "${KLIBC_SRCTAR}" ] &&
-		gen_die "Could not find klibc tarball: ${KLIBC_SRCTAR}"
-	/bin/tar jxpf "${KLIBC_SRCTAR}" ||
-		gen_die 'Could not extract klibc tarball'
-	[ ! -d "${KLIBC_DIR}" ] &&
-		gen_die "klibc tarball ${KLIBC_SRCTAR} is invalid"
-	cd "${KLIBC_DIR}"
-	if [ -f ${GK_SHARE}/pkg/klibc-1.1.16-sparc2.patch ]
-	then
-		patch -p1 -i \
-			${GK_SHARE}/pkg/klibc-1.1.16-sparc2.patch \
-			|| gen_die "Failed patching klibc"
-	fi
-	if [ -f "${GK_SHARE}/pkg/klibc-1.2.1-nostdinc-flags.patch" ]
-	then
-		patch -p1 -i \
-			${GK_SHARE}/pkg/klibc-1.2.1-nostdinc-flags.patch \
-			|| gen_die "Failed patching klibc"
-	fi
-
-	# Don't install to "//lib" fix
-	sed -e 's:SHLIBDIR = /lib:SHLIBDIR = $(INSTALLROOT)$(INSTALLDIR)/$(KLIBCCROSS)lib:' -i scripts/Kbuild.install
-	print_info 1 'klibc: >> Compiling...'
-	ln -snf "${KERNEL_DIR}" linux || gen_die "Could not link to ${KERNEL_DIR}"
-	sed -i Makefile -e "s|prefix      = /usr|prefix      = ${TEMP}/klibc-build|g"
-	if [ "${UTILS_ARCH}" != '' ]
-	then
-		sed -i Makefile -e "s|export ARCH.*|export ARCH := ${UTILS_ARCH}|g"
-	fi
-	if [ "${ARCH}" = 'um' ]
-	then
-		compile_generic "ARCH=um" utils
-	elif [ "${ARCH}" = 'x86' ]
-	then
-		compile_generic "ARCH=i386" utils
-	elif [ "${UTILS_CROSS_COMPILE}" != '' ]
-	then
-		compile_generic "CROSS=${UTILS_CROSS_COMPILE}" utils
-	else
-		compile_generic "" utils
-	fi
-
-	compile_generic "install" utils
-        
-}
-compile_udev() {
-	if [ ! -f "${UDEV_BINCACHE}" ]
-	then
-		# PPC fixup for 2.6.14
-		# Headers are moving around .. need to make them available
-		if [ "${VER}" -eq '2' -a "${PAT}" -eq '6' -a "${SUB}" -ge '14' ]
-		then
-		    if [ "${ARCH}" = 'ppc' -o "${ARCH}" = 'ppc64' ]
-		    then
-	    		cd ${KERNEL_DIR}
-			echo 'Applying hack to workaround 2.6.14+ PPC header breakages...'
-	    		compile_generic 'include/asm' kernel
-		    fi
-		fi
-		compile_klibc
-		cd "${TEMP}"
-		rm -rf "${UDEV_DIR}" udev
-		[ ! -f "${UDEV_SRCTAR}" ] &&
-			gen_die "Could not find udev tarball: ${UDEV_SRCTAR}"
-		/bin/tar -jxpf "${UDEV_SRCTAR}" ||
-			gen_die 'Could not extract udev tarball'
-		[ ! -d "${UDEV_DIR}" ] &&
-			gen_die "Udev tarball ${UDEV_SRCTAR} is invalid"
-
-		cd "${UDEV_DIR}"
-    		local extras="extras/scsi_id extras/volume_id extras/ata_id extras/run_directory extras/usb_id extras/floppy extras/cdrom_id extras/firmware"
-    		# No selinux support yet .. someday maybe
-		#use selinux && myconf="${myconf} USE_SELINUX=true"
-		print_info 1 'udev: >> Compiling...'
-		# SPARC fixup
-		if [ "${UTILS_ARCH}" = 'sparc' ]
-		then
-			echo "CFLAGS += -mcpu=v8 -mtune=v8" >> Makefile
-		fi
-		# PPC fixup for 2.6.14
-		if [ "${VER}" -eq '2' -a "${PAT}" -eq '6' -a "${SUB}" -ge '14' ]
-        	then
-			if [ "${ARCH}" = 'ppc' -o "${ARCH}" = 'ppc64' ]
-        		then
-				# Headers are moving around .. need to make them available
-				echo "CFLAGS += -I${KERNEL_DIR}/arch/${ARCH}/include" >> Makefile
-			fi
-		fi
-
-		if [ "${ARCH}" = 'um' ]
-		then
-			compile_generic "EXTRAS=\"${extras}\" ARCH=um USE_KLIBC=true KLCC=${TEMP}/klibc-build/bin/klcc USE_LOG=false DEBUG=false udevdir=/dev all" utils
-		else
-			# This *needs* to be runtask, or else it breakson most
-			# architectures.  -- wolf31o2
-			compile_generic "EXTRAS=\"${extras}\" USE_KLIBC=true KLCC=${TEMP}/klibc-build/bin/klcc USE_LOG=false DEBUG=false udevdir=/dev all" runtask
-		fi
-
-
-		print_info 1 '      >> Installing...'
-		install -d "${TEMP}/udev/etc/udev" "${TEMP}/udev/sbin" "${TEMP}/udev/etc/udev/scripts" "${TEMP}/udev/etc/udev/rules.d" "${TEMP}/udev/etc/udev/permissions.d" "${TEMP}/udev/etc/udev/extras" "${TEMP}/udev/etc" "${TEMP}/udev/sbin" "${TEMP}/udev/usr/" "${TEMP}/udev/usr/bin" "${TEMP}/udev/usr/sbin"||
-			gen_die 'Could not create directory hierarchy'
-		
-		install -c etc/udev/gentoo/udev.rules "${TEMP}/udev/etc/udev/rules.d/50-udev.rules" ||
-		    gen_die 'Could not copy gentoo udev.rules to 50-udev.rules'
-
-		compile_generic "EXTRAS=\"${extras}\" DESTDIR=${TEMP}/udev install-config" utils
-		compile_generic "EXTRAS=\"${extras}\" DESTDIR=${TEMP}/udev install-bin" utils
-		install -c extras/ide-devfs.sh "${TEMP}/udev/etc/udev/scripts" 
-		install -c extras/scsi-devfs.sh "${TEMP}/udev/etc/udev/scripts" 
-		install -c extras/raid-devfs.sh "${TEMP}/udev/etc/udev/scripts" 
-
-		cd "${TEMP}/udev"
-		print_info 1 '      >> Copying to bincache...'
-		/bin/tar -cjf "${UDEV_BINCACHE}" * ||
-			gen_die 'Could not create binary cache'
-
-		cd "${TEMP}"
-		rm -rf "${UDEV_DIR}" udev
-		
-		# PPC fixup for 2.6.14
-		if [ "${VER}" -eq '2' -a "${PAT}" -eq '6' -a "${SUB}" -ge '14' ]
-		then
-		    if [ "${ARCH}" = 'ppc' -o "${ARCH}" = 'ppc64' ]
-		    then
-			cd ${KERNEL_DIR}
-			compile_generic 'archclean' kernel
-			cd "${TEMP}"
-		    fi
-		fi
 	fi
 }
 
@@ -922,7 +576,7 @@ compile_e2fsprogs() {
 			gen_die "e2fsprogs directory ${E2FSPROGS_DIR} invalid"
 		cd "${E2FSPROGS_DIR}"
 		print_info 1 'e2fsprogs: >> Configuring...'
-		./configure  --with-ldopts=-static >> ${DEBUGFILE} 2>&1 ||
+		./configure  --with-ldopts=-static >> ${LOGFILE} 2>&1 ||
 			gen_die 'Configuring e2fsprogs failed!'
 		print_info 1 'e2fsprogs: >> Compiling...'
 		MAKE=${UTILS_MAKE} compile_generic "" ""

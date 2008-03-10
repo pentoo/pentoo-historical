@@ -21,7 +21,8 @@ GOOD="\033[32;1m"
 RESET="]R"
 # ANSI COLORS
 # Erase to end of line
-CRE="[K"
+CRE="
+[K"
 # Clear and reset Screen
 CLEAR="c"
 # Normal color
@@ -59,7 +60,7 @@ then
 fi
 
 QUIET=1
-ROOT_LINKS='bin sbin lib lib32 lib64 boot usr opt'
+ROOT_LINKS='bin sbin lib lib32 lib64 boot usr opt emul'
 ROOT_TREES='etc root home var'
 INSMOD='insmod'
 if [ "${KMINOR}" -gt '4' ]
@@ -74,8 +75,9 @@ CDROOT=0
 CDROOT_DEV=''
 NEW_ROOT="/newroot"
 CONSOLE="/dev/console"
+MODULESD="mnt/cdrom"
 
 # Only sections that are in by default or those that
 # are not module groups need to be defined here...
-HWOPTS='usb firewire keymap cache evms2 sata lvm2 dmraid slowusb'
-MY_HWOPTS='usb firewire sata dmraid'
+HWOPTS='usb firewire keymap cache pata sata evms lvm dmraid mdadm slowusb fs'
+MY_HWOPTS='usb firewire pata sata dmraid mdadm fs net'
