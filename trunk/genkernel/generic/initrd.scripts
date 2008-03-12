@@ -580,6 +580,7 @@ chooseKeymap() {
 		40|uk) keymap=uk ;;
 		41|us) keymap=us ;;
 		42|wangbe) keymap=wangbe ;;
+		43|ch) keymap=ch(fr) ;;
 	esac
 	if [ -e /lib/keymaps/${keymap}.map ]
 	then
