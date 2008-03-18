@@ -722,6 +722,26 @@ if [ "${USE_AUFS_NORMAL}" -eq '1' ]
 then
 	mkdir -p /${CHROOT}/.unions/memory 2>/dev/null
 	mount -o move /memory /${CHROOT}/.unions/memory || echo '*: Failed to move aufs /memory into the system root!'
+	for i in tmp var/tmp mnt/gentoo mnt/livecd
+	do
+		mkdir -p ${CHROOT}/$i
+		chmod 755 ${CHROOT}/$i
+	done
+	# This will prevent from putting junk on the CHANGESDEV
+	mount -t tmpfs tmpfs ${CHROOT}/var/tmp
+	mount -t tmpfs tmpfs ${CHROOT}/tmp
+	mount -o bind ${NEW_ROOT}/mnt/cdrom ${CHROOT}/mnt/cdrom
+	mount -o bind ${NEW_ROOT}/mnt/livecd ${CHROOT}/mnt/livecd
+	if [ -e $MEMORY/keyboard -a "${CDROOT}" -eq '1' ]
+	then
+		cp $MEMORY/keyboard ${CHROOT}/etc/sysconfig/keyboard
+	elif [ -e /etc/sysconfig/keyboard -a "${CDROOT}" -eq '1' ]
+	then
+		mkdir -p ${NEW_ROOT}/etc/sysconfig/
+		cp /etc/sysconfig/keyboard ${CHROOT}/etc/sysconfig/keyboard
+	fi
+
+
 fi
 
 if [ "$0" = '/linuxrc' ] || [ "$0" = 'linuxrc' ]

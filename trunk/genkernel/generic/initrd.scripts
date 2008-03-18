@@ -74,10 +74,10 @@ findcdmount() {
 				good_msg "Attempting to mount media:- ${x}"
 				if [ -z "${CDROOT_DEV}" ]
 				then
-					mount -r -t auto ${x} ${NEW_ROOT}/mnt/cdrom \
+					mount -t auto ${x} ${NEW_ROOT}/mnt/cdrom \
 						> /dev/null 2>&1
 				else
-					mount -r -t iso9660 ${x} ${NEW_ROOT}/mnt/cdrom \
+					mount -t iso9660 ${x} ${NEW_ROOT}/mnt/cdrom \
 						> /dev/null 2>&1
 				fi
 				if [ "$?" = '0' ]
@@ -512,7 +512,11 @@ detect_sbp2_devices() {
 }
 
 setup_keymap() {
-	if [ "${DO_keymap}" ]
+	if [ -e $MEMORY/keyboard ]
+	then
+		. $MEMORY/keyboard
+		loadkmap < /lib/keymaps/${XKEYBOARD}.map
+	elif [ "${DO_keymap}" ]
 	then
 		if [ ! -e /dev/vc/0 -a ! -e /dev/tty0 ]
 		then
@@ -524,8 +528,10 @@ setup_keymap() {
 		chooseKeymap
 
 		[ "${DEVBIND}" -eq '1' ] && umount /dev
-		
-		if [ -e /etc/sysconfig/keyboard -a "${CDROOT}" -eq '1' ]
+		if [ -e /etc/sysconfig/keyboard -a "${USE_AUFS_NORMAL}" -eq '1' ]
+		then
+			cp /etc/sysconfig/keyboard $MEMORY
+		elif [ -e /etc/sysconfig/keyboard -a "${CDROOT}" -eq '1' ]
 		then
 			mkdir -p ${NEW_ROOT}/etc/sysconfig/
 			cp /etc/sysconfig/keyboard ${NEW_ROOT}/etc/sysconfig/keyboard
@@ -580,7 +586,7 @@ chooseKeymap() {
 		40|uk) keymap=uk ;;
 		41|us) keymap=us ;;
 		42|wangbe) keymap=wangbe ;;
-		43|ch) keymap="ch(fr)" ;;
+		43|ch*) keymap=ch\(fr\) ;;
 	esac
 	if [ -e /lib/keymaps/${keymap}.map ]
 	then
@@ -594,11 +600,12 @@ chooseKeymap() {
 #		fi
 		mkdir -p /etc/sysconfig
 #		echo "XKEYBOARD=${xkeymap}" > /etc/sysconfig/keyboard
-		echo "XKEYBOARD=${keymap}" > /etc/sysconfig/keyboard
+		echo "XKEYBOARD=\"${keymap}\"" > /etc/sysconfig/keyboard
 	elif [ "$keymap" = '' ]
 	then
 		echo
 		good_msg "Keeping default keymap"
+		echo "XKEYBOARD=us" > /etc/sysconfig/keyboard
 	else
 		bad_msg "Sorry, but keymap ''${keymap}'' is invalid!"
 		chooseKeymap
@@ -815,12 +822,48 @@ rundebugshell() {
 	fi
 }
 
+# Function to create an ext2 fs on $CHANGESDEV, $CHANGESMNT mountpoint
+create_changefs() {
+	local size
+	while [ 1 ]
+	do
+		read -p '<< Size of file (Enter for default 256 Mb): ' size
+		if [ -z "$size" ]; then
+			let size=256
+		fi
+		let size="$size"
+		if [ $size -lt 16 ]
+		then
+			bad_msg "Please give a size between 16 and 512 Mb"
+		elif [ $size -gt 512 ]
+		then
+			bad_msg "Please give a size between 16 and 512 Mb"
+		else
+			dd if=/dev/zero of=$CHANGESMNT/livecd.aufs bs=1M count=$size
+			if [ $? = '0' ]
+			then
+				good_msg "Creation of livecd.aufs, $size Mb on $CHANGESDEV successful, formatting it ext2"
+				mke2fs -F $CHANGESMNT/livecd.aufs
+				break
+			else
+				rm -f $CHANGESMNT/livecd.aufs
+				bad_msg "Unable to create livecd.aufs on $CHANGESDEV of $size Mb"
+				bad_msg "Please give a size between 16 and 512 Mb"
+				bad_msg "Also check if your disk is full or read-only ?"
+			fi
+		fi
+	done
+	return 0
+}
+
 setup_aufs() {
 	if [ "${USE_AUFS_NORMAL}" -eq '1' ]
  	then
 		# Directory used for rw changes in union mount filesystem
 		UNION=/union
 		MEMORY=/memory
+		# Mountpoint for the changesdev
+		CHANGESMNT=$NEW_ROOT/mnt/changesdev
 		if [ -z "$UID" ]
 		then
 			CHANGES=$MEMORY/aufs_changes/default
@@ -830,36 +873,50 @@ setup_aufs() {
 
 		mkdir -p ${MEMORY}
 		mkdir -p ${UNION}
-#		good_msg "Loading unionfs module"
-#		modprobe unionfs > /dev/null 2>&1
+		mkdir -p ${CHANGESMNT}
 		if [ -n "${AUFS}" ]
 		then
 			CHANGESDEV=${AUFS}
 			good_msg "mounting $CHANGESDEV to $MEMORY for aufs support"
-			mount -t auto $CHANGESDEV $MEMORY
-			# mount tmpfs only in the case when changes= boot parameter was
-			# empty or we were not able to mount the storage device
+#			mount -t auto $CHANGESDEV $MEMORY
+			mount -t auto $CHANGESDEV $CHANGESMNT
 			ret=$?
 			if [ "${ret}" -ne 0 ]
 			then
 				bad_msg "mount of $CHANGESDEV failed falling back to ramdisk based aufs"
 				mount -t tmpfs tmpfs $MEMORY
 			fi
-			if [ "${CDROOT}" -eq '1' -a ! -f ${MEMORY}/livecd.aufs  ]
+			# Check and attempt to create the changesfile
+			if [ ! -e $CHANGESMNT/livecd.aufs ]
+			then
+				create_changefs
+				mount -t auto $CHANGESMNT/livecd.aufs $MEMORY
+			else
+				mount -t auto $CHANGESMNT/livecd.aufs $MEMORY
+			fi
+			# mount tmpfs only in the case when changes= boot parameter was
+			# empty or we were not able to mount the storage device
+			if [ "${CDROOT}" -eq '1' -a ! -f ${CHANGESMNT}/livecd.aufs  ]
 			then
 				umount $MEMORY
 				bad_msg "failed to find livecd.aufs file on $CHANGESDEV"
-				bad_msg "create a livecd.aufs file on this device if you wish to use it for aufs"
+				bad_msg "create an ext2 livecd.aufs file on this device if you wish to use it for aufs"
 				bad_msg "falling back to ramdisk based aufs for safety"
 				mount -t tmpfs tmpfs $MEMORY
+				XINO=$MEMORY
+			else
+				XINO=$MEMORY/xino
+				mkdir -p $XINO
+				mount -t tmpfs tmpfs $XINO
 			fi
 		else 
 			good_msg "Mounting ramdisk to $MEMORY for aufs support..."
-			mount -t tmpfs tmpfs $MEMORY 
+			mount -t tmpfs tmpfs $MEMORY
+			XINO=$MEMORY
 		fi 
 
-		mkdir -p $CHANGES 
-		mount -t aufs -n -o br:$CHANGES=rw aufs ${UNION}
+		mkdir -p $CHANGES
+		mount -t aufs -n -o nowarn_perm,udba=none,xino=$XINO/.aufs.xino,br:$CHANGES=rw aufs ${UNION}
 		ret=$?
 		if [ "${ret}" -ne 0 ]
 		then 
