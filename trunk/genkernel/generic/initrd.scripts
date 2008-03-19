@@ -892,7 +892,40 @@ setup_aufs() {
 				create_changefs
 				mount -t auto $CHANGESMNT/livecd.aufs $MEMORY
 			else
-				mount -t auto $CHANGESMNT/livecd.aufs $MEMORY
+				local nbpass=0
+				while [ 1 ]
+				do
+					mount -t auto $CHANGESMNT/livecd.aufs $MEMORY
+					ret=$?
+					if [ "${ret}" -ne 0 ]
+					then
+						if [ $nbpass -eq 0 ]
+						then
+							bad_msg "mounting of changes file failed, Running e2fsck"
+							e2fsck $CHANGESMNT/livecd.aufs
+							nbpass=$(($nbpass + 1))
+						else
+							bad_msg "mount of $CHANGESDEV failed falling back to ramdisk based aufs"
+							bad_msg "your live.aufs might be messed up, and I couldn't fix it"
+							bad_msg "moving live.aufs to livecd.aufs.bad"
+							mv $CHANGESMNT/livecd.aufs $CHANGESMNT/livecd.aufs.bad
+							bad_msg "try to fit it yourself with e2fsck later on, sorry for disturbing"
+							break
+						fi
+					else
+						if [ $nbpass -eq 1 ]
+						then
+							good_msg "e2fsck seemed successful. Please check your files after bootup"
+						fi
+						break
+					fi
+				done
+				if [ -f ${MEMORY}/.doclean.sh ]
+				then
+					good_msg "finishing the permanent changes cleanup"
+					. ${MEMORY}/.doclean.sh
+					rm ${MEMORY}/.doclean.sh
+				fi
 			fi
 			# mount tmpfs only in the case when changes= boot parameter was
 			# empty or we were not able to mount the storage device
