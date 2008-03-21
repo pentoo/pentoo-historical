@@ -29,7 +29,7 @@ portage_overlay: /usr/local/portage /usr/portage/local/enlightenment
 livecd/fstype: squashfs
 livecd/fsops: -root-owned -b 1048576
 livecd/cdtar: /usr/lib/catalyst/livecd/cdtar/isolinux-3.09-memtest86+-cdtar.tar.bz2
-livecd/iso: /tmp/pentoo-2008.0_alpha1.iso
+livecd/iso: /tmp/pentoo-2008.0_alpha4.iso
 
 # A fsscript is simply a shell script that is copied into the chroot of the CD
 # after the kernel(s) and any external modules have been compiled and is 
@@ -60,7 +60,7 @@ livecd/fsscript: /root/pentoo/x86/scripts/2008.0/fsscript.sh
 # is used on the x86/amd64 release media to enable keymap selection.
 # example:
 # livecd/bootargs: dokeymap
-livecd/bootargs: dokeymap unionfs
+livecd/bootargs: aufs max_loop=256 dokeymap
 
 # This is a set of arguments that will be passed to genkernel for all kernels
 # defined in this target.  It is useful for passing arguments to genkernel that
@@ -130,7 +130,7 @@ livecd/rcadd: autoconfig|default
 # use this on the official media, so it is left blank.
 # example:
 # livecd/rcdel:
-# livecd/rcdel:
+livecd/rcdel: spind|default
 
 # This overlay is dropped onto the CD filesystem and is outside any loop which
 # has been configured.  This is typically used for adding the documentation,
@@ -138,7 +138,7 @@ livecd/rcadd: autoconfig|default
 # be available if docache is enabled, as they are outside the loop.
 # example:
 # livecd/overlay: /tmp/overlay-minimal
-# livecd/overlay:
+livecd/overlay: /root/pentoo/isoroot
 
 # This overlay is dropped onto the filesystem within the loop.  This can be used
 # for such things as updating configuration files or adding anything else you
@@ -248,6 +248,7 @@ boot/kernel/gentoo/use: pcmcia usb madwifi injection
 # boot/kernel/gentoo/packages: pcmcia-cs speedtouch slmodem globespan-adsl hostap-driver hostap-utils ipw2100 ipw2200 fritzcapi fcdsl cryptsetup
 boot/kernel/gentoo/packages: 
 #sys-apps/pcmcia-cs
+sys-apps/pcmciautils
 net-wireless/acx
 net-wireless/at76c503a
 #net-wireless/ieee80211
