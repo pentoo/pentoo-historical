@@ -8,7 +8,7 @@ DESCRIPTION="Genmenu is a tool for generating freedesktop-compliant menus"
 HOMEPAGE="https://trac.pentoo.ch/projects/catalyst/wiki/Genmenu"
 SRC_URI="http://dev.pentoo.ch/~grimmlin/${P}.tbz2"
 LICENSE="GPL-2"
-SLOT=""
+SLOT="0"
 KEYWORDS="~x86"
 IUSE=""
 DEPEND=">=dev-python/lxml-1.3
