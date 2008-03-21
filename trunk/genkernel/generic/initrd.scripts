@@ -904,8 +904,8 @@ setup_aufs() {
 							nbpass=$(($nbpass + 1))
 						else
 							bad_msg "mount of $CHANGESDEV failed falling back to ramdisk based aufs"
-							bad_msg "your live.aufs might be messed up, and I couldn't fix it"
-							bad_msg "moving live.aufs to livecd.aufs.bad"
+							bad_msg "your livecd.aufs might be messed up, and I couldn't fix it"
+							bad_msg "moving livecd.aufs to livecd.aufs.bad"
 							mv $CHANGESMNT/livecd.aufs $CHANGESMNT/livecd.aufs.bad
 							bad_msg "try to fit it yourself with e2fsck later on, sorry for disturbing"
 							break

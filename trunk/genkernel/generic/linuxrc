@@ -728,8 +728,13 @@ then
 		chmod 755 ${CHROOT}/$i
 	done
 	# This will prevent from putting junk on the CHANGESDEV
+	mkdir -p ${CHROOT}/usr/portage/distfiles
 	mount -t tmpfs tmpfs ${CHROOT}/var/tmp
 	mount -t tmpfs tmpfs ${CHROOT}/tmp
+	mount -t tmpfs tmpfs ${CHROOT}/usr/portage/distfiles
+	warn_msg "/tmp /var/tmp /usr/portage/distfiles are mounted in ram"
+	warn_msg "consider saving important files elsewhere..."
+	read -t 3 UNUSEDVAL
 	mount -o bind ${NEW_ROOT}/mnt/cdrom ${CHROOT}/mnt/cdrom
 	mount -o bind ${NEW_ROOT}/mnt/livecd ${CHROOT}/mnt/livecd
 	if [ -e $MEMORY/keyboard -a "${CDROOT}" -eq '1' ]
