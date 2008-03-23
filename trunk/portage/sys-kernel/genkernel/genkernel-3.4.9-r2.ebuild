@@ -13,9 +13,8 @@ VERSION_UNIONFS='1.5pre-cvs200701042308'
 
 DESCRIPTION="Gentoo automatic kernel building scripts"
 HOMEPAGE="http://www.gentoo.org"
-SRC_URI="mirror://gentoo/${P}.tar.bz2
+SRC_URI="http://dev.pentoo.ch/~grimmlin/${P}.tar.bz2
 	mirror://gentoo/${PN}-pkg-${VERSION_PKG}.tar.bz2
-	http://dev.gentoo.org/~wolf31o2/sources/${PN}/${P}.tar.bz2
 	http://dev.gentoo.org/~wolf31o2/sources/${PN}/${PN}-pkg-${VERSION_PKG}.tar.bz2
 	http://people.redhat.com/~heinzm/sw/dmraid/src/dmraid-${VERSION_DMRAID}.tar.bz2
 	http://people.redhat.com/~heinzm/sw/dmraid/src/old/dmraid-${VERSION_DMRAID}.tar.bz2
@@ -44,8 +43,7 @@ src_unpack() {
 	cd "${S}"
 	unpack ${PN}-pkg-${VERSION_PKG}.tar.bz2
 	use selinux && sed -i 's/###//g' gen_compile.sh
-	epatch "${FILESDIR}"/${P}-modules.patch
-	epatch "${FILESDIR}"/${P}-regress.patch
+#	epatch "${FILESDIR}"/${P}-regress.patch
 }
 
 src_install() {
