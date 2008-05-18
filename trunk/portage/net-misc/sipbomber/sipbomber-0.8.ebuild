@@ -5,14 +5,14 @@
 
 DESCRIPTION="SipBomber is a tool to stress SIP server/proxy implementations."
 HOMEPAGE="http://www.metalinkltd.com/downloads.php"
-SRC_URI="http://www.pentoo.ch/distfiles/${PN}_${PV}.tar.gz"
+SRC_URI="http://metalinkltd.com/wp-content/uploads/${PN}_${PV}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86"
 IUSE=""
 
-DEPEND="=x11-libs/qt-3*"
+DEPEND="x11-libs/qt"
 
 S=${WORKDIR}/${PN}
 
