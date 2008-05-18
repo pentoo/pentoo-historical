@@ -17,6 +17,8 @@ RDEPEND="dev-python/Impacket
 	 app-fuzz/scapy
 	 qt? ( dev-python/PyQt )"
 
+MY_P=${PN}-0.0.7
+S=${WORKDIR}/${MY_P}
 src_compile() {
 	einfo "Nothing to compile"
 }
@@ -24,6 +26,8 @@ src_compile() {
 src_install() {
 	if ! use qt; then
 		rm -rf gui ingumagui.py
+	else
+		dosbin ${FILESDIR}/ingumagui
 	fi
         dodir /usr/lib/${PN}
 	dodoc AUTHORS  COPYING.txt  ChangeLog  LICENSE  MODULES.txt  README  REQUIRES  THANKS  TODO  TUTORIAL.txt doc/*
