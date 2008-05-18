@@ -10,7 +10,7 @@ ESVN_REPO_URI="https://w3af.svn.sourceforge.net/svnroot/w3af/trunk"
 LICENSE="GPL-2"
 KEYWORDS="-*"
 IUSE=""
-
+SLOT="0"
 RDEPEND="dev-python/utidylib
 	 dev-python/soappy"
 

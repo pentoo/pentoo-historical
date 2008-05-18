@@ -11,6 +11,7 @@ LICENSE="GPL-2"
 KEYWORDS="~amd64 ~ppc ~x86"
 IUSE=""
 RDEPEND="dev-perl/Net-DNS"
+SLOT="0"
 
 S="${WORKDIR}"/"${PN}"
 

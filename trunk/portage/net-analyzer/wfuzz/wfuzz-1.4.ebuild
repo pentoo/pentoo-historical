@@ -10,7 +10,7 @@ SRC_URI="http://www.edge-security.com/soft/${P}.tar.gz"
 LICENSE="GPL-2"
 KEYWORDS="~amd64 ~ppc ~x86"
 IUSE=""
-
+SLOT="0"
 RDEPEND="dev-python/pycurl"
 
 src_compile() {

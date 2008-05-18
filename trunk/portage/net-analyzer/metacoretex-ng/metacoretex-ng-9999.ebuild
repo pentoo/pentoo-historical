@@ -16,7 +16,7 @@ KEYWORDS="-*"
 IUSE=""
 DEPEND="dev-java/ant"
 RDEPEND="virtual/jre"
-
+SLOT="0"
 
 src_compile() {
 	ant probes

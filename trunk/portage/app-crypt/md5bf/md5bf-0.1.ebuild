@@ -12,6 +12,7 @@ KEYWORDS="~amd64 ~ppc ~x86"
 IUSE=""
 DEPEND="dev-lang/nasm"
 RDEPEND=""
+SLOT="0"
 
 src_compile() {
 	sed -i -e "s:gcc:gcc ${CFLAGS}:" Makefile

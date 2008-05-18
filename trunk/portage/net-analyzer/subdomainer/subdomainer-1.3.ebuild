@@ -10,6 +10,7 @@ LICENSE="GPL-2"
 KEYWORDS="~amd64 ~ppc ~x86"
 IUSE=""
 RDEPEND=""
+SLOT="0"
 S="${WORKDIR}"/"${PN}"
 
 src_unpack() {

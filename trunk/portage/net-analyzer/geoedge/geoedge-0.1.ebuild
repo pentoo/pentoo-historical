@@ -9,6 +9,7 @@ LICENSE="GPL-2"
 KEYWORDS="~amd64 ~ppc ~x86"
 IUSE=""
 RDEPEND=""
+SLOT="0"
 
 src_unpack() {
 	elog "Nothing to unpack"
