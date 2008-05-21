@@ -17,6 +17,7 @@ portage_overlay: /usr/local/portage /usr/portage/local/layman/enlightenment
 # pkgcache_path:
 
 livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2
+wifi injection
 -quicktime qt qt3 -qt4 -cups -spell
 png jpeg gif dri svg aac 
 alsa esd gstreamer jack mp3 vorbis wavpack wma
