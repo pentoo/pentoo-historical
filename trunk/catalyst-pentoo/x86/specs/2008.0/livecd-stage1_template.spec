@@ -4,7 +4,7 @@ target: livecd-stage1
 rel_type: default
 profile: default-linux/x86/2007.0
 snapshot: 2008.0
-source_subpath: default/stage3-i686-2007.0
+source_subpath: default/stage3-i686-2008.0
 portage_confdir: /root/pentoo/x86/portage
 portage_overlay: /usr/local/portage /usr/portage/local/layman/enlightenment
 
@@ -16,7 +16,12 @@ portage_overlay: /usr/local/portage /usr/portage/local/layman/enlightenment
 # pkgcache_path: /tmp/packages
 # pkgcache_path:
 
-livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2 -quicktime -qt -qt3 -qt4 -cups -spell png jpeg gif dri opengl
+livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2
+-quicktime -qt -qt3 -qt4 -cups -spell
+png jpeg gif dri svg aac 
+alsa esd gstreamer jack mp3 vorbis wavpack wma
+dvd mpeg ogg rtsp x264 xvid wxwindows
+#opengl
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
@@ -27,7 +32,7 @@ livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr 
 livecd/packages:
 sys-kernel/pentoo-sources
 app-admin/gamin
-app-admin/genmenu
+=app-admin/genmenu-9999
 app-admin/localepurge
 app-admin/syslog-ng
 app-arch/gzip
@@ -41,6 +46,7 @@ app-editors/nano
 app-editors/ghex
 app-editors/scite
 app-text/epdf
+app-text/epdfview
 app-forensics/cmospwd
 app-fuzz/Peach
 app-fuzz/bed
@@ -64,14 +70,14 @@ dev-db/mssqlscan
 dev-db/oat
 dev-db/sqlat
 dev-db/sqlbf
-dev-db/sqlinject
+#dev-db/sqlinject
 dev-libs/eet
 dev-libs/embryo
 dev-libs/engrave
 dev-libs/libxslt
 dev-libs/openobex
 dev-python/pygtk
-dev-python/lxml
+=dev-python/lxml-1.3.6
 dev-util/dialog
 dev-util/e_utils
 dev-util/subversion
@@ -81,8 +87,10 @@ media-libs/edje
 media-libs/epeg
 media-libs/epsilon
 media-libs/imlib2
+media-sound/audacious
 media-sound/alsa-utils
 media-sound/sox
+media-video/vlc
 net-analyzer/aimsniff
 net-analyzer/amap
 net-analyzer/angst
@@ -119,7 +127,7 @@ net-analyzer/nessus
 net-analyzer/nessus-plugins
 net-analyzer/netcat
 net-analyzer/netdiscover
-#net-analyzer/netdude
+net-analyzer/netdude
 net-analyzer/net-snmp
 net-analyzer/netwag
 net-analyzer/netwox
@@ -165,8 +173,8 @@ net-fs/samba
 net-ftp/ftp
 net-ftp/netkit-ftpd
 net-ftp/oftpd
-#net-im/gaim
-net-im/skype
+net-im/pidgin
+#net-im/skype
 #net-im/ekiga
 net-irc/irssi
 net-irc/xchat
@@ -191,9 +199,9 @@ net-misc/raccess
 net-misc/rdesktop
 net-misc/grdesktop
 net-misc/rsync
-#net-misc/sipbomber
+net-misc/sipbomber
 net-misc/sipp
-net-misc/siproxd
+#net-misc/siproxd
 net-misc/sipsak
 net-misc/socat
 net-misc/stunnel
@@ -216,7 +224,7 @@ net-wireless/airsnort
 net-wireless/airtraf
 net-wireless/bluez-libs
 net-wireless/bluez-utils
-#net-wireless/btscanner
+net-wireless/btscanner
 net-wireless/kismet
 net-wireless/mdk
 net-wireless/ska
