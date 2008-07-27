@@ -18,6 +18,11 @@ DEPEND=">=net-wireless/bluez-utils-2.15
 	>=dev-libs/libxml2-2.6
 	>sys-libs/ncurses-5.4"
 
+src_compile() {
+	sed -i -e 's/-Wimplicit-function-dec //g' configure*
+	econf || die "econf failed"
+	emake || die "emake failed"
+}
 src_install() {
 	einstall || die "install failed"
 	dodoc AUTHORS ChangeLog README NEWS TODO USAGE
