@@ -2,6 +2,7 @@ app-forensics/cmospwd,cracker,cmospwd
 app-fuzz/Peach,fuzzers,peach
 app-fuzz/bed,fuzzers,bed
 app-fuzz/bss,fuzzers,bss
+app-fuzz/fusil,fuzzers Fusil,fusil-apache fusil-firefox fusil-gstreamer fusil-libc-printf fusil-ogg123 fusil-poppler fusil-clamav fusil-gettext fusil-imagemagick fusil-mplayer fusil-php fusil-python
 app-fuzz/fuzzer-server,fuzzers,fuzzer-server
 app-fuzz/http-fuzz,fuzzers,httpfuzz
 app-fuzz/protos,fuzzers,protos
@@ -68,6 +69,7 @@ net-analyzer/nmap,scanner,nmap.desktop
 net-analyzer/nmbscan,scanner,nmbscan
 net-analyzer/ntop,analyzer,ntop.desktop
 net-analyzer/ntp-fingerprint,footprint fingerprint Services,ntp-fingerprint
+net-analyzer/onesixtyone,scanner,onesixtyone
 net-analyzer/p0f,footprint fingerprint OS,p0f
 net-analyzer/packit,forging,packit,
 net-analyzer/paketto,analyzer,lc minewt paratrace
