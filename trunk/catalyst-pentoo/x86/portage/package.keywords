@@ -140,7 +140,7 @@ dev-db/sqlat ~x86
 dev-db/sqlbf ~x86
 dev-db/sqlinject ~x86
 dev-dotnet/wxnet ~x86
-dev-libs/nss ~x86
+#dev-libs/nss ~x86
 dev-python/pycrypto ~x86
 dev-python/lxml ~x86
 dev-util/premake ~x86
@@ -178,10 +178,11 @@ net-analyzer/upnpscan ~x86
 net-analyzer/wfuzz ~x86
 net-analyzer/yersinia ~x86
 net-im/skype ~x86
+net-libs/libpcapnav ~x86
 net-libs/libnetdude ~x86
 net-misc/karma ~x86
 net-misc/netsed ~x86
-net-misc/netdude ~x86
+net-analyzer/netdude ~x86
 net-misc/partysip ~x86
 net-misc/proxychains ~x86
 net-misc/raccess ~x86
@@ -207,6 +208,7 @@ net-wireless/aircrack-ng ~x86
 net-wireless/airsnort ~x86
 net-wireless/at76c503a ~x86
 net-wireless/atmel-firmware ~x86
+net-wireless/bcm43xx-fwcutter ~x86
 net-wireless/ieee80211 ~x86
 net-wireless/ipw2100 ~x86
 net-wireless/ipw2200 ~x86
@@ -214,6 +216,7 @@ net-wireless/ipw2200-firmware ~x86
 net-wireless/ipw3945 ~x86
 net-wireless/ipw3945d ~x86
 net-wireless/ipw3945-ucode ~x86
+net-wireless/iwl5000-ucode ~x86
 net-wireless/kismet ~x86
 net-wireless/linux-wlan-ng ~x86
 net-wireless/linux-wlan-ng-firmware ~x86
@@ -225,6 +228,7 @@ net-wireless/madwifi-ng-tools ~x86
 net-wireless/mdk ~x86
 net-wireless/ndiswrapper ~x86
 net-wireless/prism54 ~x86
+net-wireless/rfswitch ~x86
 net-wireless/rt2x00 -*
 net-wireless/rtl8180 ~x86
 net-wireless/ska ~x86
@@ -243,7 +247,7 @@ sys-fs/ntfsprogs ~x86
 sys-fs/unionfs ~x86
 #sys-kernel/genkernel
 sys-libs/libkudzu ~x86
-www-client/mozilla-firefox ~x86
+#www-client/mozilla-firefox ~x86
 net-wireless/ipw3945d ~x86
 sys-fs/unionfs ~x86
 sys-fs/squashfs-tools ~x86
