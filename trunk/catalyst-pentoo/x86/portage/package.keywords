@@ -121,6 +121,7 @@ app-forensics/cmospwd ~x86
 app-fuzz/Peach ~x86
 app-fuzz/bed ~x86
 app-fuzz/bss ~x86
+app-fuzz/fusil ~x86
 app-fuzz/fuzzer ~x86
 app-fuzz/fuzzer-server ~x86
 app-fuzz/http-fuzz ~x86
@@ -141,8 +142,9 @@ dev-db/sqlbf ~x86
 dev-db/sqlinject ~x86
 dev-dotnet/wxnet ~x86
 #dev-libs/nss ~x86
-dev-python/pycrypto ~x86
 dev-python/lxml ~x86
+dev-python/pycrypto ~x86
+dev-python/python-ptrace ~x86
 dev-util/premake ~x86
 net-analyzer/theHarvester ~x86
 net-analyzer/geoedge ~x86
@@ -169,6 +171,7 @@ net-analyzer/netdiscover ~x86
 net-analyzer/nikto ~x86
 net-analyzer/nmap ~x86
 net-analyzer/ntp-fingerprint ~x86
+net-analyzer/onesixtyone ~x86
 net-analyzer/p0f ~x86
 net-analyzer/sara ~x86
 net-analyzer/sipvicious ~x86
