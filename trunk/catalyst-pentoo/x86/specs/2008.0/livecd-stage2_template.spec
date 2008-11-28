@@ -121,7 +121,7 @@ livecd/type: generic-livecd
 # This option will automatically create missing runlevels
 # example:
 # livecd/rcadd:
-livecd/rcadd: autoconfig|default
+livecd/rcadd: autoconfig|default gpm|default
 
 # This is for removing init script from runlevels.  It is executed after the
 # defaults shipped with catalyst, so it is possible to remove the defaults using
@@ -214,7 +214,7 @@ boot/kernel/gentoo/sources: pentoo-sources
 # used by genkernel to compile the kernel this label applies to.
 # example:
 # boot/kernel/gentoo/config: /tmp/2.6.11-smp.config
-boot/kernel/gentoo/config: /root/pentoo/x86/kernel/config-2.6.23
+boot/kernel/gentoo/config: /root/pentoo/x86/kernel/config-2.6.26
 #/usr/share/genkernel/x86/kernel-config-2.6
 
 # This option sets genkernel parameters on a per-kernel basis and applies only
@@ -231,7 +231,7 @@ boot/kernel/gentoo/gk_kernargs: --unionfs
 # the default USE for the specified profile.
 # example:
 # boot/kernel/gentoo/use: pcmcia usb -X
-boot/kernel/gentoo/use: pcmcia usb madwifi injection
+boot/kernel/gentoo/use: pcmcia usb madwifi injection wifi
 
 # This option appends an extension to the name of your kernel, as viewed by a
 # uname -r/  This also affects any modules built under this kernel label.  This
@@ -248,20 +248,31 @@ boot/kernel/gentoo/use: pcmcia usb madwifi injection
 # boot/kernel/gentoo/packages: pcmcia-cs speedtouch slmodem globespan-adsl hostap-driver hostap-utils ipw2100 ipw2200 fritzcapi fcdsl cryptsetup
 boot/kernel/gentoo/packages: 
 #sys-apps/pcmcia-cs
+=app-admin/genmenu-9999
 sys-apps/pcmciautils
 net-wireless/acx
 net-wireless/at76c503a
+net-wireless/atmel-firmware
+net-wireless/b43-fwcutter
+net-wireless/bcm43xx-fwcutter
 #net-wireless/ieee80211
 net-wireless/ipw2100-firmware
 net-wireless/ipw2200-firmware
-net-wireless/ipw3945
+net-wireless/ipw3945-ucode
+net-wireless/iwl3945-ucode
+net-wireless/iwl4965-ucode
+net-wireless/iwl5000-ucode
+#net-wireless/iwlwifi
 #net-wireless/linux-wlan-ng
 net-wireless/madwifi-ng
+net-wireless/orinoco-fwutils
+#net-wireless/rfswitch
 net-wireless/wpa_supplicant
-#net-wireless/prism54
+net-wireless/prism54-firmware
 #net-wireless/rt2x00
 #net-wireless/rtl8180
-#net-wireless/zd1211
+net-wireless/zd1201-firmware
+net-wireless/zd1211-firmware
 sys-fs/fuse
 sys-fs/ntfs3g
 net-firewall/firehol

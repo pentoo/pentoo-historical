@@ -18,10 +18,10 @@ portage_overlay: /usr/local/portage /usr/portage/local/layman/enlightenment
 
 livecd/use: X livecd -gnome -nls gtk -kde -eds gtk2 cairo -pam firefox gpm dvdr oss mmx sse sse2
 wifi injection
--quicktime qt qt3 -qt4 -cups -spell
+-quicktime qt qt3 -qt4 -cups -spell lua
 png jpeg gif dri svg aac 
 alsa esd gstreamer jack mp3 vorbis wavpack wma
-dvd mpeg ogg rtsp x264 xvid wxwindows
+dvd mpeg ogg rtsp x264 xvid wxwindows sqlite
 #opengl
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
@@ -46,19 +46,20 @@ app-editors/hexedit
 app-editors/nano
 app-editors/ghex
 app-editors/scite
-app-text/epdf
+#app-text/epdf
 app-text/epdfview
 app-forensics/cmospwd
 app-fuzz/Peach
 app-fuzz/bed
 app-fuzz/bss
 app-fuzz/fuzzer-server
+app-fuzz/fusil
 app-fuzz/http-fuzz
 app-fuzz/protos
 app-fuzz/scapy
 app-fuzz/smtp-fuzz
 app-fuzz/smudge
-app-fuzz/snmp-fuzzer
+#app-fuzz/snmp-fuzzer
 app-fuzz/ohrwurm
 app-misc/examine
 app-misc/livecd-tools
@@ -72,16 +73,20 @@ dev-db/oat
 dev-db/sqlat
 dev-db/sqlbf
 #dev-db/sqlinject
+dev-java/jad-bin
 dev-libs/eet
 dev-libs/embryo
 dev-libs/engrave
 dev-libs/libxslt
 dev-libs/openobex
+dev-libs/libxml2
+dev-python/pysqlite
 dev-python/pygtk
 =dev-python/lxml-1.3.6
 dev-util/dialog
 dev-util/e_utils
 dev-util/subversion
+dev-util/insight
 gnome-base/gnome-menus
 media-gfx/scrot
 media-libs/edje
@@ -128,8 +133,8 @@ net-analyzer/nessus
 net-analyzer/nessus-plugins
 net-analyzer/netcat
 net-analyzer/netdiscover
-net-analyzer/netdude
-net-analyzer/net-snmp
+#net-analyzer/netdude
+#net-analyzer/net-snmp+++Replaced-by-onesixtyone
 net-analyzer/netwag
 net-analyzer/netwox
 net-analyzer/ngrep
@@ -138,6 +143,7 @@ net-analyzer/nmap
 net-analyzer/nmbscan
 net-analyzer/ntop
 net-analyzer/ntp-fingerprint
+net-analyzer/onesixtyone
 net-analyzer/p0f
 net-analyzer/packit
 net-analyzer/paketto
@@ -253,6 +259,7 @@ sys-boot/grub
 sys-boot/syslinux
 sys-devel/gettext
 sys-devel/crossdev
+sys-devel/gdb
 sys-fs/device-mapper
 sys-fs/jfsutils
 sys-fs/reiserfsprogs
