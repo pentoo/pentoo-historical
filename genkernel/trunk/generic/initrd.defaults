@@ -72,7 +72,6 @@ CDROOT_DEV=''
 CDROOT_TYPE='auto'
 NEW_ROOT='/newroot'
 CONSOLE='/dev/console'
-MODULESD="mnt/cdrom"
 
 LOOPS='/livecd.loop /zisofs /livecd.squashfs /image.squashfs /livecd.gcloop'
 
