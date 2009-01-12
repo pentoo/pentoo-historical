@@ -40,11 +40,10 @@ longusage() {
   echo "	--symlink		Manage symlinks in /boot for installed images"
   echo "	--no-symlink		Do not manage symlinks"
   echo "	--no-initrdmodules	Don't copy any modules to the initrd"
+  echo "	--all-initrd-modules	Copy all kernel modules to the initrd"
   echo "	--callback=<...>	Run the specified arguments after the"
   echo "				kernel and modules have been compiled"
   echo "	--static		Build a static (monolithic kernel)."
-  echo "	--initramfs		Builds initramfs before kernel and embeds it"
-  echo "				into the kernel."
   echo "  Kernel settings"
   echo "	--kerneldir=<dir>	Location of the kernel sources"
   echo "	--kernel-config=<file>	Kernel configuration file to use for compilation"
@@ -73,6 +72,7 @@ longusage() {
   echo "	--splash=<theme>	Enable framebuffer splash using <theme>"
   echo "	--splash-res=<res>	Select splash theme resolutions to install"
   echo "	--do-keymap-auto	Forces keymap selection at boot"
+  echo "	--no-keymap		Disables keymap selection support"
   echo "	--evms			Include EVMS support"
   echo "				--> 'emerge evms' in the host operating system"
   echo "				first"
@@ -115,6 +115,18 @@ longusage() {
   echo "	--initramfs-overlay=<dir>"
   echo "				Directory structure to include in the initramfs,"
   echo "				only available on 2.6 kernels"
+  echo "	--firmware"
+  echo "				Enable copying of firmware into initramfs"
+  echo "	--firmware-dir=<dir>"
+  echo "				Specify directory to copy firmware from (defaults"
+  echo "				to /lib/firmware)"
+  echo "	--firmware-files=<files>"
+  echo "				Specifies specific firmware files to copy. This"
+  echo "				overrides --firmware-dir. For multiple files,"
+  echo "				separate the filenames with a comma"
+  echo "	--integrated-initramfs"
+  echo "				Build the generated initramfs into the kernel instead of"
+  echo "				keeping it as a separate file"
 }
 
 usage() {
@@ -198,7 +210,12 @@ parse_cmdline() {
 			;;
 		--do-keymap-auto)
 			CMD_DOKEYMAPAUTO=1
+			CMD_KEYMAP=1
 			print_info 2 "CMD_DOKEYMAPAUTO: ${CMD_DOKEYMAPAUTO}"
+			;;
+		--no-keymap)
+			CMD_KEYMAP=0
+			print_info 2 "CMD_KEYMAP: ${CMD_KEYMAP}"
 			;;
 		--evms)
 			CMD_EVMS=1
@@ -209,17 +226,6 @@ parse_cmdline() {
 			print_info 2 "CMD_EVMS: ${CMD_EVMS}"
 			echo
 			print_warning 1 "Please use --evms, as --evms2 is deprecated."
-			;;
-		--unionfs)
-			CMD_UNIONFS=1
-			print_info 2 "CMD_UNIONFS: ${CMD_UNIONFS}"
-			echo
-			print_warning 1 "WARNING: unionfs support is in active development and is not meant for general"
-			print_warning 1 "use."
-			print_warning 1 "Bug Reports without patches/fixes will be ignored."
-			print_warning 1 "Use at your own risk as this could blow up your system."
-			print_warning 1 "This code is subject to change at any time."
-			echo
 			;;
 		--lvm)
 			CMD_LVM=1
@@ -368,6 +374,10 @@ parse_cmdline() {
 			CMD_NOINITRDMODULES=1
 			print_info 2 "CMD_NOINITRDMODULES: ${CMD_NOINITRDMODULES}"
 			;;
+		--all-initrd-modules)
+			CMD_ALLINITRDMODULES=1
+			print_info 2 "CMD_ALLINITRDMODULES: ${CMD_ALLINITRDMODULES}"
+			;;
 		--callback=*)
 			CMD_CALLBACK=`parse_opt "$*"`
 			print_info 2 "CMD_CALLBACK: ${CMD_CALLBACK}/$*"
@@ -375,10 +385,6 @@ parse_cmdline() {
 		--static)
 			CMD_STATIC=1
 			print_info 2 "CMD_STATIC: ${CMD_STATIC}"
-			;;
-		--initramfs)
-			CMD_INITRAMFS=1
-			print_info 2 "CMD_INITRAMFS: ${CMD_INITRAMFS}"
 			;;
 		--tempdir=*)
 			TMPDIR=`parse_opt "$*"`
@@ -465,8 +471,9 @@ parse_cmdline() {
 		--genzimage)
 			KERNEL_MAKE_DIRECTIVE_2='zImage.initrd'
 			KERNEL_BINARY_2='arch/powerpc/boot/zImage.initrd'
-			ENABLE_PEGASOS_HACKS="yes"
-			print_info 2 "ENABLE_PEGASOS_HACKS: ${ENABLE_PEGASOS_HACKS}"
+			CMD_GENZIMAGE="yes"
+#			ENABLE_PEGASOS_HACKS="yes"
+#			print_info 2 "ENABLE_PEGASOS_HACKS: ${ENABLE_PEGASOS_HACKS}"
 			;;
 		--disklabel)
 			CMD_DISKLABEL=1
@@ -475,6 +482,24 @@ parse_cmdline() {
 		--luks)
 			CMD_LUKS=1
 			print_info 2 "CMD_LUKS: ${CMD_LUKS}"
+			;;
+		--firmware)
+			CMD_FIRMWARE=1
+			print_info 2 "CMD_FIRMWARE: ${CMD_FIRMWARE}"
+			;;
+		--firmware-dir=*)
+			CMD_FIRMWARE_DIR=`parse_opt "$*"`
+			CMD_FIRMWARE=1
+			print_info 2 "CMD_FIRMWARE_DIR: ${CMD_FIRMWARE_DIR}"
+			;;
+		--firmware-files=*)
+			CMD_FIRMWARE_FILES=`parse_opt "$*"`
+			CMD_FIRMWARE=1
+			print_info 2 "CMD_FIRMWARE_FILES: ${CMD_FIRMWARE_FILES}"
+			;;
+		--integrated-initramfs)
+			CMD_INTEGRATED_INITRAMFS=1
+			print_info 2 "CMD_INTEGRATED_INITRAMFS=${CMD_INTEGRATED_INITRAMFS}"
 			;;
 		all)
 			BUILD_KERNEL=1

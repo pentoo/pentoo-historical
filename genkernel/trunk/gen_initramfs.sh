@@ -72,25 +72,6 @@ append_blkid(){
 	rm -rf "${TEMP}/initramfs-blkid-temp" > /dev/null
 }
 
-append_unionfs_modules(){
-	compile_unionfs_modules
-}
-
-append_unionfs_tools(){
-	if [ -d "${TEMP}/initramfs-unionfs-tools-temp" ]
-	then
-		rm -r "${TEMP}/initramfs-unionfs-tools-temp/"
-	fi
-	print_info 1 'UNIONFS TOOLS: Adding support (compiling)...'
-	compile_unionfs_utils
-	mkdir -p "${TEMP}/initramfs-unionfs-tools-temp/bin/"
-	/bin/tar -jxpf "${UNIONFS_BINCACHE}" -C "${TEMP}/initramfs-unionfs-tools-temp" ||
-		gen_die "Could not extract unionfs tools binary cache!";
-	cd "${TEMP}/initramfs-unionfs-tools-temp/"
-	find . -print | cpio ${CPIO_ARGS} --append -F "${CPIO}"
-	rm -r "${TEMP}/initramfs-unionfs-tools-temp/"
-}
-
 #append_suspend(){
 #	if [ -d "${TEMP}/initramfs-suspend-temp" ];
 #	then
@@ -120,6 +101,13 @@ append_dmraid(){
 	/bin/tar -jxpf "${DMRAID_BINCACHE}" -C "${TEMP}/initramfs-dmraid-temp" ||
 		gen_die "Could not extract dmraid binary cache!";
 	cd "${TEMP}/initramfs-dmraid-temp/"
+	RAID456=`find . -type f -name raid456.ko`
+	if [ -n "${RAID456}" ]
+	then
+		cd "${RAID456/raid456.ko/}"
+		ln -sf raid456.kp raid45.ko
+		cd "${TEMP}/initramfs-dmraid-temp/"
+	fi
 	find . -print | cpio ${CPIO_ARGS} --append -F "${CPIO}"
 	rm -r "${TEMP}/initramfs-dmraid-temp/"
 }
@@ -231,7 +219,8 @@ append_mdadm(){
 }
 
 append_splash(){
-	if [ -x /usr/bin/splash_geninitramfs ] || [ -x /sbin/splash_geninitramfs ]
+	splash_geninitramfs=`which splash_geninitramfs 2>/dev/null`
+	if [ -x "${splash_geninitramfs}" ]
 	then
 		[ -z "${SPLASH_THEME}" ] && [ -e /etc/conf.d/splash ] && source /etc/conf.d/splash
 		[ -z "${SPLASH_THEME}" ] && SPLASH_THEME=default
@@ -262,6 +251,35 @@ append_overlay(){
 	cd ${INITRAMFS_OVERLAY}
 	find . -print | cpio ${CPIO_ARGS} --append -F "${CPIO}"
 }
+
+append_firmware() {
+	if [ -z "${FIRMWARE_FILES}" -a ! -d "${FIRMWARE_DIR}" ]
+	then
+		gen_die "specified firmware directory (${FIRMWARE_DIR}) does not exist"
+	fi
+	if [ -d "${TEMP}/initramfs-firmware-temp" ]
+	then
+		rm -r "${TEMP}/initramfs-firmware-temp/"
+	fi
+	mkdir -p "${TEMP}/initramfs-firmware-temp/lib/firmware"
+	cd "${TEMP}/initramfs-firmware-temp"
+	if [ -n "${FIRMWARE_FILES}" ]
+	then
+		OLD_IFS=$IFS
+		IFS=","
+		for i in ${FIRMWARE_FILES}
+		do
+			cp -L "${i}" ${TEMP}/initramfs-firmware-temp/lib/firmware/
+		done
+		IFS=$OLD_IFS
+	else
+		cp -a "${FIRMWARE_DIR}"/* ${TEMP}/initramfs-firmware-temp/lib/firmware/
+	fi
+	find . -print | cpio ${CPIO_ARGS} --append -F "${CPIO}" \
+		|| gen_die "appending firmware to cpio"
+	rm -r "${TEMP}/initramfs-firmware-temp/"
+}
+
 print_list()
 {
 	local x
@@ -381,8 +399,11 @@ append_auxilary() {
 	then
 		echo 'MY_HWOPTS="${MY_HWOPTS} keymap"' >> ${TEMP}/initramfs-aux-temp/etc/initrd.defaults
 	fi
-	mkdir -p "${TEMP}/initramfs-aux-temp/lib/keymaps"
-	/bin/tar -C "${TEMP}/initramfs-aux-temp/lib/keymaps" -zxf "${GK_SHARE}/generic/keymaps.tar.gz"
+	if isTrue $CMD_KEYMAP
+	then
+		mkdir -p "${TEMP}/initramfs-aux-temp/lib/keymaps"
+		/bin/tar -C "${TEMP}/initramfs-aux-temp/lib/keymaps" -zxf "${GK_SHARE}/generic/keymaps.tar.gz"
+	fi
 	if isTrue $CMD_SLOWUSB
 	then
 		echo 'MY_HWOPTS="${MY_HWOPTS} slowusb"' >> ${TEMP}/initramfs-aux-temp/etc/initrd.defaults
@@ -442,9 +463,6 @@ create_initramfs() {
 	append_data 'base_layout'
 	append_data 'auxilary'
 	append_data 'busybox' "${BUSYBOX}"
-#	append_data 'devfs' "${DEVFS}"
-#	append_data 'unionfs_modules' "${UNIONFS}"
-	append_data 'unionfs_tools' "${UNIONFS}"
 	append_data 'lvm' "${LVM}"
 	append_data 'dmraid' "${DMRAID}"
 	append_data 'evms' "${EVMS}"
@@ -460,6 +478,11 @@ create_initramfs() {
 	append_data 'blkid' "${DISKLABEL}"
 	append_data 'splash' "${SPLASH}"
 
+	if isTrue "${FIRMWARE}" && [ -n "${FIRMWARE_DIR}" ]
+	then
+		append_data 'firmware'
+	fi
+
 	# This should always be appended last
 	if [ "${INITRAMFS_OVERLAY}" != '' ]
 	then
@@ -469,21 +492,18 @@ create_initramfs() {
 	gzip -9 "${CPIO}"
 	mv -f "${CPIO}.gz" "${CPIO}"
 
-	if [ "${ENABLE_PEGASOS_HACKS}" = 'yes' ]
+	if isTrue "${INTEGRATED_INITRAMFS}"
 	then
-			# Pegasos hack for merging the initramfs into the kernel at compile time
-			cp ${TMPDIR}/initramfs-${KV} ${KERNEL_DIR}/arch/powerpc/boot/ramdisk.image.gz &&
-			rm ${TMPDIR}/initramfs-${KV}
-	elif [ ${BUILD_INITRAMFS} -eq '1' ]
-	then
-		# Mips also mimics Pegasos to merge the initramfs into the kernel
-		cp ${TMPDIR}/initramfs-${KV} ${KERNEL_DIR}/initramfs.cpio.gz
-		gunzip -f ${KERNEL_DIR}/initramfs.cpio.gz
+#		cp ${TMPDIR}/initramfs-${KV} ${KERNEL_DIR}/usr/initramfs_data.cpio.gz
+		mv ${TMPDIR}/initramfs-${KV} ${TMPDIR}/initramfs-${KV}.cpio.gz
+#		sed -i "s|^.*CONFIG_INITRAMFS_SOURCE=.*$|CONFIG_INITRAMFS_SOURCE=\"${TMPDIR}/initramfs-${KV}.cpio.gz\"|" ${KERNEL_DIR}/.config
+		sed -i '/^.*CONFIG_INITRAMFS_SOURCE=.*$/d' ${KERNEL_DIR}/.config
+		echo -e "CONFIG_INITRAMFS_SOURCE=\"${TMPDIR}/initramfs-${KV}.cpio.gz\"\nCONFIG_INITRAMFS_ROOT_UID=0\nCONFIG_INITRAMFS_ROOT_GID=0" >> ${KERNEL_DIR}/.config
 	fi
 
 	if ! isTrue "${CMD_NOINSTALL}"
 	then
-		if [ "${ENABLE_PEGASOS_HACKS}" != 'yes' ]
+		if ! isTrue "${INTEGRATED_INITRAMFS}"
 		then
 			copy_image_with_preserve "initramfs" \
 				"${TMPDIR}/initramfs-${KV}" \

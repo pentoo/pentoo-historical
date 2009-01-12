@@ -49,23 +49,6 @@ create_base_initrd_sys() {
 	echo "/dev/ram0     /           ext2    defaults	0 0" > ${TEMP}/initrd-temp/etc/fstab
 	echo "proc          /proc       proc    defaults    0 0" >> ${TEMP}/initrd-temp/etc/fstab
 
-	if [ "${NODEVFSD}" = '' ]
-	then
-		echo "REGISTER        .*           MKOLDCOMPAT" > ${TEMP}/initrd-temp/etc/devfsd.conf
-		echo "UNREGISTER      .*           RMOLDCOMPAT" >> ${TEMP}/initrd-temp/etc/devfsd.conf
-		echo "REGISTER        .*           MKNEWCOMPAT" >> ${TEMP}/initrd-temp/etc/devfsd.conf
-		echo "UNREGISTER      .*           RMNEWCOMPAT" >> ${TEMP}/initrd-temp/etc/devfsd.conf
-	fi
-
-	# SGI LiveCDs need the following binary (no better place for it than here)
-	# getdvhoff is a DEPEND of genkernel, so it *should* exist
-	if [ ${BUILD_INITRAMFS} -eq '1' ]
-	then
-		[ -e /usr/lib/getdvhoff/getdvhoff ] \
-			&& cp /usr/lib/getdvhoff/getdvhoff ${TEMP}/initrd-temp/bin \
-			|| gen_die "sys-boot/getdvhoff not merged!"
-	fi
-
 	cd ${TEMP}/initrd-temp/dev
 	MAKEDEV std
 	MAKEDEV console
@@ -81,32 +64,6 @@ create_base_initrd_sys() {
 	tar -xjf "${BUSYBOX_BINCACHE}" -C "${TEMP}/initrd-temp/bin" busybox ||
 		gen_die 'Could not extract busybox bincache!'
 	chmod +x "${TEMP}/initrd-temp/bin/busybox"
-
-	# devfsd
-	if [ "${KERN_24}" -eq '1' ]
-	then
-		cp "${DEVFSD_BINCACHE}" "${TEMP}/initrd-temp/bin/devfsd.bz2" || gen_die 'Could not copy devfsd executable from bincache!'
-		bunzip2 "${TEMP}/initrd-temp/bin/devfsd.bz2" || gen_die 'Could not uncompress devfsd!'
-		chmod +x "${TEMP}/initrd-temp/bin/devfsd"
-	fi
-
-	#unionfs modules
-	if [ "${UNIONFS}" -eq '1' ]
-	then
-		print_info 1 'UNIONFS MODULES: Adding support (compiling)...'
-		compile_unionfs_modules
-		/bin/tar -jxpf "${UNIONFS_MODULES_BINCACHE}" -C "${TEMP}/initrd-temp" ||
-			gen_die "Could not extract unionfs modules binary cache!";
-	fi
-	
-	#unionfs utils
-	if [ "${UNIONFS}" -eq '1' ]
-	then
-		print_info 1 'UNIONFS TOOLS: Adding support (compiling)...'
-		compile_unionfs_utils
-		/bin/tar -jxpf "${UNIONFS_BINCACHE}" -C "${TEMP}/initrd-temp" ||
-			gen_die "Could not extract unionfs tools binary cache!";
-	fi
 
 	# DMRAID 
 	if [ "${DMRAID}" -eq '1' ]
@@ -324,8 +281,11 @@ create_initrd_aux() {
 	then
 		echo 'MY_HWOPTS="${MY_HWOPTS} keymap"' >> ${TEMP}/initrd-temp/etc/initrd.defaults
 	fi
-	mkdir -p "${TEMP}/initrd-temp/lib/keymaps"
-	/bin/tar -C "${TEMP}/initrd-temp/lib/keymaps" -zxf "${GK_SHARE}/generic/keymaps.tar.gz"
+	if isTrue $CMD_KEYMAP
+	then
+		mkdir -p "${TEMP}/initrd-temp/lib/keymaps"
+		/bin/tar -C "${TEMP}/initrd-temp/lib/keymaps" -zxf "${GK_SHARE}/generic/keymaps.tar.gz"
+	fi
 	if isTrue $CMD_SLOWUSB
 	then
 		echo 'MY_HWOPTS="${MY_HWOPTS} slowusb"' >> ${TEMP}/initrd-temp/etc/initrd.defaults
@@ -388,10 +348,10 @@ create_initrd() {
 			"initrd-${KNAME}-${ARCH}-${KV}"
 	fi
 
-        if [ "${ENABLE_PEGASOS_HACKS}" = 'yes' ]
-        then
-		# Pegasos hack for merging the initramfs into the kernel at compile time
-		cp ${TMPDIR}/initrd-${KV} ${KERNEL_DIR}/arch/${ARCH}/boot/images/ramdisk.image.gz &&
-		rm ${TMPDIR}/initrd-${KV}
-	fi
+#	if [ "${ENABLE_PEGASOS_HACKS}" = 'yes' ]
+#	then
+#		# Pegasos hack for merging the initramfs into the kernel at compile time
+#		cp ${TMPDIR}/initrd-${KV} ${KERNEL_DIR}/arch/${ARCH}/boot/images/ramdisk.image.gz &&
+#		rm ${TMPDIR}/initrd-${KV}
+#	fi
 }

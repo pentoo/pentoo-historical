@@ -20,6 +20,10 @@ compile_kernel_args() {
 		then
 			ARGS="${ARGS} AS=\"${KERNEL_AS}\""
 		fi
+		if [ -n "${KERNEL_ARCH}" ]
+		then
+			ARGS="${ARGS} ARCH=\"${KERNEL_ARCH}\""
+		fi
 	fi
 	echo -n "${ARGS}"
 }
@@ -182,6 +186,33 @@ reset_args()
 	fi
 }
 
+apply_patches() {
+	util=$1
+	version=$2
+
+	if [ -d "${GK_SHARE}/patches/${util}/${version}" ]
+	then
+		print_info 1 "${util}: >> Applying patches..."
+		for i in ${GK_SHARE}/patches/${util}/${version}/*
+		do
+			patch_success=0
+			for j in `seq 0 5`
+			do
+				patch -p${j} --backup-if-mismatch -f < "${i}" >/dev/null
+				if [ $? = 0 ]
+				then
+					patch_success=1
+					break
+				fi
+			done
+			if [ ${patch_success} != 1 ]
+			then
+#				return 1
+				gen_die "could not apply patch ${i} for ${util}-${version}"
+			fi
+		done
+	fi
+}
 
 compile_generic() {
 	local RET
@@ -305,7 +336,7 @@ compile_kernel() {
 			"System.map" \
 			"System.map-${KNAME}-${ARCH}-${KV}"
 
-		if [ "${ENABLE_PEGASOS_HACKS}" = 'yes' ]
+		if isTrue "${GENZIMAGE}"
 		then
 			copy_image_with_preserve "kernelz" \
 				"${KERNEL_BINARY_2}" \
@@ -316,53 +347,11 @@ compile_kernel() {
 			gen_die "Could not copy the kernel binary to ${TMPDIR}!"
 		cp "System.map" "${TMPDIR}/System.map-${KNAME}-${ARCH}-${KV}" ||
 			gen_die "Could not copy System.map to ${TMPDIR}!"
-		if [ "${ENABLE_PEGASOS_HACKS}" = 'yes' ]
+		if isTrue "${GENZIMAGE}"
 		then
 			cp "${KERNEL_BINARY_2}" "${TMPDIR}/kernelz-${KV}" ||
 				gen_die "Could not copy the kernelz binary to ${TMPDIR}!"
 		fi
-	fi
-}
-
-compile_unionfs_modules() {
-	echo "Nothing to compile, unionfs is in kernel now"
-}
-
-compile_unionfs_utils() {
-	if [ ! -f "${UNIONFS_BINCACHE}" ]
-	then
-		[ -f "${UNIONFS_SRCTAR}" ] ||
-			gen_die "Could not find unionfs source tarball: ${UNIONFS_SRCTAR}!"
-		cd "${TEMP}"
-		rm -rf ${UNIONFS_DIR} > /dev/null
-		rm -rf unionfs* > /dev/null
-		mkdir -p unionfs/sbin
-		/bin/tar -zxpf ${UNIONFS_SRCTAR} ||
-			gen_die 'Could not extract unionfs source tarball!'
-		[ -d "${UNIONFS_DIR}" ] ||
-			gen_die 'Unionfs directory ${UNIONFS_DIR} is invalid!'
-		cd "${UNIONFS_DIR}"
-		print_info 1 'unionfs tools: >> Compiling...'
-		sed -i utils/Makefile -e 's|${CC} -o|${CC} -static -o|g'
-		sed -i Makefile -e 's|${CC} -o|${CC} -static -o|g'
-		compile_generic utils utils
-
-		if [ ! -e "uniondbg" ]; then
-			cd utils
-		fi
-		print_info 1 'unionfs: >> Copying to cache...'
-		strip uniondbg unionctl
-		cp uniondbg ${TEMP}/unionfs/sbin/ || 
-			gen_die 'Could not copy the uniondbg binary to the tmp directory'
-		cp unionctl ${TEMP}/unionfs/sbin/ ||
-			gen_die 'Could not copy the unionctl binary to the tmp directory'
-		cd ${TEMP}/unionfs
-		/bin/tar -cjf "${UNIONFS_BINCACHE}" . ||
-			gen_die 'Could not create unionfs tools binary cache'
-		
-		cd "${TEMP}"
-		rm -rf "${UNIONFS_DIR}" > /dev/null
-		rm -rf unionfs > /dev/null
 	fi
 }
 
@@ -371,25 +360,12 @@ compile_busybox() {
 		gen_die "Could not find busybox source tarball: ${BUSYBOX_SRCTAR}!"
 	[ -f "${BUSYBOX_CONFIG}" ] ||
 		gen_die "Cound not find busybox config file: ${BUSYBOX_CONFIG}!"
-	cd "${TEMP}"
-	rm -rf "${BUSYBOX_DIR}" > /dev/null
-	/bin/tar -jxpf ${BUSYBOX_SRCTAR} ||
-		gen_die 'Could not extract busybox source tarball!'
-	[ -d "${BUSYBOX_DIR}" ] ||
-		gen_die 'Busybox directory ${BUSYBOX_DIR} is invalid!'
-	cp "${BUSYBOX_CONFIG}" "${BUSYBOX_DIR}/.config"
-	sed -i ${BUSYBOX_DIR}/.config -e 's/#\? \?CONFIG_FEATURE_INSTALLER[ =].*/CONFIG_FEATURE_INSTALLER=y/g'
-	cd "${BUSYBOX_DIR}"
-	patch -p1 < "${GK_SHARE}/pkg/busybox-1.1.3+gentoo-mdadm.patch"
-	patch -p1 < "${GK_SHARE}/pkg/busybox-1.1.3+gentoo-mdadm2.patch"
-	print_info 1 'busybox: >> Configuring...'
-	yes '' 2>/dev/null | compile_generic oldconfig utils
 
 	# Delete cache if stored config's MD5 does not match one to be used
-	if [ -f "${BUSYBOX_BINCACHE}" -a -f "${BUSYBOX_CONFIG}" ]
+	if [ -f "${BUSYBOX_BINCACHE}" ]
 	then
-		oldconfig_md5=$(tar -xjf "${BUSYBOX_BINCACHE}" -O .config | md5sum)
-		newconfig_md5=$(md5sum < .config)
+		oldconfig_md5=$(tar -xjf "${BUSYBOX_BINCACHE}" -O .config.gk_orig 2>/dev/null | md5sum)
+		newconfig_md5=$(md5sum < "${BUSYBOX_CONFIG}")
 		if [ "${oldconfig_md5}" != "${newconfig_md5}" ]
 		then
 			print_info 1 "busybox: >> Removing stale cache..."
@@ -401,6 +377,19 @@ compile_busybox() {
 
 	if [ ! -f "${BUSYBOX_BINCACHE}" ]
 	then
+		cd "${TEMP}"
+		rm -rf "${BUSYBOX_DIR}" > /dev/null
+		/bin/tar -jxpf ${BUSYBOX_SRCTAR} ||
+			gen_die 'Could not extract busybox source tarball!'
+		[ -d "${BUSYBOX_DIR}" ] ||
+			gen_die 'Busybox directory ${BUSYBOX_DIR} is invalid!'
+		cp "${BUSYBOX_CONFIG}" "${BUSYBOX_DIR}/.config"
+		cp "${BUSYBOX_CONFIG}" "${BUSYBOX_DIR}/.config.gk_orig"
+		cd "${BUSYBOX_DIR}"
+		apply_patches busybox ${BUSYBOX_VER}
+		print_info 1 'busybox: >> Configuring...'
+		yes '' 2>/dev/null | compile_generic oldconfig utils
+
 		print_info 1 'busybox: >> Compiling...'
 		compile_generic all utils
 		print_info 1 'busybox: >> Copying to cache...'
@@ -408,12 +397,12 @@ compile_busybox() {
 			gen_die 'Busybox executable does not exist!'
 		strip "${TEMP}/${BUSYBOX_DIR}/busybox" ||
 			gen_die 'Could not strip busybox binary!'
-		tar -cj -C "${TEMP}/${BUSYBOX_DIR}" -f "${BUSYBOX_BINCACHE}" busybox .config ||
+		tar -cj -C "${TEMP}/${BUSYBOX_DIR}" -f "${BUSYBOX_BINCACHE}" busybox .config .config.gk_orig ||
 			gen_die 'Could not create the busybox bincache!'
-	fi
 
-	cd "${TEMP}"
-	rm -rf "${BUSYBOX_DIR}" > /dev/null
+		cd "${TEMP}"
+		rm -rf "${BUSYBOX_DIR}" > /dev/null
+	fi
 }
 
 compile_lvm() {
@@ -500,34 +489,6 @@ compile_dmraid() {
 		cd "${TEMP}"
 		rm -rf "${TEMP}/device-mapper" > /dev/null
 		rm -rf "${DMRAID_DIR}" dmraid
-	fi
-}
-
-compile_devfsd() {
-	local ARGS
-	if [ ! -f "${DEVFSD_BINCACHE}" ]
-	then
-		[ ! -f "${DEVFSD_SRCTAR}" ] &&
-			gen_die "Could not find devfsd source tarball: ${DEVFSD_SRCTAR}"
-		cd "${TEMP}"
-		rm -rf "${DEVFSD_DIR}"
-		/bin/tar -jxpf "${DEVFSD_SRCTAR}"
-		[ ! -d "${DEVFSD_DIR}" ] &&
-			gen_die "Devfsd directory ${DEVFSD_DIR} invalid"
-		cd "${DEVFSD_DIR}"
-
-		print_info 1 'devfsd: >> Compiling...'
-		compile_generic 'LDFLAGS=-static' utils
-
-		print_info 1 '        >> Copying to cache...'
-		[ -f "${TEMP}/${DEVFSD_DIR}/devfsd" ] || gen_die 'The devfsd executable does not exist after the compilation of devfsd!'
-		strip "${TEMP}/${DEVFSD_DIR}/devfsd" || gen_die 'Could not strip devfsd!'
-		bzip2 "${TEMP}/${DEVFSD_DIR}/devfsd" || gen_die 'Compression of devfsd failed!'
-		[ -f "${TEMP}/${DEVFSD_DIR}/devfsd.bz2" ] || gen_die 'Could not find compressed devfsd.bz2 binary!'
-		mv "${TEMP}/${DEVFSD_DIR}/devfsd.bz2" "${DEVFSD_BINCACHE}" || gen_die 'Could not move compressed binary to the package cache!'
-
-		cd "${TEMP}"
-		rm -rf "${DEVFSD_DIR}" > /dev/null
 	fi
 }
 

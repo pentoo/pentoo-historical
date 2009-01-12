@@ -1,9 +1,9 @@
 #!/bin/bash
 
 get_KV() {
-	if [ "${CMD_NO_KERNEL_SOURCES}" = '1' -a -e "${CMD_KERNCACHE}" ]
+	if [ "${NO_KERNEL_SOURCES}" = '1' -a -e "${KERNCACHE}" ]
 	then
-		/bin/tar -xj -C ${TEMP} -f ${CMD_KERNCACHE} kerncache.config 
+		/bin/tar -xj -C ${TEMP} -f ${KERNCACHE} kerncache.config 
 		if [ -e ${TEMP}/kerncache.config ]
 		then
 			KERN_24=0
@@ -72,7 +72,6 @@ determine_real_args() {
 	set_config_with_override 2 DEBUGFILE            CMD_DEBUGFILE
 	set_config_with_override 2 KERNEL_DIR           CMD_KERNEL_DIR           "${DEFAULT_KERNEL_SOURCE}"
 	set_config_with_override 1 NO_KERNEL_SOURCES    CMD_NO_KERNEL_SOURCES
-	set_config_with_override 2 KERNCACHE            CMD_KERNCACHE
 	set_config_with_override 2 KNAME                CMD_KERNNAME             "genkernel"
 
 	set_config_with_override 2 MAKEOPTS             CMD_MAKEOPTS             "$DEFAULT_MAKEOPTS"
@@ -99,37 +98,37 @@ determine_real_args() {
 	set_config_with_override 2 MODULESPACKAGE       CMD_MODULESPACKAGE
 	set_config_with_override 2 KERNCACHE            CMD_KERNCACHE
 	set_config_with_override 1 NOINITRDMODULES      CMD_NOINITRDMODULES
+	set_config_with_override 1 ALLINITRDMODULES     CMD_ALLINITRDMODULES
 	set_config_with_override 2 INITRAMFS_OVERLAY    CMD_INITRAMFS_OVERLAY
 	set_config_with_override 1 MOUNTBOOT            CMD_MOUNTBOOT
 	set_config_with_override 1 BUILD_STATIC         CMD_STATIC
-	set_config_with_override 1 BUILD_INITRAMFS      CMD_INITRAMFS
 	set_config_with_override 1 SAVE_CONFIG          CMD_SAVE_CONFIG
  	set_config_with_override 1 SYMLINK              CMD_SYMLINK
 	set_config_with_override 2 INSTALL_MOD_PATH     CMD_INSTALL_MOD_PATH
 	set_config_with_override 1 OLDCONFIG            CMD_OLDCONFIG
 	set_config_with_override 1 LVM                  CMD_LVM
 	set_config_with_override 1 EVMS                 CMD_EVMS
-	set_config_with_override 1 UNIONFS              CMD_UNIONFS
 	set_config_with_override 1 DMRAID               CMD_DMRAID
 	set_config_with_override 1 BUSYBOX              CMD_BUSYBOX              "yes"
-	set_config_with_override 1 DEVFS                CMD_UNDEFINED_CMD        "no"
-	
 	set_config_with_override 1 DISKLABEL            CMD_DISKLABEL
 	set_config_with_override 1 LUKS                 CMD_LUKS
 	set_config_with_override 1 MDADM                CMD_MDADM
+	set_config_with_override 1 FIRMWARE             CMD_FIRMWARE
+	set_config_with_override 2 FIRMWARE_DIR         CMD_FIRMWARE_DIR         "/lib/firmware"
+	set_config_with_override 2 FIRMWARE_FILES       CMD_FIRMWARE_FILES
+	set_config_with_override 1 INTEGRATED_INITRAMFS CMD_INTEGRATED_INITRAMFS
+	set_config_with_override 1 GENZIMAGE            CMD_GENZIMAGE
+	set_config_with_override 1 KEYMAP               CMD_KEYMAP               "yes"
+	set_config_with_override 1 DOKEYMAPAUTO         CMD_DOKEYMAPAUTO
 
-		BOOTDIR=`arch_replace "${BOOTDIR}"`
-		BOOTDIR=${BOOTDIR%/}    # Remove any trailing slash
+	BOOTDIR=`arch_replace "${BOOTDIR}"`
+	BOOTDIR=${BOOTDIR%/}    # Remove any trailing slash
 
 	CACHE_DIR=`arch_replace "${CACHE_DIR}"`
 	BUSYBOX_BINCACHE=`cache_replace "${BUSYBOX_BINCACHE}"`
-	DEVFSD_BINCACHE=`cache_replace "${DEVFSD_BINCACHE}"`
-	DEVFSD_CONF_BINCACHE=`cache_replace "${DEVFSD_CONF_BINCACHE}"`
 	DEVICE_MAPPER_BINCACHE=`cache_replace "${DEVICE_MAPPER_BINCACHE}"`
 	LVM_BINCACHE=`cache_replace "${LVM_BINCACHE}"`
 	DMRAID_BINCACHE=`cache_replace "${DMRAID_BINCACHE}"`
-	UNIONFS_BINCACHE=`cache_replace "${UNIONFS_BINCACHE}"`
-	UNIONFS_MODULES_BINCACHE=`cache_replace "${UNIONFS_MODULES_BINCACHE}"`
 	BLKID_BINCACHE=`cache_replace "${BLKID_BINCACHE}"`
   
 	DEFAULT_KERNEL_CONFIG=`arch_replace "${DEFAULT_KERNEL_CONFIG}"`
@@ -138,8 +137,6 @@ determine_real_args() {
 	DEVICE_MAPPER_BINCACHE=`arch_replace "${DEVICE_MAPPER_BINCACHE}"`
 	LVM_BINCACHE=`arch_replace "${LVM_BINCACHE}"`
 	DMRAID_BINCACHE=`arch_replace "${DMRAID_BINCACHE}"`
-	UNIONFS_BINCACHE=`arch_replace "${UNIONFS_BINCACHE}"`
-	UNIONFS_MODULES_BINCACHE=`arch_replace "${UNIONFS_MODULES_BINCACHE}"`
 	BLKID_BINCACHE=`arch_replace "${BLKID_BINCACHE}"`
 	
 
@@ -157,26 +154,26 @@ determine_real_args() {
 	if [ "${NO_KERNEL_SOURCES}" != "1" ]
 	then
 		if [ ! -d ${KERNEL_DIR} ]
-	then
+		then
 			gen_die "kernel source directory \"${KERNEL_DIR}\" was not found!"
-	fi
+		fi
 	fi
 
 	if [ -z "${KERNCACHE}" ]
 	then
 		if [ "${KERNEL_DIR}" = '' -a "${NO_KERNEL_SOURCES}" != "1" ]
-	then
+		then
 			gen_die 'No kernel source directory!'
-	fi
+		fi
 		if [ ! -e "${KERNEL_DIR}" -a "${NO_KERNEL_SOURCES}" != "1" ]
-	then
+		then
 			gen_die 'No kernel source directory!'
-	fi
+		fi
 	else
 		if [ "${KERNEL_DIR}" = '' ]
 		then
 			gen_die 'Kernel Cache specified but no kernel tree to verify against!'
-	fi
+		fi
 	fi
 
 	# Special case:  If --no-clean is specified on the command line, 
@@ -184,9 +181,9 @@ determine_real_args() {
 	if [ "${CMD_CLEAN}" != '' ]
 	then
 		if ! isTrue ${CLEAN}
-	then
+		then
 			MRPROPER=0
-	fi
+		fi
 	fi
 	
 	if [ -n "${MINKERNPACKAGE}" ]
@@ -203,7 +200,11 @@ determine_real_args() {
 	then
 		mkdir -p `dirname ${KERNCACHE}`
 	fi
+
+	if ! isTrue "${BUILD_INITRD}"
+	then
+		INTEGRATED_INITRAMFS=0
+	fi
 	
 	get_KV
-	UNIONFS_MODULES_BINCACHE=`kv_replace "${UNIONFS_MODULES_BINCACHE}"`
 }

@@ -245,8 +245,8 @@ has_loop() {
 	fi
 	if [ -e '/dev/loop0' -o -e '/dev/loop/0' -a ${PIPESTATUS[1]} ]
 	then
-		# We found devfs or standard dev loop device, assume
-		# loop is compiled into the kernel or the module is loaded
+		# We found a standard dev loop device, assume loop is compiled into the
+		# kernel or the module is loaded
 		return 0
 	else
 		return 1
@@ -486,11 +486,15 @@ set_config_with_override() {
 		if [ -n "${!CfgVar}" ]
 		then
 			Result=${!CfgVar}
+			# we need to set the CMD_* according to configfile...
+			eval ${OverrideVar}=\"${Result}\"
 			print_info 5 "  $CfgVar set in config file to \"${Result}\"."
 		else
 			if [ -n "$Default" ]
 			then
 				Result=${Default}
+				# set OverrideVar to Result, otherwise CMD_* may not be initialized...
+				eval ${OverrideVar}=\"${Result}\"
 				print_info 5 "  $CfgVar defaulted to \"${Result}\"."
 			else
 				print_info 5 "  $CfgVar not set."
@@ -511,3 +515,12 @@ set_config_with_override() {
 	eval ${CfgVar}=\"${Result}\"
 }
 
+check_distfiles() {
+	for i in $BUSYBOX_SRCTAR $DEVICE_MAPPER_SRCTAR $LVM_SRCTAR $DMRAID_SRCTAR $E2FSPROGS_SRCTAR
+	do
+		if [ ! -f "${i}" ]
+		then
+			small_die "Could not find source tarball ${i}. Please refetch."
+		fi
+	done
+}
