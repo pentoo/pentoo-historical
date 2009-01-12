@@ -394,8 +394,13 @@ CONFIG_CHPASSWD=y
 # Linux Ext2 FS Progs
 #
 # CONFIG_CHATTR is not set
+CONFIG_E2FSCK=y
 # CONFIG_FSCK is not set
 # CONFIG_LSATTR is not set
+CONFIG_MKE2FS=y
+CONFIG_TUNE2FS=y
+# CONFIG_E2LABEL is not set
+CONFIG_FINDFS=y
 
 #
 # Linux Module Utilities
