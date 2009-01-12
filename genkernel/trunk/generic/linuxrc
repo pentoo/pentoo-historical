@@ -81,6 +81,25 @@ do
 		looptype\=*)
 			LOOPTYPE=`parse_opt "${x}"`
 		;;
+		aufs)
+			USE_AUFS_NORMAL=1
+		;;
+		aufs\=*)
+			USE_AUFS_NORMAL=1
+			CMD_AUFS=`parse_opt "${x}"`
+			echo ${CMD_AUFS}|grep , >/dev/null 2>&1
+			if [ "$?" -eq '0' ]
+			then
+				UID=`echo ${CMD_AUFS#*,}`
+				AUFS=`echo ${CMD_AUFS%,*}`
+			else
+				AUFS=${CMD_AUFS}
+			fi
+		;;
+		# Allow user to specify the modules location
+		modules\=*)
+			MODULESD=`parse_opt "${x}"`
+      		;;
 		# Start Volume manager options 
 		dolvm)
 			USE_LVM_NORMAL=1
@@ -250,15 +269,25 @@ then
 fi
 
 mkdir -p "${NEW_ROOT}"
-CHROOT="${NEW_ROOT}"
+setup_aufs
+
+if [ "${USE_AUFS_NORMAL}" -eq '1' ]
+then
+	CHROOT=${UNION}
+else
+	CHROOT=${NEW_ROOT}
+fi
 
 # Run debug shell if requested
 rundebugshell
 
 if [ "${CDROOT}" = '1' ]
 then
-	good_msg "Making tmpfs for ${NEW_ROOT}"
-	mount -t tmpfs tmpfs "${NEW_ROOT}"
+	if [ ! "${USE_AUFS_NORMAL}" -eq '1' ]
+	then
+		good_msg "Making tmpfs for ${NEW_ROOT}"
+		mount -t tmpfs tmpfs ${NEW_ROOT}
+	fi
 	
 	for i in dev mnt mnt/cdrom mnt/livecd mnt/key tmp tmp/.initrd mnt/gentoo sys
 	do
@@ -512,6 +541,24 @@ then
 		fi
 	fi
 
+	if [ "${USE_AUFS_NORMAL}" -eq '1' ]
+	then
+		union_insert_dir ${UNION} ${NEW_ROOT}/${FS_LOCATION}
+		
+		# Make sure fstab notes livecd is mounted ro.  Makes system skip remount which fails on aufs dirs.
+		sed -e 's|\(.*\s/\s*tmpfs\s*\)defaults\(.*\)|\1defaults,ro\2|' /${UNION}/etc/fstab > /${UNION}/etc/fstab.new
+		mv /${UNION}/etc/fstab.new /${UNION}/etc/fstab
+		warn_msg "Adding all modules in $MODULESD/modules/"
+		if [ "${MODULESD}" = "mnt/cdrom" ]
+		then
+			union_insert_modules mnt/cdrom
+		else
+			mkdir ${NEW_ROOT}/mnt/modulesd
+			mount "${MODULESD}" ${NEW_ROOT}/mnt/modulesd
+			union_insert_modules ${NEW_ROOT}/mnt/modulesd
+		fi
+	fi
+	
 	# Unpacking additional packages from NFS mount
 	# This is useful for adding kernel modules to /lib
 	# We do this now, so that additional packages can add whereever they want.
@@ -528,56 +575,57 @@ then
 		fi
 	fi
 
-	
-	good_msg "Copying read-write image contents to tmpfs"
-	# Copy over stuff that should be writable
-	(cd "${NEW_ROOT}/${FS_LOCATION}"; cp -a ${ROOT_TREES} "${NEW_ROOT}")
+	if [ ! "${USE_AUFS_NORMAL}" -eq '1' ]
+		good_msg "Copying read-write image contents to tmpfs"
+		# Copy over stuff that should be writable
+		(cd "${NEW_ROOT}/${FS_LOCATION}"; cp -a ${ROOT_TREES} "${NEW_ROOT}")
 
-	# Now we do the links.
-	for x in ${ROOT_LINKS}
-	do
-		if [ -L "${NEW_ROOT}/${FS_LOCATION}/${x}" ]
-		then
-			ln -s "`readlink ${NEW_ROOT}/${FS_LOCATION}/${x}`" "${x}" 2>/dev/null
-		else
-			# List all subdirectories of x
-			find "${NEW_ROOT}/${FS_LOCATION}/${x}" -type d 2>/dev/null | while read directory
-			do
-				# Strip the prefix of the FS_LOCATION
-				directory="${directory#${NEW_ROOT}/${FS_LOCATION}/}"
+		# Now we do the links.
+		for x in ${ROOT_LINKS}
+		do
+			if [ -L "${NEW_ROOT}/${FS_LOCATION}/${x}" ]
+			then
+				ln -s "`readlink ${NEW_ROOT}/${FS_LOCATION}/${x}`" "${x}" 2>/dev/null
+			else
+				# List all subdirectories of x
+				find "${NEW_ROOT}/${FS_LOCATION}/${x}" -type d 2>/dev/null | while read directory
+				do
+					# Strip the prefix of the FS_LOCATION
+					directory="${directory#${NEW_ROOT}/${FS_LOCATION}/}"
 
-				# Skip this directory if we already linked a parent directory
-				if [ "${curent_parrent}" != '' ]; then
-					var=`echo "${directory}" | grep "^${curent_parrent}"`
-					if [ "${var}" != '' ]; then
-						continue
-					fi
-				fi
-				# Test if the directory exists already
-				if [ -e "/${NEW_ROOT}/${directory}" ]
-				then
-					# It does exist, link all the individual files
-					for file in `ls /${NEW_ROOT}/${FS_LOCATION}/${directory}`
-					do
-					if [ ! -d "/${NEW_ROOT}/${FS_LOCATION}/${directory}/${file}" ] && [ ! -e "${NEW_ROOT}/${directory}/${file}" ]; then
-							ln -s "/${FS_LOCATION}/${directory}/${file}" "${directory}/${file}" 2> /dev/null
+					# Skip this directory if we already linked a parent directory
+					if [ "${curent_parrent}" != '' ]; then
+						var=`echo "${directory}" | grep "^${curent_parrent}"`
+						if [ "${var}" != '' ]; then
+							continue
 						fi
-					done
-				else
-					# It does not exist, make a link to the livecd
-					ln -s "/${FS_LOCATION}/${directory}" "${directory}" 2>/dev/null
-					current_parent="${directory}"
-				fi
-			done
-		fi
-	done
+					fi
+					# Test if the directory exists already
+					if [ -e "/${NEW_ROOT}/${directory}" ]
+					then
+						# It does exist, link all the individual files
+						for file in `ls /${NEW_ROOT}/${FS_LOCATION}/${directory}`
+						do
+						if [ ! -d "/${NEW_ROOT}/${FS_LOCATION}/${directory}/${file}" ] && [ ! -e "${NEW_ROOT}/${directory}/${file}" ]; then
+								ln -s "/${FS_LOCATION}/${directory}/${file}" "${directory}/${file}" 2> /dev/null
+							fi
+						done
+					else
+						# It does not exist, make a link to the livecd
+						ln -s "/${FS_LOCATION}/${directory}" "${directory}" 2>/dev/null
+						current_parent="${directory}"
+					fi
+				done
+			fi
+		done
 
-	if [ "${DO_slowusb}" ] || [ "${FORCE_slowusb}" ]
-	then
-		sleep 10
+		if [ "${DO_slowusb}" ] || [ "${FORCE_slowusb}" ]
+		then
+			sleep 10
+		fi
+		mkdir initrd proc tmp sys 2>/dev/null
+		chmod 1777 tmp
 	fi
-	mkdir initrd proc tmp sys 2>/dev/null
-	chmod 1777 tmp
 
 	#UML=`cat /proc/cpuinfo|grep UML|sed -e 's|model name.*: ||'`
 	#if [ "${UML}" = 'UML' ]
@@ -594,6 +642,12 @@ then
 	then
 		sleep 10
 	fi
+else
+	if [ "${USE_AUFS_NORMAL}" -eq '1' ]
+	then
+		union_insert_dir ${UNION} ${NEW_ROOT}
+		mkdir -p ${UNION}/tmp/.initrd
+	fi
 fi
 
 # Execute script on the cdrom just before boot to update things if necessary
@@ -606,6 +660,35 @@ then
 fi
 
 verbose_kmsg
+
+f [ "${USE_AUFS_NORMAL}" -eq '1' ]
+then
+	mkdir -p /${CHROOT}/.unions/memory 2>/dev/null
+	mount -o move /memory /${CHROOT}/.unions/memory || echo '*: Failed to move aufs /memory into the system root!'
+	for i in tmp var/tmp mnt/gentoo mnt/livecd
+	do
+		mkdir -p ${CHROOT}/$i
+		chmod 755 ${CHROOT}/$i
+	done
+	# This will prevent from putting junk on the CHANGESDEV
+	mkdir -p ${CHROOT}/usr/portage/distfiles
+	mount -t tmpfs tmpfs ${CHROOT}/var/tmp
+	mount -t tmpfs tmpfs ${CHROOT}/tmp
+	mount -t tmpfs tmpfs ${CHROOT}/usr/portage/distfiles
+	warn_msg "/tmp /var/tmp /usr/portage/distfiles are mounted in ram"
+	warn_msg "consider saving important files elsewhere..."
+	read -t 3 UNUSEDVAL
+	mount -o bind ${NEW_ROOT}/mnt/cdrom ${CHROOT}/mnt/cdrom
+	mount -o bind ${NEW_ROOT}/mnt/livecd ${CHROOT}/mnt/livecd
+	if [ -e $MEMORY/keyboard -a "${CDROOT}" -eq '1' ]
+	then
+		cp $MEMORY/keyboard ${CHROOT}/etc/sysconfig/keyboard
+	elif [ -e /etc/sysconfig/keyboard -a "${CDROOT}" -eq '1' ]
+	then
+		mkdir -p ${NEW_ROOT}/etc/sysconfig/
+		cp /etc/sysconfig/keyboard ${CHROOT}/etc/sysconfig/keyboard
+	fi
+fi
 
 # There used to be some initrd/2.4 code here, but it's gone now :
 echo -ne "${GOOD}>>${NORMAL}${BOLD} Booting (initramfs)${NORMAL}"
