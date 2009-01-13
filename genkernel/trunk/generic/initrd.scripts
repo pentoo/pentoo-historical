@@ -116,7 +116,7 @@ findmediamount() {
 #				else
 #					mount -r -t auto ${x} ${mntdir} &>/dev/null
 #				fi
-				mount -r -t ${CDROOT_TYPE} ${x} ${mntdir} >/dev/null 2>&1
+				mount -t ${CDROOT_TYPE} ${x} ${mntdir} >/dev/null 2>&1
 				if [ "$?" = '0' ]
 				then
 					# Check for the media
@@ -239,6 +239,40 @@ union_insert_modules() {
 		mount -o loop,ro ${module} ${MEMORY}/modules/`basename ${module} .lzm`
 		union_insert_dir $UNION ${MEMORY}/modules/`basename ${module} .lzm`
 	done
+}
+
+# Function to create an ext2 fs on $CHANGESDEV, $CHANGESMNT mountpoint
+create_changefs() {
+	local size
+	while [ 1 ]
+	do
+		read -p '<< Size of file (Enter for default 256 Mb): ' size
+		if [ -z "$size" ]; then
+			let size=256
+		fi
+		let size="$size"
+		if [ $size -lt 16 ]
+		then
+			bad_msg "Please give a size between 16 and 512 Mb"
+		elif [ $size -gt 1024 ]
+		then
+			bad_msg "Please give a size between 16 and 1024 Mb"
+		else
+			dd if=/dev/zero of=$CHANGESMNT/livecd.aufs bs=1M count=$size
+			if [ $? = '0' ]
+			then
+				good_msg "Creation of livecd.aufs, $size Mb on $CHANGESDEV successful, formatting it ext2"
+				mke2fs -F $CHANGESMNT/livecd.aufs
+				break
+			else
+				rm -f $CHANGESMNT/livecd.aufs
+				bad_msg "Unable to create livecd.aufs on $CHANGESDEV of $size Mb"
+				bad_msg "Please give a size between 16 and 512 Mb"
+				bad_msg "Also check if your disk is full or read-only ?"
+			fi
+		fi
+	done
+	return 0
 }
 
 setup_aufs() {
@@ -720,7 +754,7 @@ chooseKeymap() {
 #		fi
 		mkdir -p /etc/sysconfig
 #		echo "XKEYBOARD=${xkeymap}" > /etc/sysconfig/keyboard
-		echo "XKEYBOARD=${keymap}" > /etc/sysconfig/keyboard
+		echo "XKEYBOARD=\"${keymap}\"" > /etc/sysconfig/keyboard
 	elif [ -z "${keymap}" ]
 	then
 		echo
