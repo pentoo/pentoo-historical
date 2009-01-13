@@ -526,7 +526,7 @@ compile_device_mapper() {
 }
 
 compile_e2fsprogs() {
-	if [ ! -f "${BLKID_BINCACHE}" ]
+	if [ ! -f "${E2FSPROGS_BINCACHE}" ]
 	then
 		[ ! -f "${E2FSPROGS_SRCTAR}" ] &&
 			gen_die "Could not find e2fsprogs source tarball: ${E2FSPROGS_SRCTAR}. Please place it there, or place another version, changing /etc/genkernel.conf as necessary!"
@@ -539,19 +539,38 @@ compile_e2fsprogs() {
 		print_info 1 'e2fsprogs: >> Configuring...'
 		./configure  --with-ldopts=-static >> ${LOGFILE} 2>&1 ||
 			gen_die 'Configuring e2fsprogs failed!'
-		print_info 1 'e2fsprogs: >> Compiling...'
-		MAKE=${UTILS_MAKE} compile_generic "" ""
-		print_info 1 'blkid: >> Copying to cache...'
-		[ -f "${TEMP}/${E2FSPROGS_DIR}/misc/blkid" ] ||
-			gen_die 'Blkid executable does not exist!'
-		strip "${TEMP}/${E2FSPROGS_DIR}/misc/blkid" ||
-			gen_die 'Could not strip blkid binary!'
-		bzip2 "${TEMP}/${E2FSPROGS_DIR}/misc/blkid" ||
-			gen_die 'bzip2 compression of blkid failed!'
-		mv "${TEMP}/${E2FSPROGS_DIR}/misc/blkid.bz2" "${BLKID_BINCACHE}" ||
-			gen_die 'Could not copy the blkid binary to the package directory, does the directory exist?'
+		print_info 1 'e2fsprogs: >> Compiling libs...'
+		#MAKE=${UTILS_MAKE} compile_generic "" ""
+		make libs >> ${LOGFILE} 2>&1 ||
+			gen_die 'Compiling e2fsprogs libs failed!'
+		print_info 1 'e2fsprogs: >> Compiling e2fsck...'
+		cd "${TEMP}/${E2FSPROGS_DIR}/e2fsck"
+		make e2fsck.static >> ${LOGFILE} 2>&1 ||
+			gen_die 'Compiling static e2fsck failed!'
+		cd "${TEMP}/${E2FSPROGS_DIR}/misc"
+		print_info 1 'e2fsprogs: >> Compiling mke2fs...'
+		make mke2fs.static >> ${LOGFILE} 2>&1 ||
+			gen_die 'Compiling static mke2fs failed!'
+		cd "${TEMP}/${E2FSPROGS_DIR}"
+		print_info 1 'e2fsprogs: >> Copying to cache...'
+		[ -f "${TEMP}/${E2FSPROGS_DIR}/misc/mke2fs.static" ] ||
+			gen_die 'mke2fs executable does not exist!'
+		[ -f "${TEMP}/${E2FSPROGS_DIR}/e2fsck/e2fsck.static" ] ||
+			gen_die 'e2fsck executable does not exist!'
+		strip "${TEMP}/${E2FSPROGS_DIR}/misc/mke2fs.static" "${TEMP}/${E2FSPROGS_DIR}/e2fsck/e2fsck.static" ||
+			gen_die 'Could not strip e2fs binaries!'
+
+		mkdir "${TEMP}/e2fsprogs"
+		mkdir "${TEMP}/e2fsprogs/sbin"
+		install -m 0755 -s misc/mke2fs.static "${TEMP}/e2fsprogs/sbin/mke2fs"
+		install -m 0755 -s e2fsck/e2fsck.static "${TEMP}/e2fsprogs/sbin/e2fsck"
+		print_info 1 '      >> Copying to bincache...'
+		cd "${TEMP}/e2fsprogs"
+		/bin/tar -cjf "${E2FSPROGS_BINCACHE}" sbin/ ||
+			gen_die 'Could not create binary cache'
 
 		cd "${TEMP}"
+		rm -rf "${TEMP}/e2fsprogs" > /dev/null
 		rm -rf "${E2FSPROGS_DIR}" > /dev/null
 	fi
 }

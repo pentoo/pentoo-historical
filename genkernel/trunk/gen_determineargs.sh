@@ -129,7 +129,7 @@ determine_real_args() {
 	DEVICE_MAPPER_BINCACHE=`cache_replace "${DEVICE_MAPPER_BINCACHE}"`
 	LVM_BINCACHE=`cache_replace "${LVM_BINCACHE}"`
 	DMRAID_BINCACHE=`cache_replace "${DMRAID_BINCACHE}"`
-	BLKID_BINCACHE=`cache_replace "${BLKID_BINCACHE}"`
+	E2FSPROGS_BINCACHE=`cache_replace "${E2FSPROGS_BINCACHE}"`
   
 	DEFAULT_KERNEL_CONFIG=`arch_replace "${DEFAULT_KERNEL_CONFIG}"`
 	BUSYBOX_CONFIG=`arch_replace "${BUSYBOX_CONFIG}"`
@@ -137,7 +137,7 @@ determine_real_args() {
 	DEVICE_MAPPER_BINCACHE=`arch_replace "${DEVICE_MAPPER_BINCACHE}"`
 	LVM_BINCACHE=`arch_replace "${LVM_BINCACHE}"`
 	DMRAID_BINCACHE=`arch_replace "${DMRAID_BINCACHE}"`
-	BLKID_BINCACHE=`arch_replace "${BLKID_BINCACHE}"`
+	E2FSPROGS_BINCACHE=`arch_replace "${E2FSPROGS_BINCACHE}"`
 	
 
 	if [ "${CMD_BOOTLOADER}" != '' ]

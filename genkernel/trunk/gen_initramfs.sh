@@ -57,19 +57,20 @@ append_busybox() {
 	rm -rf "${TEMP}/initramfs-busybox-temp" > /dev/null
 }
 
-append_blkid(){
-	if [ -d "${TEMP}/initramfs-blkid-temp" ]
+append_e2fsprogs(){
+	if [ -d "${TEMP}/initramfs-e2fsprogs-temp" ]
 	then
-		rm -r "${TEMP}/initramfs-blkid-temp/"
+		rm -r "${TEMP}/initramfs-e2fsprogs-temp/"
 	fi
+	print_info 1 'E2FSPROGS: Adding support (compiling binaries)...'
+	compile_e2fsprogs
 	cd ${TEMP}
-	mkdir -p "${TEMP}/initramfs-blkid-temp/bin/"
-	[ "${DISKLABEL}" -eq '1' ] && { /bin/bzip2 -dc "${BLKID_BINCACHE}" > "${TEMP}/initramfs-blkid-temp/bin/blkid" ||
-		gen_die "Could not extract blkid binary cache!"; }
-	chmod a+x "${TEMP}/initramfs-blkid-temp/bin/blkid"
-	cd "${TEMP}/initramfs-blkid-temp/"
+	mkdir -p "${TEMP}/initramfs-e2fsprogs-temp/"
+	/bin/tar -jxpf "${E2FSPROGS_BINCACHE}" -C "${TEMP}/initramfs-e2fsprogs-temp/" ||
+		gen_die "Could not extract e2fsprogs binary cache!"
+	cd "${TEMP}/initramfs-e2fsprogs-temp/"
 	find . -print | cpio ${CPIO_ARGS} --append -F "${CPIO}"
-	rm -rf "${TEMP}/initramfs-blkid-temp" > /dev/null
+	rm -rf "${TEMP}/initramfs-e2fsprogs-temp" > /dev/null
 }
 
 #append_suspend(){
@@ -463,6 +464,7 @@ create_initramfs() {
 	append_data 'base_layout'
 	append_data 'auxilary'
 	append_data 'busybox' "${BUSYBOX}"
+	append_data 'e2fsprogs'
 	append_data 'lvm' "${LVM}"
 	append_data 'dmraid' "${DMRAID}"
 	append_data 'evms' "${EVMS}"
