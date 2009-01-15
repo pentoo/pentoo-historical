@@ -669,7 +669,11 @@ detect_sbp2_devices() {
 }
 
 setup_keymap() {
-	if [ "${DO_keymap}" ]
+	if [ -e $MEMORY/keyboard ]
+	then
+		. $MEMORY/keyboard
+		loadkmap < /lib/keymaps/${XKEYBOARD}.map
+	elif [ "${DO_keymap}" ]
 	then
 		if [ ! -e /dev/vc/0 -a ! -e /dev/tty0 ]
 		then
@@ -681,8 +685,11 @@ setup_keymap() {
 		[ -f /lib/keymaps/keymapList ] && chooseKeymap
 
 		[ "${DEVBIND}" = '1' ] && umount /dev
-		
-		if [ -e /etc/sysconfig/keyboard -a "${CDROOT}" -eq '1' ]
+
+		if [ -e /etc/sysconfig/keyboard -a "${USE_AUFS_NORMAL}" -eq '1' ]
+		then
+			cp /etc/sysconfig/keyboard $MEMORY
+		elif [ -e /etc/sysconfig/keyboard -a "${CDROOT}" -eq '1' ]
 		then
 			mkdir -p ${NEW_ROOT}/etc/sysconfig/
 			cp /etc/sysconfig/keyboard ${NEW_ROOT}/etc/sysconfig/keyboard
@@ -759,6 +766,7 @@ chooseKeymap() {
 	then
 		echo
 		good_msg "Keeping default keymap"
+		echo "XKEYBOARD=us" > /etc/sysconfig/keyboard
 	else
 		bad_msg "Sorry, but keymap ''${keymap}'' is invalid!"
 		unset keymap

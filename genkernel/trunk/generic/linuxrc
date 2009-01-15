@@ -266,8 +266,6 @@ setup_md_device
 # Scan volumes
 startVolumes
 
-setup_keymap
-
 # Initialize LUKS root device except for livecd's
 if [ "${CDROOT}" != 1 ]
 then
@@ -289,6 +287,8 @@ then
 else
 	CHROOT=${NEW_ROOT}
 fi
+
+setup_keymap
 
 # Run debug shell if requested
 rundebugshell
