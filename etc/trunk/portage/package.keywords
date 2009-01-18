@@ -265,3 +265,8 @@ net-wireless/afrag ~x86
 net-wireless/mdk ~x86
 net-wireless/ska ~x86
 dev-ruby/wxruby ~x86
+
+##2.6.29 and beyond wifi regdomain stuff
+net-wireless/iw
+net-wireless/crda
+net-wireless/wireless-regdb
