@@ -1,0 +1,14 @@
+#!/bin/bash
+
+xhost +
+sudo su - -c "rm -rf installer*; wget http://dev.gentoo.org/~agaffney/gli/snapshots/installer-\$(wget -O - http://dev.gentoo.org/~agaffney/gli/ 2>/dev/null | grep -e 'installer-' | sed -e 's:^.\+>installer-::' -e 's:\.tar\.bz2.\+$::').tar.bz2; tar -xjf \$(ls -1t installer-*.tar.bz2 | head -n 1); cd installer/src/fe/gtk; env DISPLAY=:0.0 ./gtkfe.py"
+
+#sudo su -
+
+#DATE=`wget -O - http://dev.gentoo.org/~agaffney/gli/ 2>/dev/null | grep -e 'installer-' | sed -e 's:^.\+>installer-::' -e 's:\.tar\.bz2.\+$::'`
+#wget http://dev.gentoo.org/~agaffney/gli/snapshots/installer-${DATE}.tar.bz2
+#tar -xjf installer-${DATE}.tar.bz2
+
+#export DISPLAY=:0.0
+#cd installer/src/fe/gtk
+#./gtkfe.py

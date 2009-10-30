@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2004 Gentoo Technologies, Inc.
+  $Header: /var/cvsroot/gentoo/src/installer/src/tests/gli_test_profile.xml,v 1.2 2004/02/15 02:11:27 esammer Exp $
+-->
+
+<gli-profile>
+
+	<time-zone>GMT</time-zone>
+
+</gli-profile>
