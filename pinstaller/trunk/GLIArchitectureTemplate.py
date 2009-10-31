@@ -328,7 +328,7 @@ class ArchitectureTemplate:
 
 		if GLIUtility.is_file(self._chroot_dir + "/etc/X11"):
 			# Copy the xorg.conf from the LiveCD if they installed xorg-x11
-			exitstatus = GLIUtility.spawn("cp /root/xorg.conf " + self._chroot_dir + "/etc/X11/xorg.conf")
+			exitstatus = GLIUtility.spawn("cp /etc/X11/xorg.conf " + self._chroot_dir + "/etc/X11/xorg.conf")
 			if not GLIUtility.exitsuccess(exitstatus):
 				self._logger.log("Could NOT copy the xorg configuration from the livecd to the new system!")
 			else:

@@ -423,12 +423,12 @@ class x86ArchitectureTemplate(ArchitectureTemplate):
 		self.build_mode = self._install_profile.get_kernel_build_method()
 		self._gather_grub_drive_info()
 		root = self._chroot_dir
-		exitstatus2, kernel_names = GLIUtility.spawn("ls -1 --color=no " + root + "/boot/pentoo", return_output=True)
+		exitstatus2, kernel_names = GLIUtility.spawn("ls -1 --color=no " + root + "/boot/kernel-*", return_output=True)
 		self._logger.log("Output of Kernel Names:\n"+kernel_names)
 		if not GLIUtility.exitsuccess(exitstatus2):
 			raise GLIException("BootloaderError", 'fatal', '_configure_grub', "Error listing the kernels in /boot")
 		if self.build_mode == "genkernel" or self._install_profile.get_kernel_source_pkg() == "livecd-kernel":
-			exitstatus3, initrd_names = GLIUtility.spawn("ls -1 --color=no " + root + "/boot/pentoo.igz", return_output=True)
+			exitstatus3, initrd_names = GLIUtility.spawn("ls -1 --color=no " + root + "/boot/init*", return_output=True)
 			self._logger.log("Output of Initrd Names:\n"+initrd_names)
 		if not GLIUtility.exitsuccess(exitstatus3):
 			raise GLIException("BootloaderError", 'fatal', '_configure_grub', "Error listing the initrds")
