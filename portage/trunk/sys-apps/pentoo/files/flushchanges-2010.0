@@ -5,7 +5,7 @@
 DST="/mnt/cdrom/modules"
 CHANGESDIR="/.unions/memory/aufs_changes/default/"
 
-[ -e /sbin/functions.sh ] && . /sbin/functions.sh
+[ -e /lib/rc/sh/functions.sh ] && . /lib/rc/sh/functions.sh
 
 usage ()
 {

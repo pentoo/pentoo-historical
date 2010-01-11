@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source /sbin/functions.sh
+source /lib/rc/sh/functions.sh
 mkdir -p /modules/
 
 TMPDIR="/tmp/rootfs-$$"
