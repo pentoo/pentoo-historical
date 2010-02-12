@@ -73,6 +73,22 @@ append_e2fsprogs(){
 	rm -rf "${TEMP}/initramfs-e2fsprogs-temp" > /dev/null
 }
 
+append_gnupg(){
+        if [ -d "${TEMP}/initramfs-gnupg-temp" ]
+        then
+                rm -r "${TEMP}/initramfs-gnupg-temp/"
+        fi
+        print_info 1 'GNUPG: Adding support (compiling binaries)...'
+        compile_gnupg
+        cd ${TEMP}
+        mkdir -p "${TEMP}/initramfs-gnupg-temp/"
+        /bin/tar -jxpf "${E2FSPROGS_BINCACHE}" -C "${TEMP}/initramfs-gnupg-temp/" ||
+                gen_die "Could not extract gnupg binary cache!"
+        cd "${TEMP}/initramfs-gnupg-temp/"
+        find . -print | cpio ${CPIO_ARGS} --append -F "${CPIO}"
+        rm -rf "${TEMP}/initramfs-gnupg-temp" > /dev/null
+}
+
 #append_suspend(){
 #	if [ -d "${TEMP}/initramfs-suspend-temp" ];
 #	then
@@ -465,6 +481,7 @@ create_initramfs() {
 	append_data 'auxilary'
 	append_data 'busybox' "${BUSYBOX}"
 	append_data 'e2fsprogs'
+	append_data 'gnupg'
 	append_data 'lvm' "${LVM}"
 	append_data 'dmraid' "${DMRAID}"
 	append_data 'evms' "${EVMS}"
