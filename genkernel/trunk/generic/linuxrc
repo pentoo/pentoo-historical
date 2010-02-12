@@ -199,6 +199,13 @@ do
 		swap_keydev\=*)
 			CRYPT_SWAP_KEYDEV=`parse_opt "${x}"`
 		;;
+		root_gpg\=*)
+			GPG_ROOT_KEY=`parse_opt "${x}"`
+			GPG_SWAP_KEY=`parse_opt "${x}"`
+		;;
+		swap_gpg\=*)
+			GPG_SWAP_KEY=`parse_opt "${x}"`
+		;;
 		real_resume\=*)
 			REAL_RESUME=`parse_opt "${x}"`
 		;;

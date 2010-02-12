@@ -863,7 +863,12 @@ openLUKS() {
 			;;
 	esac
 
-	eval local LUKS_DEVICE='"${CRYPT_'${TYPE}'}"' LUKS_NAME="$1" LUKS_KEY='"${CRYPT_'${TYPE}'_KEY}"' LUKS_KEYDEV='"${CRYPT_'${TYPE}'_KEYDEV}"'
+	if [ -z "${CRYPT_ROOT_KEY}" ]
+	then
+		eval local LUKS_DEVICE='"${CRYPT_'${TYPE}'}"' LUKS_NAME="$1" LUKS_KEY='"${CRYPT_'${TYPE}'_KEY}"' LUKS_KEYDEV='"${CRYPT_'${TYPE}'_KEYDEV}"'
+	else
+		eval local LUKS_DEVICE='"${CRYPT_'${TYPE}'}"' LUKS_NAME="$1" LUKS_KEY='"${GPG_'${TYPE}'_KEY}"' LUKS_KEYDEV='"${CRYPT_'${TYPE}'_KEYDEV}"'
+	fi
 	local DEV_ERROR=0 KEY_ERROR=0 KEYDEV_ERROR=0
 	local mntkey="/mnt/key/" cryptsetup_options=''
 
@@ -957,7 +962,12 @@ openLUKS() {
 					cryptsetup_options="-d ${mntkey}${LUKS_KEY}"
 				fi
 				# At this point, keyfile or not, we're ready!
-				crypt_filter "cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
+				if [ -z "${CRYPT_ROOT_KEY}" ]
+				then
+					crypt_filter "cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
+				else
+					crypt_filter "gpg ${cryptsetup_options} 2>/dev/null | cryptsetup luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
+				fi
 				if [ $? -eq 0 ]
 				then
 					good_msg "LUKS device ${LUKS_DEVICE} opened" ${CRYPT_SILENT}
