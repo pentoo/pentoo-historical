@@ -483,6 +483,11 @@ parse_cmdline() {
 			CMD_LUKS=1
 			print_info 2 "CMD_LUKS: ${CMD_LUKS}"
 			;;
+		--gpg=*)
+			CMD_GPG=1
+			CMD_GPG_KEY=`parse_opt "$*"`
+			print_info 2 "CMD_GPG_KEY: ${CMD_GPG_KEY}"
+			;;
 		--firmware)
 			CMD_FIRMWARE=1
 			print_info 2 "CMD_FIRMWARE: ${CMD_FIRMWARE}"
