@@ -419,9 +419,6 @@ append_auxilary() {
 				rm -f "${TEMP}/initramfs-aux-temp/bin/gpg"
 				cp /usr/bin/gpg "${TEMP}/initramfs-aux-temp/bin/gpg"
 				chmod +x "${TEMP}/initramfs-aux-temp/bin/gpg"
-				rm -f "${TEMP}/initramfs-aux-temp/.gnupg"
-				mkdir -p "${TEMP}/initramfs-aux-temp/.gnupg/"
-				[ -e ${GPG_KEY} ] && cp "${GPG_KEY}" ${TEMP}/initramfs-aux-temp/.gnupg/
 			fi
 			else
 				print_info 1 "GPG support requires static gpg at /usr/bin/gpg"
