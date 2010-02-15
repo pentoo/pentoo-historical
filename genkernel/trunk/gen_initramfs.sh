@@ -419,7 +419,6 @@ append_auxilary() {
 				rm -f "${TEMP}/initramfs-aux-temp/bin/gpg"
 				cp /usr/bin/gpg "${TEMP}/initramfs-aux-temp/bin/gpg"
 				chmod +x "${TEMP}/initramfs-aux-temp/bin/gpg"
-			fi
 			else
 				print_info 1 "GPG support requires static gpg at /usr/bin/gpg"
 				print_info 1 "Emerge gnupg with USE=\"static\""
