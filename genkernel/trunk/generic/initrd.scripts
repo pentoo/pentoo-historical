@@ -972,9 +972,9 @@ openLUKS() {
 					echo
 					stty echo
 					#Now that we have the passphrase, we open the volume.
-					crypt_filter "echo -n "${cfg_gpg_pass}" | \
+					crypt_filter 'echo -n "${cfg_gpg_pass}" | \
 					gpg --batch --logger-file /dev/null --passphrase-fd 0 \
-					${cryptsetup_options} 2>/dev/null | cryptsetup luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
+					"${cryptsetup_options}" 2>/dev/null | cryptsetup luksOpen "${LUKS_DEVICE}" "${LUKS_NAME}"'
 				fi
 				if [ $? -eq 0 ]
 				then
