@@ -964,13 +964,25 @@ openLUKS() {
 				then
 					crypt_filter "cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
 				else
-					crypt_filter "gpg ${cryptsetup_options} 2>/dev/null | cryptsetup luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
+					#Here we read in the passphrase from terminal.
+					#This is very confusing if the gpg key doesn't need a passphrase... (can that happen?)
+					stty -echo
+					echo -n "Passphrase: "
+					read cfg_gpg_pass
+					echo
+					stty echo
+					#Now that we have the passphrase, we open the volume.
+					crypt_filter "echo -n "${cfg_gpg_pass}" | \
+					gpg --batch --logger-file /dev/null --passphrase-fd 0 \
+					${cryptsetup_options} 2>/dev/null | cryptsetup luksOpen ${LUKS_DEVICE} ${LUKS_NAME}"
 				fi
 				if [ $? -eq 0 ]
 				then
+					unset cfg_gpg_pass
 					good_msg "LUKS device ${LUKS_DEVICE} opened" ${CRYPT_SILENT}
 					break
 				else
+					unset cfg_gpg_pass
 					bad_msg "Failed to open LUKS device ${LUKS_DEVICE}" ${CRYPT_SILENT}
 					DEV_ERROR=1
 					KEY_ERROR=1
