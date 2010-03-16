@@ -346,6 +346,7 @@ append_auxilary() {
 		rm -r "${TEMP}/initramfs-aux-temp/"
 	fi
 	mkdir -p "${TEMP}/initramfs-aux-temp/etc"	
+	mkdir -p "${TEMP}/initramfs-aux-temp/bin"	
 	mkdir -p "${TEMP}/initramfs-aux-temp/sbin"	
 	if [ -f "${CMD_LINUXRC}" ]
 	then
