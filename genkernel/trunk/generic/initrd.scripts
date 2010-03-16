@@ -864,7 +864,6 @@ openLUKS() {
 	esac
 
 	eval local LUKS_DEVICE='"${CRYPT_'${TYPE}'}"' LUKS_NAME="$1" LUKS_KEY='"${CRYPT_'${TYPE}'_KEY}"' LUKS_KEYDEV='"${CRYPT_'${TYPE}'_KEYDEV}"'
-	fi
 	local DEV_ERROR=0 KEY_ERROR=0 KEYDEV_ERROR=0
 	local mntkey="/mnt/key/" cryptsetup_options=''
 
