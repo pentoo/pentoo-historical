@@ -281,6 +281,25 @@ append_firmware() {
 	rm -r "${TEMP}/initramfs-firmware-temp/"
 }
 
+append_gpg() {
+	if [ -d "${TEMP}/initramfs-gpg-temp" ]
+	then
+		rm -r "${TEMP}/initramfs-gpg-temp"
+	fi
+	cd ${TEMP}
+	mkdir -p "${TEMP}/initramfs-gpg-temp/sbin/"
+	if [ ! -e ${GPG_BINCACHE} ] ; then
+		print_info 1 '		GPG: Adding support (compiling binaries)...'
+		compile_gpg
+	fi
+	bzip2 -dc "${GPG_BINCACHE}" > "${TEMP}/initramfs-gpg-temp/sbin/gpg" ||
+		gen_die 'Could not extract gpg binary cache!'
+	chmod a+x "${TEMP}/initramfs-gpg-temp/sbin/gpg"
+	cd "${TEMP}/initramfs-gpg-temp/"
+	find . -print | cpio ${CPIO_ARGS} --append -F "${CPIO}"
+	rm -rf "${TEMP}/initramfs-gpg-temp" > /dev/null
+}
+
 print_list()
 {
 	local x
@@ -412,20 +431,6 @@ append_auxilary() {
 	fi
 	if isTrue ${LUKS}
 	then
-		if isTrue ${GPG}
-		then
-			if is_static /usr/bin/gpg
-			then
-				print_info 1 "Including gpg support"
-				rm -f "${TEMP}/initramfs-aux-temp/bin/gpg"
-				cp /usr/bin/gpg "${TEMP}/initramfs-aux-temp/bin/gpg"
-				chmod +x "${TEMP}/initramfs-aux-temp/bin/gpg"
-			else
-				print_info 1 "GPG support requires static gpg at /usr/bin/gpg"
-				print_info 1 "Emerge gnupg with USE=\"static\""
-				print_info 1 "Not including GPG support"
-			fi
-		fi
 		if is_static /bin/cryptsetup
 		then
 			print_info 1 "Including LUKS support"
@@ -443,10 +448,6 @@ append_auxilary() {
 			print_info 1 "LUKS support requires static cryptsetup at /bin/cryptsetup or /sbin/cryptsetup"
 			print_info 1 "Not including LUKS support"
 		fi
-	elif isTrue ${GPG}
-	then
-		print_info 1 "GPG support requires LUKS support too"
-		print_info 1 "Not including GPG support"
 	fi
 
 	cd ${TEMP}/initramfs-aux-temp/sbin && ln -s ../init init
@@ -488,6 +489,7 @@ create_initramfs() {
 	append_data 'dmraid' "${DMRAID}"
 	append_data 'evms' "${EVMS}"
 	append_data 'mdadm' "${MDADM}"
+	append_data 'gpg' "${GPG}"
 	
 	if [ "${NOINITRDMODULES}" -eq '0' ]
 	then

@@ -131,7 +131,8 @@ determine_real_args() {
 	LVM_BINCACHE=`cache_replace "${LVM_BINCACHE}"`
 	DMRAID_BINCACHE=`cache_replace "${DMRAID_BINCACHE}"`
 	E2FSPROGS_BINCACHE=`cache_replace "${E2FSPROGS_BINCACHE}"`
-  
+	GPG_BINCACHE=`cache_replace "${GPG_BINCACHE}"`
+
 	DEFAULT_KERNEL_CONFIG=`arch_replace "${DEFAULT_KERNEL_CONFIG}"`
 	BUSYBOX_CONFIG=`arch_replace "${BUSYBOX_CONFIG}"`
 	BUSYBOX_BINCACHE=`arch_replace "${BUSYBOX_BINCACHE}"`
@@ -139,7 +140,7 @@ determine_real_args() {
 	LVM_BINCACHE=`arch_replace "${LVM_BINCACHE}"`
 	DMRAID_BINCACHE=`arch_replace "${DMRAID_BINCACHE}"`
 	E2FSPROGS_BINCACHE=`arch_replace "${E2FSPROGS_BINCACHE}"`
-	
+	GPG_BINCACHE=`arch_replace "${GPG_BINCACHE}"`
 
 	if [ "${CMD_BOOTLOADER}" != '' ]
 	then

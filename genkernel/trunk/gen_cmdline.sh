@@ -90,6 +90,7 @@ longusage() {
   echo "				initrd"
   echo "	--luks			Include LUKS support"
   echo "				--> 'emerge cryptsetup-luks' with USE=-dynamic"
+  echo "	--gpg			Include GPG-armored LUKS support"
   echo "    --no-busybox    Do not include busybox in the initrd or initramfs."
   echo "  Internals"
   echo "	--arch-override=<arch>	Force to arch instead of autodetect"
