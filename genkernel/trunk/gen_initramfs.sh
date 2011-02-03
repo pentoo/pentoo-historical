@@ -531,6 +531,11 @@ create_initramfs() {
 			print_info 1 "using bzip2..." True False
 			/bin/bzip2 -z -f -9 ${CPIO}
 			mv "${CPIO}.bz2" "${CPIO%%.cpio}"
+		elif `grep -q '^CONFIG_RD_XZ=y' ${KERNEL_DIR}/.config` && test -f /usr/bin/xz
+		then
+			print_info 1 "using xz..." True False
+			/usr/bin/xz -z -f -9 ${CPIO}
+			mv "${CPIO}.xz" "${CPIO%%.cpio}"
 		elif test -f /bin/gzip
 		then
 			print_info 1 "using gzip..." True False
