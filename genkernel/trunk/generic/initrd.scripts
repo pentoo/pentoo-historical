@@ -141,10 +141,10 @@ findmediamount() {
 
 devicelist(){
 	# Locate the cdrom device with our media on it.
-	# CDROM DEVICES
-	local DEVICES="/dev/cdroms/* /dev/ide/cd/* /dev/sr*"
 	# USB Keychain/Storage
-	DEVICES="$DEVICES /dev/sd*"
+	local DEVICES="/dev/sd*"
+	# CDROM DEVICES
+	DEVICES="$DEVICES /dev/cdroms/* /dev/ide/cd/* /dev/sr*"
 	# IDE devices
 	DEVICES="$DEVICES /dev/hd*"
 	# USB using the USB Block Driver
@@ -253,10 +253,7 @@ create_changefs() {
 		let size="$size"
 		if [ $size -lt 16 ]
 		then
-			bad_msg "Please give a size between 16 and 512 Mb"
-		elif [ $size -gt 1024 ]
-		then
-			bad_msg "Please give a size between 16 and 1024 Mb"
+			bad_msg "Please give a size of at least 16 Mb"
 		else
 			dd if=/dev/zero of=$CHANGESMNT/livecd.aufs bs=1M count=$size
 			if [ $? = '0' ]
@@ -267,8 +264,12 @@ create_changefs() {
 			else
 				rm -f $CHANGESMNT/livecd.aufs
 				bad_msg "Unable to create livecd.aufs on $CHANGESDEV of $size Mb"
-				bad_msg "Please give a size between 16 and 512 Mb"
+				bad_msg "Please give a size of at least 16 Mb"
 				bad_msg "Also check if your disk is full or read-only ?"
+				read -p '<< Type "a" to abort, anything else to continue : ' doabort
+				if [ "$doabort" = "a" ]; then
+					return 1
+				fi
 			fi
 		fi
 	done
@@ -293,24 +294,40 @@ setup_aufs() {
 		mkdir -p ${MEMORY}
 		mkdir -p ${UNION}
 		mkdir -p ${CHANGESMNT}
+		for i in dev mnt mnt/cdrom mnt/livecd mnt/key tmp tmp/.initrd mnt/gentoo sys
+		do
+			mkdir -p "${NEW_ROOT}/${i}"
+			chmod 755 "${NEW_ROOT}/${i}"
+		done
+		[ ! -e "${NEW_ROOT}/dev/null" ] && mknod "${NEW_ROOT}"/dev/null c 1 3
+		[ ! -e "${NEW_ROOT}/dev/console" ] && mknod "${NEW_ROOT}"/dev/console c 5 1
+
+		bootstrapCD
 		if [ -n "${AUFS}" ]
 		then
-			CHANGESDEV=${AUFS}
-			good_msg "mounting $CHANGESDEV to $MEMORY for aufs support"
-#			mount -t auto $CHANGESDEV $MEMORY
-			mount -t auto $CHANGESDEV $CHANGESMNT
-			ret=$?
-			if [ "${ret}" -ne 0 ]
+			if [ "${AUFS}" = "detect" ]
 			then
-				bad_msg "mount of $CHANGESDEV failed falling back to ramdisk based aufs"
-				mount -t tmpfs tmpfs $MEMORY
+				CHANGESMNT="${NEW_ROOT}/mnt/cdrom"
+				CHANGESDEV=${REAL_ROOT}
+			else
+				CHANGESDEV=${AUFS}
+				good_msg "mounting $CHANGESDEV to $MEMORY for aufs support"
+	#			mount -t auto $CHANGESDEV $MEMORY
+				mount -t auto $CHANGESDEV $CHANGESMNT
+				ret=$?
+				if [ "${ret}" -ne 0 ]
+				then
+					bad_msg "mount of $CHANGESDEV failed falling back to ramdisk based aufs"
+					unset AUFS
+				fi
 			fi
 			# Check and attempt to create the changesfile
-			if [ ! -e $CHANGESMNT/livecd.aufs ]
+			if [ ! -e $CHANGESMNT/livecd.aufs ] && [ -n "${AUFS}" ]
 			then
 				create_changefs
 				mount -t auto $CHANGESMNT/livecd.aufs $MEMORY
-			else
+			elif [ -n "${AUFS}" ]
+			then
 				local nbpass=0
 				while [ 1 ]
 				do
@@ -328,7 +345,7 @@ setup_aufs() {
 							bad_msg "your livecd.aufs might be messed up, and I couldn't fix it"
 							bad_msg "moving livecd.aufs to livecd.aufs.bad"
 							mv $CHANGESMNT/livecd.aufs $CHANGESMNT/livecd.aufs.bad
-							bad_msg "try to fit it yourself with e2fsck later on, sorry for disturbing"
+							bad_msg "try to fix it yourself with e2fsck later on, sorry for disturbing"
 							break
 						fi
 					else

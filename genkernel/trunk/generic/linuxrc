@@ -108,6 +108,10 @@ do
 				AUFS=${CMD_AUFS}
 			fi
 		;;
+		persistent)
+			USE_AUFS_NORMAL=1
+			AUFS="detect"
+		;;
 		# Allow user to specify the modules location
 		modules\=*)
 			MODULESD=`parse_opt "${x}"`
@@ -282,36 +286,33 @@ then
 	fi
 fi
 
-mkdir -p "${NEW_ROOT}"
-setup_aufs
-
-if [ "${USE_AUFS_NORMAL}" -eq '1' ]
-then
-	CHROOT=${UNION}
-else
-	CHROOT=${NEW_ROOT}
-fi
-
-# Run debug shell if requested
-rundebugshell
 
 if [ "${CDROOT}" = '1' ]
 then
+
+	mkdir -p "${NEW_ROOT}"
+	setup_aufs
 	setup_keymap
 
-	if [ ! "${USE_AUFS_NORMAL}" -eq '1' ]
+	# Run debug shell if requested
+	rundebugshell
+
+	if [ "${USE_AUFS_NORMAL}" -eq '1' ]
 	then
+		CHROOT=${UNION}
+	else
+		CHROOT=${NEW_ROOT}
 		good_msg "Making tmpfs for ${NEW_ROOT}"
 		mount -t tmpfs tmpfs ${NEW_ROOT}
+
+		for i in dev mnt mnt/cdrom mnt/livecd mnt/key tmp tmp/.initrd mnt/gentoo sys
+		do
+			mkdir -p "${NEW_ROOT}/${i}"
+			chmod 755 "${NEW_ROOT}/${i}"
+		done
+		[ ! -e "${NEW_ROOT}/dev/null" ] && mknod "${NEW_ROOT}"/dev/null c 1 3
+		[ ! -e "${NEW_ROOT}/dev/console" ] && mknod "${NEW_ROOT}"/dev/console c 5 1
 	fi
-	
-	for i in dev mnt mnt/cdrom mnt/livecd mnt/key tmp tmp/.initrd mnt/gentoo sys
-	do
-		mkdir -p "${NEW_ROOT}/${i}"
-		chmod 755 "${NEW_ROOT}/${i}"
-	done
-	[ ! -e "${NEW_ROOT}/dev/null" ] && mknod "${NEW_ROOT}"/dev/null c 1 3
-	[ ! -e "${NEW_ROOT}/dev/console" ] && mknod "${NEW_ROOT}"/dev/console c 5 1
 
 	# For SGI LiveCDs ...
 	if [ "${LOOPTYPE}" = "sgimips" ]
@@ -327,7 +328,7 @@ then
 		[ ! -e "${NEW_ROOT}/dev/tty1" ] && mknod "${NEW_ROOT}/dev/tty1" c 4 1
 	fi
 
-	if [ "${REAL_ROOT}" != "/dev/nfs" ] && [ "${LOOPTYPE}" != "sgimips" ]
+	if [ "${REAL_ROOT}" != "/dev/nfs" ] && [ "${LOOPTYPE}" != "sgimips" ] && [ "${USE_AUFS_NORMAL}" != '1' ]
 	then
 		bootstrapCD
 	fi
