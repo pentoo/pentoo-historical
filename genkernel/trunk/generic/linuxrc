@@ -286,11 +286,11 @@ then
 	fi
 fi
 
+mkdir -p "${NEW_ROOT}"
+CHROOT=${NEW_ROOT}
 
 if [ "${CDROOT}" = '1' ]
 then
-
-	mkdir -p "${NEW_ROOT}"
 	setup_aufs
 	setup_keymap
 
