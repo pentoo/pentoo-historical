@@ -798,7 +798,7 @@ chooseKeymap() {
 		good_msg "Keeping default keymap"
 		splash set_msg "Keeping default keymap"
 		mkdir -p /etc/sysconfig
-		echo "XKEYBOARD=\"ch(fr)\"" > /etc/sysconfig/keyboard
+		echo "XKEYBOARD=us" > /etc/sysconfig/keyboard
 	else
 		bad_msg "Sorry, but keymap ''${keymap}'' is invalid!"
 		unset keymap
