@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: 543f48434fd483f3234cd864d42eca9b60997a18 $
+# $Id: 8d16136c0b6d1bd02301bc5e1f6b49c186d726ea $
 
 CPIO_ARGS="--quiet -o -H newc"
 
@@ -560,6 +560,7 @@ append_auxilary() {
 		rm -r "${TEMP}/initramfs-aux-temp/"
 	fi
 	mkdir -p "${TEMP}/initramfs-aux-temp/etc"	
+	mkdir -p "${TEMP}/initramfs-aux-temp/bin"	
 	mkdir -p "${TEMP}/initramfs-aux-temp/sbin"	
 	if [ -f "${CMD_LINUXRC}" ]
 	then
@@ -706,16 +707,40 @@ create_initramfs() {
 		append_data 'overlay'
 	fi
 
-	gzip -9 "${CPIO}"
-	mv -f "${CPIO}.gz" "${CPIO}"
-
+	# handle the last image
 	if isTrue "${INTEGRATED_INITRAMFS}"
 	then
-#		cp ${TMPDIR}/initramfs-${KV} ${KERNEL_DIR}/usr/initramfs_data.cpio.gz
-		mv ${TMPDIR}/initramfs-${KV} ${TMPDIR}/initramfs-${KV}.cpio.gz
-#		sed -i "s|^.*CONFIG_INITRAMFS_SOURCE=.*$|CONFIG_INITRAMFS_SOURCE=\"${TMPDIR}/initramfs-${KV}.cpio.gz\"|" ${KERNEL_DIR}/.config
+		# put in kernel, here we should put CPIO
 		sed -i '/^.*CONFIG_INITRAMFS_SOURCE=.*$/d' ${KERNEL_DIR}/.config
-		echo -e "CONFIG_INITRAMFS_SOURCE=\"${TMPDIR}/initramfs-${KV}.cpio.gz\"\nCONFIG_INITRAMFS_ROOT_UID=0\nCONFIG_INITRAMFS_ROOT_GID=0" >> ${KERNEL_DIR}/.config
+		echo -e "CONFIG_INITRAMFS_SOURCE=\"${CPIO}\"\nCONFIG_INITRAMFS_ROOT_UID=0\nCONFIG_INITRAMFS_ROOT_GID=0" >> ${KERNEL_DIR}/.config
+	else
+		# compress using the best way
+		print_info 1 "        >> compressing the initrd " False
+                if `grep -q '^CONFIG_RD_XZ=y' ${KERNEL_DIR}/.config` && test -f /usr/bin/xz
+                then
+                        print_info 1 "using xz..." True False
+                        /usr/bin/xz -e --check=none -z -f -9 ${CPIO}
+                        mv "${CPIO}.xz" "${CPIO%%.cpio}"
+
+		elif `grep -q '^CONFIG_RD_LZMA=y' ${KERNEL_DIR}/.config` && test -f /usr/bin/lzma
+		then
+			print_info 1 "using lzma..." True False
+			/usr/bin/lzma -z -f -9 ${CPIO}
+			mv "${CPIO}.lzma" "${CPIO%%.cpio}"
+		elif `grep -q '^CONFIG_RD_BZIP2=y' ${KERNEL_DIR}/.config` && test -f /bin/bzip2
+		then
+			print_info 1 "using bzip2..." True False
+			/bin/bzip2 -z -f -9 ${CPIO}
+			mv "${CPIO}.bz2" "${CPIO%%.cpio}"
+		elif test -f /bin/gzip
+		then
+			print_info 1 "using gzip..." True False
+			/bin/gzip -f -9 ${CPIO}
+			mv "${CPIO}.gz" "${CPIO%%.cpio}"
+		else
+			print_info 1 "--not compressed!" True False
+			mv "${CPIO}" "${CPIO%%.cpio}"
+		fi
 	fi
 
 	if ! isTrue "${CMD_NOINSTALL}"

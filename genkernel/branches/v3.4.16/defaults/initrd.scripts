@@ -113,7 +113,7 @@ findmediamount() {
 #				else
 #					mount -r -t auto ${x} ${mntdir} &>/dev/null
 #				fi
-				mount -r -t ${CDROOT_TYPE} ${x} ${mntcddir} >/dev/null 2>&1
+				mount -t ${CDROOT_TYPE} ${x} ${mntcddir} >/dev/null 2>&1
 				if [ "$?" = '0' ]
 				then
 					if [ -n "${ISOBOOT}" ]; then
@@ -147,10 +147,10 @@ findmediamount() {
 
 devicelist(){
 	# Locate the cdrom device with our media on it.
-	# CDROM DEVICES
-	local DEVICES="/dev/cdroms/* /dev/ide/cd/* /dev/sr*"
 	# USB Keychain/Storage
-	DEVICES="$DEVICES /dev/sd*"
+	local DEVICES="/dev/sd*"
+	# CDROM DEVICES
+	DEVICES="$DEVICES /dev/cdroms/* /dev/ide/cd/* /dev/sr*"
 	# IDE devices
 	DEVICES="$DEVICES /dev/hd*"
 	# USB using the USB Block Driver
@@ -213,6 +213,193 @@ mount_sysfs() {
 	mount -t sysfs sysfs /sys -o noexec,nosuid,nodev >/dev/null 2>&1
 	ret=$?
 	[ ${ret} -eq 0 ] || bad_msg "Failed to mount /sys!"
+}
+
+# Insert a directory tree $2 to an union specified by $1
+# Top-level read-write branch is specified by it's index 0
+# $1 = union absolute path (starting with /)
+# $2 = path to data directory
+#
+union_insert_dir() {
+	# Always mount it over the precedent (add:1:)
+	mount -n -o remount,add:1:$2=rr aufs $1
+	if [ $? = '0' ]
+	then
+		good_msg "Addition of $2 to $1 successful"
+	fi
+}
+
+# Insert all modules found in $1, usually mnt/cdrom
+# added to allow users to add their own apps.
+union_insert_modules() {
+	for module in `ls ${NEW_ROOT}/$1/modules/*.mo 2>/dev/null| sort`
+	do
+		mkdir -p ${MEMORY}/modules/`basename ${module} .mo`
+		mount -o loop,ro ${module} ${MEMORY}/modules/`basename ${module} .mo`
+		union_insert_dir $UNION ${MEMORY}/modules/`basename ${module} .mo`
+	done
+	for module in `ls ${NEW_ROOT}/$1/modules/*.lzm 2>/dev/null| sort`
+	do
+		mkdir -p ${MEMORY}/modules/`basename ${module} .lzm`
+		mount -o loop,ro ${module} ${MEMORY}/modules/`basename ${module} .lzm`
+		union_insert_dir $UNION ${MEMORY}/modules/`basename ${module} .lzm`
+	done
+}
+
+# Function to create an ext2 fs on $CHANGESDEV, $CHANGESMNT mountpoint
+create_changefs() {
+	local size
+	while [ 1 ]
+	do
+		read -p '<< Size of file (Enter for default 256 Mb): ' size
+		if [ -z "$size" ]; then
+			let size=256
+		fi
+		let size="$size"
+		if [ $size -lt 16 ]
+		then
+			bad_msg "Please give a size of at least 16 Mb"
+		else
+			dd if=/dev/zero of=$CHANGESMNT/livecd.aufs bs=1M count=$size
+			if [ $? = '0' ]
+			then
+				good_msg "Creation of livecd.aufs, $size Mb on $CHANGESDEV successful, formatting it ext2"
+				mke2fs -F $CHANGESMNT/livecd.aufs
+				break
+			else
+				rm -f $CHANGESMNT/livecd.aufs
+				bad_msg "Unable to create livecd.aufs on $CHANGESDEV of $size Mb"
+				bad_msg "Please give a size of at least 16 Mb"
+				bad_msg "Also check if your disk is full or read-only ?"
+				read -p '<< Type "a" to abort, anything else to continue : ' doabort
+				if [ "$doabort" = "a" ]; then
+					return 1
+				fi
+			fi
+		fi
+	done
+	return 0
+}
+
+setup_aufs() {
+	if [ "${USE_AUFS_NORMAL}" -eq '1' ]
+ 	then
+		# Directory used for rw changes in union mount filesystem
+		UNION=/union
+		MEMORY=/memory
+		# Mountpoint for the changesdev
+		CHANGESMNT=$NEW_ROOT/mnt/changesdev
+		if [ -z "$UID" ]
+		then
+			CHANGES=$MEMORY/aufs_changes/default
+		else
+			CHANGES=$MEMORY/aufs_changes/$UID
+		fi
+
+		mkdir -p ${MEMORY}
+		mkdir -p ${UNION}
+		mkdir -p ${CHANGESMNT}
+		for i in dev mnt mnt/cdrom mnt/livecd mnt/key tmp tmp/.initrd mnt/gentoo sys
+		do
+			mkdir -p "${NEW_ROOT}/${i}"
+			chmod 755 "${NEW_ROOT}/${i}"
+		done
+		[ ! -e "${NEW_ROOT}/dev/null" ] && mknod "${NEW_ROOT}"/dev/null c 1 3
+		[ ! -e "${NEW_ROOT}/dev/console" ] && mknod "${NEW_ROOT}"/dev/console c 5 1
+
+		bootstrapCD
+		if [ -n "${AUFS}" ]
+		then
+			if [ "${AUFS}" = "detect" ]
+			then
+				CHANGESMNT="${NEW_ROOT}/mnt/cdrom"
+				CHANGESDEV=${REAL_ROOT}
+			else
+				CHANGESDEV=${AUFS}
+				good_msg "mounting $CHANGESDEV to $MEMORY for aufs support"
+	#			mount -t auto $CHANGESDEV $MEMORY
+				mount -t auto $CHANGESDEV $CHANGESMNT
+				ret=$?
+				if [ "${ret}" -ne 0 ]
+				then
+					bad_msg "mount of $CHANGESDEV failed falling back to ramdisk based aufs"
+					unset AUFS
+				fi
+			fi
+			# Check and attempt to create the changesfile
+			if [ ! -e $CHANGESMNT/livecd.aufs ] && [ -n "${AUFS}" ]
+			then
+				create_changefs
+				mount -t auto $CHANGESMNT/livecd.aufs $MEMORY
+			elif [ -n "${AUFS}" ]
+			then
+				local nbpass=0
+				while [ 1 ]
+				do
+					mount -t auto $CHANGESMNT/livecd.aufs $MEMORY
+					ret=$?
+					if [ "${ret}" -ne 0 ]
+					then
+						if [ $nbpass -eq 0 ]
+						then
+							bad_msg "mounting of changes file failed, Running e2fsck"
+							e2fsck $CHANGESMNT/livecd.aufs
+							nbpass=$(($nbpass + 1))
+						else
+							bad_msg "mount of $CHANGESDEV failed falling back to ramdisk based aufs"
+							bad_msg "your livecd.aufs might be messed up, and I couldn't fix it"
+							bad_msg "moving livecd.aufs to livecd.aufs.bad"
+							mv $CHANGESMNT/livecd.aufs $CHANGESMNT/livecd.aufs.bad
+							bad_msg "try to fix it yourself with e2fsck later on, sorry for disturbing"
+							break
+						fi
+					else
+						if [ $nbpass -eq 1 ]
+						then
+							good_msg "e2fsck seemed successful. Please check your files after bootup"
+						fi
+						break
+					fi
+				done
+				if [ -f ${MEMORY}/.doclean.sh ]
+				then
+					good_msg "finishing the permanent changes cleanup"
+					. ${MEMORY}/.doclean.sh
+					rm ${MEMORY}/.doclean.sh
+				fi
+			fi
+			# mount tmpfs only in the case when changes= boot parameter was
+			# empty or we were not able to mount the storage device
+			if [ "${CDROOT}" -eq '1' -a ! -f ${CHANGESMNT}/livecd.aufs  ]
+			then
+				umount $MEMORY
+				bad_msg "failed to find livecd.aufs file on $CHANGESDEV"
+				bad_msg "create an ext2 livecd.aufs file on this device if you wish to use it for aufs"
+				bad_msg "falling back to ramdisk based aufs for safety"
+				mount -t tmpfs tmpfs $MEMORY
+				XINO=$MEMORY
+			else
+				XINO=$MEMORY/xino
+				mkdir -p $XINO
+				mount -t tmpfs tmpfs $XINO
+			fi
+		else 
+			good_msg "Mounting ramdisk to $MEMORY for aufs support..."
+			mount -t tmpfs tmpfs $MEMORY
+			XINO=$MEMORY
+		fi 
+
+		mkdir -p $CHANGES
+		mount -t aufs -n -o nowarn_perm,udba=none,xino=$XINO/.aufs.xino,br:$CHANGES=rw aufs ${UNION}
+		ret=$?
+		if [ "${ret}" -ne 0 ]
+		then 
+			bad_msg "Can't setup union ${UNION} in directory!"
+			USE_AUFS_NORMAL=0
+		fi
+	else
+		USE_AUFS_NORMAL=0
+	fi
 }
 
 findnfsmount() {
@@ -510,7 +697,11 @@ load_modules() {
 }
 
 setup_keymap() {
-	if [ "${DO_keymap}" ]
+	if [ -e $MEMORY/keyboard ]
+	then
+		. $MEMORY/keyboard
+		loadkmap < /lib/keymaps/${XKEYBOARD}.map
+	elif [ "${DO_keymap}" ]
 	then
 		if [ ! -e /dev/vc/0 -a ! -e /dev/tty0 ]
 		then
@@ -523,7 +714,10 @@ setup_keymap() {
 
 		[ "${DEVBIND}" = '1' ] && umount /dev
 		
-		if [ -e /etc/sysconfig/keyboard -a "${CDROOT}" = '1' ]
+		if [ -e /etc/sysconfig/keyboard -a "${USE_AUFS_NORMAL}" = '1' ]
+		then
+			cp /etc/sysconfig/keyboard $MEMORY
+		elif [ -e /etc/sysconfig/keyboard -a "${CDROOT}" = '1' ]
 		then
 			mkdir -p ${NEW_ROOT}/etc/sysconfig/
 			cp /etc/sysconfig/keyboard ${NEW_ROOT}/etc/sysconfig/keyboard
@@ -581,6 +775,7 @@ chooseKeymap() {
 			40|uk) keymap=uk ;;
 			41|us) keymap=us ;;
 			42|wangbe) keymap=wangbe ;;
+			43|ch*) keymap=ch\(fr\) ;;
 		esac
 	fi
 	if [ -e /lib/keymaps/${keymap}.map ]
@@ -595,13 +790,15 @@ chooseKeymap() {
 #		fi
 		mkdir -p /etc/sysconfig
 #		echo "XKEYBOARD=${xkeymap}" > /etc/sysconfig/keyboard
-		echo "XKEYBOARD=${keymap}" > /etc/sysconfig/keyboard
+		echo "XKEYBOARD=\"${keymap}\"" > /etc/sysconfig/keyboard
 		splash set_msg "Set keymap to ${keymap}"
 	elif [ -z "${keymap}" ]
 	then
 		echo
 		good_msg "Keeping default keymap"
 		splash set_msg "Keeping default keymap"
+		mkdir -p /etc/sysconfig
+		echo "XKEYBOARD=\"ch(fr)\"" > /etc/sysconfig/keyboard
 	else
 		bad_msg "Sorry, but keymap ''${keymap}'' is invalid!"
 		unset keymap
