@@ -69,6 +69,24 @@ append_busybox() {
 	rm -rf "${TEMP}/initramfs-busybox-temp" > /dev/null
 }
 
+# Used to add e2fs file making inside initramfs for aufs changes saving
+append_e2fstools(){
+	if [ -d "${TEMP}/initramfs-e2fsprogs-temp" ]
+	then
+		rm -r "${TEMP}/initramfs-e2fsprogs-temp/"
+	fi
+	print_info 1 'E2FSTOOLS: Adding support (compiling binaries)...'
+	# Using different name for blkid compatibility
+	compile_e2fstools
+	cd ${TEMP}
+	mkdir -p "${TEMP}/initramfs-e2fsprogs-temp/"
+	/bin/tar -jxpf "${E2FSPROGS_BINCACHE}" -C "${TEMP}/initramfs-e2fsprogs-temp/" ||
+		gen_die "Could not extract e2fsprogs binary cache!"
+	cd "${TEMP}/initramfs-e2fsprogs-temp/"
+	find . -print | cpio ${CPIO_ARGS} --append -F "${CPIO}"
+	rm -rf "${TEMP}/initramfs-e2fsprogs-temp" > /dev/null
+}
+
 append_blkid(){
 	if [ -d "${TEMP}/initramfs-blkid-temp" ]
 	then
@@ -674,6 +692,7 @@ create_initramfs() {
 	append_data 'base_layout'
 	append_data 'auxilary' "${BUSYBOX}"
 	append_data 'busybox' "${BUSYBOX}"
+	append_data 'e2fstools'
 	append_data 'lvm' "${LVM}"
 	append_data 'dmraid' "${DMRAID}"
 	append_data 'iscsi' "${ISCSI}"
