@@ -1,10 +1,16 @@
-# $Id: 7f339eac6b4fff03c3d1ca0375d6b0d2021cd423 $
+# $Id: d135e0e861a2a17604868d0d81180f3e39f8c606 $
 #
 # Arch-specific options that normally shouldn't be changed.
 #
 KERNEL_MAKE_DIRECTIVE="bzImage"
+# since "" is allowed (this will translate in `make `, which is nice
+# for xen-based kernels, the default value of
+# KERNEL_MAKE_DIRECTIVE_OVERRIDE cannot be ""
+DEFAULT_KERNEL_MAKE_DIRECTIVE_OVERRIDE="--INVALID--"
+KERNEL_MAKE_DIRECTIVE_OVERRIDE="${DEFAULT_KERNEL_MAKE_DIRECTIVE_OVERRIDE}"
 KERNEL_MAKE_DIRECTIVE_2=""
 KERNEL_BINARY="arch/i386/boot/bzImage"
+KERNEL_BINARY_OVERRIDE=""
 
 COMPRESS_INITRD=yes
 

@@ -189,6 +189,14 @@ LOW-LEVEL COMPILATION OPTIONS
 *--kernel-make*=<makeprg>::
     GNU Make to use for the kernel compilation.
 
+*--kernel-target*=<t>::
+    Override default make target (bzImage), note that values
+    like *--kernel-target=* are also valid (useful for Xen
+    based kernel sources)
+
+*--kernel-binary*=<path>::
+    Override default kernel binary path (arch/foo/boot/bar)
+
 *--utils-cc*=<compiler>::
     Compiler to use for utilities.
 
@@ -235,10 +243,6 @@ INITIALIZATION
 
 *--no-keymap*::
     Disables keymap selection at boot.
-
-*--evms*::
-    Add in EVMS support from static binaries if they exist on the system:
-    you should run "emerge evms" first (in the host system).
 
 *--lvm*::
     Add in LVM support from static binaries if they exist on the
@@ -416,9 +420,6 @@ which the ramdisk scripts would recognize.
     If present,  the initrd will try to mount a livecd from that
     location. Otherwise the location will be deduced from the DCHP
     request (option root-path)
-
-*doevms*::
-    Activate EVMS volumes on bootup
 
 *dolvm*::
     Activate LVM volumes on bootup

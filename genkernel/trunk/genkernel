@@ -1,8 +1,8 @@
 #!/bin/bash
-# $Id: b779032f6827729bb72117b29a926835dd069e34 $
+# $Id: f72cf43f493e33bf9ad67bfe310509c0d2cb4690 $
 
 PATH="${PATH}:/sbin:/usr/sbin"
-GK_V='3.4.16'
+GK_V='3.4.18'
 
 # Set the default for TMPDIR.  May be modified by genkernel.conf or the
 # --tempdir command line option.
@@ -348,7 +348,6 @@ then
 	print_warning 1 'Additional kernel cmdline arguments that *may* be required to boot properly...'
 	[ "${SPLASH}" = '1' ] && print_warning 1 "add \"vga=791 splash=silent,theme:${SPLASH_THEME} console=tty1 quiet\" if you use a splash framebuffer ]"
 	[ "${LVM}" = '1' ] && print_warning 1 'add "dolvm" for lvm support'
-	[ "${EVMS}" = '1' ] && print_warning 1 'add "doevms" for evms support'
 	[ "${DMRAID}" = '1' ] && print_warning 1 'add "dodmraid" for dmraid support'
 	[ "${MDADM}" = '1' ] && print_warning 1 'add "domdadm" for RAID support'
 	[ "${DMRAID}" = '1' ] && print_warning 1 '	or "dodmraid=<additional options>"'
