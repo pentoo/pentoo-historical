@@ -32,7 +32,7 @@ overlay address
 
 5.)This version of that app will stop you from updating world so we manually remove and re-emerge the new version.
 
-6.)"--update" applications and there "--deep" dependencies --newuse emerge with new use flags, -v verbose -a ask -t tree
+6.)"--update" applications and their "--deep" dependencies --newuse emerge with new use flags, -v verbose -a ask -t tree
 
 7.)Check live packages for updates and emerge them as necessary
 
