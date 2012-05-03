@@ -25,10 +25,10 @@ revdep-rebuild
 
 2.)Updates portage
 
-3.)Sync the pentoo overlay, Deletes odd overlay address, adds new 
+3.)Sync the pentoo overlay, Deletes old overlay address, adds new 
 overlay address
 
-4.)pentoo-etc-portage it controls what version of everything gets installed, update your /etc choose -5 to auto update
+4.)pentoo-etc-portage controls what version of everything gets installed, update your /etc choose -5 to auto update
 
 5.)This version of that app will stop you from updating world so we manually remove and re-emerge the new version.
 
