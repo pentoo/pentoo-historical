@@ -7,13 +7,13 @@ emerge --sync
 
 emerge -1 portage 
 
-layman -s pentoo && layman -d pentoo && layman -a pentoo 
+layman -S && layman -d pentoo && layman -a pentoo 
 
 emerge -1 pentoo-etc-portage && etc-update 
 
 emerge -C talloc && emerge -1 talloc
 
-emerge --update --update world -vat
+emerge --update --update --newuse world -vat
 
 smart-live-rebuild
 
@@ -23,18 +23,22 @@ revdep-rebuild
 
 1.)Sync with the gentoo portage tree
 
-2.)updates portage
+2.)Updates portage
 
-3.)syncs with pentoo overlay then deletes odd overlay address, adds new 
+3.)Sync the pentoo overlay, Deletes odd overlay address, adds new 
 overlay address
 
 4.)pentoo-etc-portage it controls what version of everything gets installed, update your /etc choose -5 to auto update
 
-5.)this version of that app will stop you from updating world so we manually remove and re-emerge the new version.
+5.)This version of that app will stop you from updating world so we manually remove and re-emerge the new version.
 
-6.)"--update" applications and there "--deep" dependencies, -v verbose -a ask -t tree
+6.)"--update" applications and there "--deep" dependencies --newuse emerge with new use flags, -v verbose -a ask -t tree
 
 7.)Check live packages for updates and emerge them as necessary
 
 8.)This tool is Gentoo's Reverse Dependency rebuilder. It will scan your 
 installed ebuilds to find packages that have become broken as a result of an upgrade of a package they depend on
+
+Any questions, comments, errors... just ask.
+
+-The_Eccentric
