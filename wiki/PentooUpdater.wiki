@@ -1,4 +1,6 @@
-= Introduction =
+= Update Commands =
+
+To eliminate most of the question in IRC and to start a good documentation process (also to push Zero_Chaos to put a livecd out), I've written a Wiki for updating Pentoo
 
 Follow these steps from a fresh install to bring your system up to date.
 
@@ -13,7 +15,9 @@ emerge -1 pentoo-etc-portage && etc-update
 
 emerge -C talloc && emerge -1 talloc
 
-emerge --update --update --newuse world -vat
+emerge -f dev-java/sun-jdk dev-java/sun-jre 
+
+emerge --update --update --newuse world -vatf
 
 smart-live-rebuild
 
@@ -32,12 +36,14 @@ overlay address
 
 5.)This version of that app will stop you from updating world so we manually remove and re-emerge the new version.
 
-6.)"--update" applications and their "--deep" dependencies --newuse emerge with new use flags, -v verbose -a ask -t tree
+6.)Download everything we need first to ensure it works.
 
-7.)Check live packages for updates and emerge them as necessary
+7.)"--update" applications and their "--deep" dependencies --newuse emerge with new use flags, -v verbose -a ask -t tree -f fetchonly Instead of doing any package building, just perform fetches for all  packages.
 
-8.)This tool is Gentoo's Reverse Dependency rebuilder. It will scan your 
-installed ebuilds to find packages that have become broken as a result of an upgrade of a package they depend on
+8.)Check live packages for updates and emerge them as necessary.
+
+9.)This tool is Gentoo's Reverse Dependency rebuilder. It will scan your 
+installed ebuilds to find packages that have become broken as a result of an upgrade of a package they depend on.
 
 Any questions, comments, errors... just ask.
 
