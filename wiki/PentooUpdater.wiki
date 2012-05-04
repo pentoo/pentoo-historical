@@ -15,7 +15,7 @@ emerge -1 pentoo-etc-portage && etc-update
 
 emerge -C talloc && emerge -1 talloc
 
-emerge -f dev-java/sun-jdk dev-java/sun-jre 
+emerge -f dev-java/sun-jdk-bin dev-java/sun-jre-bin 
 
 emerge --update --update --newuse world -vatf
 
