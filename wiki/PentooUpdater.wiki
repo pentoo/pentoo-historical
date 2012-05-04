@@ -17,6 +17,8 @@ emerge -C talloc && emerge -1 talloc
 
 emerge -f dev-java/sun-jdk-bin dev-java/sun-jre-bin 
 
+emerge -1 sys-apps/sysvinit sys-apps/util-linux
+
 emerge --update --update --newuse world -vatf
 
 smart-live-rebuild
