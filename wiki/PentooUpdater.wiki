@@ -6,66 +6,47 @@ Follow these steps from a fresh install to bring your system up to date.
 
 == For the first time ==
 
+{{{
 echo 'ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"' >> /etc/make.conf
 
-emerge --sync 
+echo "`*`"  > /etc/eix-sync.conf
 
+#Sync with the gentoo portage tree
+emerge --sync 
+# Updates portage
 emerge -1 portage 
 
+# Sync overlays and re-add pentoo (a temp workaround)
 layman -S && layman -d pentoo && layman -a pentoo 
 
+# Update /etc/portage{keywords|mask}, choose -5 to auto update
 emerge -1 pentoo-etc-portage && etc-update 
 
+# Temporary workarounds
 emerge -C talloc && emerge -1 talloc
-
 emerge -f dev-java/sun-jdk dev-java/sun-jre-bin 
-
 emerge -1 sys-apps/sysvinit sys-apps/util-linux
 
+# Download everything we need first to ensure it works.
 emerge --deep --update --newuse world -vatf
 
+# Check live packages for updates and emerge them as necessary.
 smart-live-rebuild
 
 revdep-rebuild
-
+}}}
 
 == On regular basis ==
 
-emerge --sync
-
+{{{
+eix-sync
 emerge -DNu world
-
 smart-live-rebuild
-
 etc-update
-
 emerge --depclean
-
 revdep-rebuild
+eclean-dist -d
+}}}
 
-
-= *Details* =
-
-1.)Sync with the gentoo portage tree
-
-2.)Updates portage
-
-3.)Sync the pentoo overlay, Deletes old overlay address, adds new 
-overlay address
-
-4.)pentoo-etc-portage controls what version of everything gets installed, update your /etc choose -5 to auto update
-
-5.)This version of that app will stop you from updating world so we manually remove and re-emerge the new version.
-
-6.)Download everything we need first to ensure it works.
-
-7.)"--update" applications and their "--deep" dependencies --newuse emerge with new use flags, -v verbose -a ask -t tree -f fetchonly Instead of doing any package building, just perform fetches for all  packages.
-
-8.)Check live packages for updates and emerge them as necessary.
-
-9.)This tool is Gentoo's Reverse Dependency rebuilder. It will scan your 
-installed ebuilds to find packages that have become broken as a result of an upgrade of a package they depend on.
 
 Any questions, comments, errors... just ask.
-
-The_Eccentric
