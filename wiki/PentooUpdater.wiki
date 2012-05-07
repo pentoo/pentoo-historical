@@ -9,6 +9,8 @@ Follow these steps from a fresh install to bring your system up to date.
 {{{
 echo 'ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"' >> /etc/make.conf
 
+# That tool will help you to sync/search ebuilds easier
+app-portage/eix
 echo "*" > /etc/eix-sync.conf
 
 # Sync with the gentoo portage tree
