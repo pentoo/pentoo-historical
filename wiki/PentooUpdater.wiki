@@ -8,8 +8,6 @@ Follow these steps from a fresh install to bring your system up to date.
 
 echo 'ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"' >> /etc/make.conf
 
-echo '*'  > /etc/eix-sync.conf
-
 emerge --sync 
 
 emerge -1 portage 
@@ -33,7 +31,7 @@ revdep-rebuild
 
 == On regular basis ==
 
-eix-sync
+emerge --sync
 
 emerge -DNu world
 
