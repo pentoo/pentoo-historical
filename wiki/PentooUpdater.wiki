@@ -1,25 +1,18 @@
 = Update Commands =
 
-To eliminate most of the question in IRC and to start a good documentation process (also to push Zero_Chaos to put a livecd out), I've written a Wiki for updating Pentoo
+To eliminate most of the question in IRC (#pentoo) and to start a good documentation process, here are the steps to bring your system up to date
 
-Follow these steps from a fresh install to bring your system up to date.
 
 == For the first time ==
 
 {{{
+# Sync with the portage tree
+emerge --sync && layman -S
+
+# Temporary workarounds
 echo 'ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"' >> /etc/make.conf
-
-# That tool will help you to sync/search ebuilds easier
-app-portage/eix
-echo "*" > /etc/eix-sync.conf
-
-# Sync with the gentoo portage tree
-emerge --sync 
-# Updates portage
+layman -d pentoo && layman -a pentoo 
 emerge -1 portage 
-
-# Sync overlays and re-add pentoo (a temp workaround)
-layman -S && layman -d pentoo && layman -a pentoo 
 
 # Update /etc/portage{keywords|mask}, choose -5 to auto update
 emerge -1 pentoo-etc-portage && etc-update 
@@ -37,6 +30,10 @@ smart-live-rebuild
 
 # Check and rebuild broken packages after upgrade
 revdep-rebuild
+
+# Install the following tool to sync/search ebuilds faster
+emerge app-portage/eix
+echo "*" > /etc/eix-sync.conf
 }}}
 
 == On regular basis ==
@@ -50,6 +47,3 @@ emerge --depclean
 revdep-rebuild
 eclean-dist -d
 }}}
-
-
-Any questions, comments, errors... just ask.
