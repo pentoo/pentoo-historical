@@ -47,3 +47,5 @@ emerge --depclean
 revdep-rebuild
 eclean-dist -d
 }}}
+
+Any questions about eix refer to http://en.gentoo-wiki.com/wiki/Eix
