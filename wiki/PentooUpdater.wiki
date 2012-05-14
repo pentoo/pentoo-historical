@@ -1,4 +1,6 @@
 = Update Commands =
+WARNING: The errors on your screen need to be read and acted upon, following these directions blindly will result in failure, then ridicule, then more failure.
+
 
 To eliminate most of the question in IRC (#pentoo) and to start a good documentation process, here are the steps to bring your system up to date
 
