@@ -23,7 +23,7 @@ emerge -1 pentoo-etc-portage && etc-update
 emerge -C talloc && emerge -1 talloc
 emerge -f dev-java/sun-jdk dev-java/sun-jre-bin 
 emerge -1 sys-apps/sysvinit sys-apps/util-linux
-emerge -C net-analyzer/metasploit
+emerge -C net-analyzer/metasploit net-analyzer/fasttrack
 
 # Update everything for the first time
 emerge --deep --update --newuse world -vat
