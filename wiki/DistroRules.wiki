@@ -10,7 +10,7 @@ We need a set of rules to govern our behavior. This wiki page is intended to be 
 *pentoo* is used to switch on and off our changes to packages we are overriding for gentoo.  For instance we have acpid in our repo, and the diffs from gentoo are controlled with the *pentoo* use flag.
 *livecd* is used for things which belong on the livecd but not on the installed systems
 *!livecd* is used for things which belong on the running systems but not on the livecd (do not abuse this for large packages)
-_missing_ we need a new use flag to denote the difference between livecd sized versions and maxi versions.  *maxi* is possible and not currently in use, thoughts?
+_missing_ we need a new use flag to denote the difference between livecd sized versions and maxi versions.  *maxi* is possible and not currently in use, thoughts? *minimal* (similar with many packages in gentoo) could be an another option.
 
 = Keywording: =
 
