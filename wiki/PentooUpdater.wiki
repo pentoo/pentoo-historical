@@ -16,8 +16,8 @@ echo 'ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"' >> /etc/make.conf
 layman -d pentoo && layman -a pentoo 
 emerge -1 portage 
 
-# Update /etc/portage{keywords|mask}, choose -5 to auto update
-emerge -1 pentoo-etc-portage && etc-update 
+# Update /etc/portage/profile/packages.{keywords|use|mask}
+emerge -1 pentoo-etc-portage && etc-update --automode -5 
 
 # Temporary workarounds
 emerge -C talloc && emerge -1 talloc
