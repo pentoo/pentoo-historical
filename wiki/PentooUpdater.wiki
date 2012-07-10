@@ -1,9 +1,8 @@
 = Update Commands =
+
+To eliminate most of the question in IRC (#pentoo) and to start a good documentation process, here are the steps to bring your system up to date.
+
 WARNING: The errors on your screen need to be read and acted upon, following these directions blindly will result in failure, then ridicule, then more failure.
-
-
-To eliminate most of the question in IRC (#pentoo) and to start a good documentation process, here are the steps to bring your system up to date
-
 
 == For the first time ==
 
@@ -16,8 +15,9 @@ echo 'ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"' >> /etc/make.conf
 layman -d pentoo && layman -a pentoo 
 emerge -1 portage 
 
-# Update /etc/portage/profile/packages.{keywords|use|mask}
-emerge -1 pentoo-etc-portage && etc-update --automode -5 
+# Select an applicable pentoo* profile
+eselect profile list
+eselect profile set <number>
 
 # Temporary workarounds
 emerge -C talloc && emerge -1 talloc
@@ -43,7 +43,6 @@ echo "*" > /etc/eix-sync.conf
 
 {{{
 eix-sync
-etc-update
 emerge -DNu world
 smart-live-rebuild
 etc-update
