@@ -13,7 +13,7 @@ emerge --sync && layman -S
 # Temporary workarounds
 echo 'ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"' >> /etc/make.conf
 layman -d pentoo && layman -a pentoo 
-emerge -1 portage 
+emerge -1 portage eselect
 
 # Select an applicable pentoo* profile
 eselect profile list
