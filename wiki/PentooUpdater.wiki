@@ -20,6 +20,7 @@ eselect profile list
 eselect profile set <number>
 
 # Temporary workarounds
+emerge -C pentoo-etc-portage
 emerge -C talloc && emerge -1 talloc
 emerge -f dev-java/sun-jdk dev-java/sun-jre-bin 
 emerge -1 sys-apps/sysvinit sys-apps/util-linux
