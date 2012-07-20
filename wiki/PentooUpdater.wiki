@@ -11,9 +11,12 @@ WARNING: The errors on your screen need to be read and acted upon, following the
 emerge --sync && layman -S
 
 # Temporary workarounds
-echo 'ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"' >> /etc/make.conf
 layman -d pentoo && layman -a pentoo 
 emerge -1 portage eselect
+
+# Modify /etc/make.file for your system (example):
+ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"
+VIDEO_CARDS="fbdev vga vesa"
 
 # Select an applicable pentoo* profile
 eselect profile list
