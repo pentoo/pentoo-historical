@@ -14,9 +14,11 @@ emerge --sync && layman -S
 layman -d pentoo && layman -a pentoo 
 emerge -1 portage eselect
 
-# Modify /etc/make.file for your system (example):
+# Modify /etc/make.conf file for your system:
 ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"
-VIDEO_CARDS="fbdev vga vesa"
+#You may wish to edit your VIDEO_CARDS line as well but only if you know what you are doing. (You can break X if you forget your video card.
+#Example for nvidia users:
+VIDEO_CARDS="nvidia fbdev vga vesa"
 
 # Select an applicable pentoo* profile
 eselect profile list
