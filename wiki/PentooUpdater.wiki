@@ -48,13 +48,19 @@ echo "*" > /etc/eix-sync.conf
 == On regular basis ==
 
 {{{
-eix-sync
-emerge -DNu world
-smart-live-rebuild
+#This will become the pentoo-updater script soon
+
+emerge --sync
+emerge --deep --update --newuse world -vt
 etc-update
-emerge --depclean
 revdep-rebuild
+smart-live-rebuild
+perl-cleaner --modules
+python-updater
+revdep-rebuild
+etc-update
 eclean-dist -d
+
 }}}
 
 Any questions about eix refer to http://en.gentoo-wiki.com/wiki/Eix
