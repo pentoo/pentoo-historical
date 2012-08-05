@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary These are the basic rules we attempt to adhere to.
 
 = Introduction =
 
