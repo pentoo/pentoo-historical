@@ -8,11 +8,7 @@ WARNING: The errors on your screen need to be read and acted upon, following the
 
 {{{
 # Sync with the portage tree
-emerge --sync && layman -S
-
-# Temporary workarounds
-layman -d pentoo && layman -a pentoo 
-emerge -1 portage eselect
+emerge --sync
 
 # Modify /etc/make.conf file for your system:
 ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"
@@ -20,16 +16,9 @@ ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"
 #Example for nvidia users:
 VIDEO_CARDS="nvidia fbdev vga vesa"
 
-# Select an applicable pentoo* profile
+# Modify your profile only if you know what you are doing, default should be fine for most users
 eselect profile list
 eselect profile set <number>
-
-# Temporary workarounds
-emerge -C pentoo-etc-portage #(and make sure /etc/portage/package.keywords/ is clean after that)
-emerge -C talloc && emerge -1 talloc
-emerge -f dev-java/sun-jdk dev-java/sun-jre-bin 
-emerge -1 sys-apps/sysvinit sys-apps/util-linux
-emerge -C net-analyzer/metasploit net-analyzer/fasttrack
 
 # Update everything for the first time
 emerge --deep --update --newuse world -vat
@@ -40,9 +29,9 @@ smart-live-rebuild
 # Check and rebuild broken packages after upgrade
 revdep-rebuild
 
-# Install the following tool to sync/search ebuilds faster
-emerge app-portage/eix
-echo "*" > /etc/eix-sync.conf
+# Update any needed configuration files
+etc-update
+
 }}}
 
 == On regular basis ==
@@ -60,6 +49,7 @@ python-updater
 revdep-rebuild
 etc-update
 eclean-dist -d
+emerge --depclean
 
 }}}
 
