@@ -12,8 +12,8 @@ emerge --sync
 
 # Modify /etc/make.conf file for your system:
 ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"
-#You may wish to edit your VIDEO_CARDS line as well but only if you know what you are doing. (You can break X if you forget your video card.
-#Example for nvidia users:
+# You may wish to edit your VIDEO_CARDS line as well but only if you know what you are doing.
+# Example for nvidia users:
 VIDEO_CARDS="nvidia fbdev vga vesa"
 
 # Modify your profile only if you know what you are doing, default should be fine for most users
@@ -37,11 +37,12 @@ etc-update
 == On regular basis ==
 
 {{{
-#This will become the pentoo-updater script soon
+# This will become the pentoo-updater script soon
 
 emerge --sync
 emerge --deep --update --newuse world -vt
 etc-update
+emerge --depclean
 revdep-rebuild
 smart-live-rebuild
 perl-cleaner --modules
@@ -49,8 +50,6 @@ python-updater
 revdep-rebuild
 etc-update
 eclean-dist -d
-emerge --depclean
-
 }}}
 
 Any questions about eix refer to http://en.gentoo-wiki.com/wiki/Eix
