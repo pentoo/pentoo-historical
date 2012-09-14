@@ -10,7 +10,7 @@ WARNING: The errors on your screen need to be read and acted upon, following the
 # Sync with the portage tree
 emerge --sync
 
-# Modify /etc/make.conf file for your system:
+# Modify /etc/portage/make.conf file for your system:
 ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"
 # You may wish to edit your VIDEO_CARDS line as well but only if you know what you are doing.
 # Example for nvidia users:
