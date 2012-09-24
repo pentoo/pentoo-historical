@@ -43,7 +43,7 @@ emerge --sync
 emerge --deep --update --newuse world -vt
 etc-update
 emerge --depclean
-revdep-rebuild
+emerge @preserved-rebuild
 smart-live-rebuild
 perl-cleaner --modules
 python-updater
