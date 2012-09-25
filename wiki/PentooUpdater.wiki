@@ -43,13 +43,19 @@ genmenu.py -x
 
 emerge --sync
 emerge --deep --update --newuse world -vt
-smart-live-rebuild
 etc-update
 emerge --depclean
+emerge @preserved-rebuild		
+smart-live-rebuild		
+perl-cleaner --modules		
+python-updater
 revdep-rebuild
+etc-update
 eclean-dist -d
+}}}
 
-#after python/perl upgrade:
+== after python/perl upgrade: ==
+{{{
 perl-cleaner --modules
 python-updater
 }}}
