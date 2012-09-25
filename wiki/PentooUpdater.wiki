@@ -32,6 +32,8 @@ revdep-rebuild
 # Update any needed configuration files
 etc-update
 
+# Regenerate the main menu for XFCE WM
+genmenu.py -x
 }}}
 
 == On regular basis ==
