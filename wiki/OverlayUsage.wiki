@@ -43,4 +43,4 @@ pentoo/pentoo-wireless -drivers
 }}}
 
 = Updating overlay =
-The updating procedure is the same as described in the [PentooUpdater#On regular basis Pentoo Updater] section
+The updating procedure is the same as described in the [PentooUpdater#On_regular_basis Pentoo Updater] section
