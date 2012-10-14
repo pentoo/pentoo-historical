@@ -1,4 +1,4 @@
-#summary Use power of Pentoo with your existing Gentoo setup
+#summary Use the power of Pentoo with your existing Gentoo setup
 
 = Introduction =
 
@@ -14,7 +14,7 @@ emerge --sync
 USE="subversion" emerge app-portage/layman
 
 # Update list of overlays
-layman -S
+layman -L
 
 # Add Pentoo overlay
 layman -a pentoo
@@ -29,16 +29,18 @@ eselect profile set pentoo:pentoo/hardened/linux/amd64
 # See the next section for examples
 emerge -DNupv world
 
-# Install the entire Pentoo or choose a separate package
-emerge -DNupv pentoo
+# Install the entire Pentoo 
+emerge -DNu pentoo
+# or choose a separate package
+emerge -DNu pentoo-wireless
 }}}
 
 = Adjusting settings =
 
-Settings can be changed in a usual Gentoo way by changing _package.keywords_ or _package.use_ files. For example, /etc/portage/package.use/
+Settings can be changed in a usual Gentoo way by changing _package.keywords_ or _package.use_ files/directories. For example, you can disable additional wireless drivers by adding a file to the  /etc/portage/package.use/ directory with the following content:
 {{{
-net-wireless/compat-wireless -drivers
+pentoo/pentoo-wireless -drivers
 }}}
 
 = Updating overlay =
-The updating procedure is the same as described in the [PentooUpdater Pentoo Updater#On regular basis] section
+The updating procedure is the same as described in the [PentooUpdater#On regular basis Pentoo Updater] section
