@@ -1,0 +1,44 @@
+#summary Use power of Pentoo with your existing Gentoo setup
+
+= Introduction =
+
+Pentoo Linux can be used as an overlay bringing a full set of tools and settings to an existing stable Gentoo setup.
+
+= Adding the overlay =
+
+{{{
+# Update the portage to the latest version
+emerge --sync
+
+# Make sure that layman with the "subversion" flag is installed
+USE="subversion" emerge app-portage/layman
+
+# Update list of overlays
+layman -S
+
+# Add Pentoo overlay
+layman -a pentoo
+
+# List of available profiles
+eselect profile list
+
+# Select an appropriate Pentoo profile for your current setup
+eselect profile set pentoo:pentoo/hardened/linux/amd64
+
+# Check what has changed and adjust other settings if required
+# See the next section for examples
+emerge -DNupv world
+
+# Install the entire Pentoo or choose a separate package
+emerge -DNupv pentoo
+}}}
+
+= Adjusting settings =
+
+Settings can be changed in a usual Gentoo way by changing _package.keywords_ or _package.use_ files. For example, /etc/portage/package.use/
+{{{
+net-wireless/compat-wireless -drivers
+}}}
+
+= Updating overlay =
+The updating procedure is the same as described in the [PentooUpdater Pentoo Updater#On regular basis] section
