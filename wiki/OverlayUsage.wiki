@@ -37,10 +37,14 @@ emerge -DNu pentoo-wireless
 
 = Adjusting settings =
 
-Settings can be changed in a usual Gentoo way by changing _package.keywords_ or _package.use_ files/directories. For example, you can disable additional wireless drivers by adding a file to the  /etc/portage/package.use/ directory with the following content:
+To merge the overlay with your current setup smoother, additional changes can be made in a usual Gentoo way by modifying files in the /etc/portage directory. For example, you can disable additional wireless drivers by adding a file to the  /etc/portage/package.use/ directory with the following content:
 {{{
 pentoo/pentoo-wireless -drivers
 }}}
-
-= Updating overlay =
+and disable unrequited global flags in the make.conf file:
+{{{
+USE="-gps -caps -ldap"
+}}}
+See the official [http://www.gentoo.org/doc/en/handbook/ Gentoo handbook] for more details
+= Updating the overlay =
 The updating procedure is the same as described in the [PentooUpdater#On_regular_basis Pentoo Updater] section
