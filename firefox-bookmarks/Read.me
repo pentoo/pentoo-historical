@@ -1,0 +1,11 @@
+=Getting the bookmarks=
+Go to Downloads and get the latest bookmarks.html. Then open Firefox and import it.
+
+=Getting the bookmarks for Live-CD=
+Run the ebuild. It will create /root/.mozilla with an almost empty FF profile, the only files will be profile.ini and places.sqlite (the later holds the bookmarks).
+
+=Creating a new bookmarks version for the LiveCD=
+  # Create a new bookmarks.html (don't forget to remove anything that is not in the pentoo bookmark folder).
+  # Upload that bookmarks.html to this project, then use it to create a fresh places.sqlite (I removed last-visited and such).
+  # Then remove anything from /root/.mozilla except the 2 mentioned files. Compress and upload to here.
+  # Don't forget to create new version of the ebuild.
