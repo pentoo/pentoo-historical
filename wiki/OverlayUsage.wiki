@@ -43,7 +43,7 @@ pentoo/pentoo-wireless -drivers
 }}}
 and disable unrequited global flags in the make.conf file:
 {{{
-USE="-gps -caps -ldap"
+USE="-gps -caps -livecd -ldap"
 }}}
 See the official [http://www.gentoo.org/doc/en/handbook/ Gentoo handbook] for more details
 = Updating the overlay =
