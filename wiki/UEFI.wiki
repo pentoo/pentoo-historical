@@ -1,14 +1,13 @@
-#UEFI booting with Pentoo
+# UEFI booting with Pentoo
 
 = Introduction =
 
-This article covers basic information about UEFI booting and the steps to use boot Pentoo through UEFI.
-It's currently based on the Pentoo 2012.0 Beta3 Release - we are working on it ;)
-I did not UEFI booting installation with the installer. The installer probably surely needs some love to support GPT, please report if you tried!_
+This article covers basic information about UEFI booting and the steps to use boot Pentoo through UEFI.<br/>
+It's currently based on the Pentoo 2012.0 Beta3 Release - we are working on it, this will one day function straight though the installer ;)
 
 = Basic Steps =
-The examples cover an installation using 2 USB sticks (8GB and 16GB), I'm sure you can deduce from that ;)
-This is a brief list of what you need/want for Pentoo (2012 beta3). Read the [UEFI#Information] chapter for the reasons. [http://en.gentoo-wiki.com/wiki/UEFI] is a pretty good source of deeper info.
+The examples cover an installation using 2 USB sticks (8GB and 16GB), I'm sure you can deduce from that ;)<br/>
+This is a brief list of what you need/want for Pentoo (2012 beta3).
 
 = Preparation =
 
@@ -46,8 +45,8 @@ cat > /mnt/cdrom/startup.nsh <<EOF
 fs0:\boot\pentoo root=/dev/ram0 init=/linuxrc  nodetect aufs max_loop=256 dokeymap looptype=squashfs loop=/image.squashfs  cdroot vga=791 initrd=\boot\pentoo.igz
 EOF
 }}}
-These parameters are from adapted from grub - and the backslashes for initrd are correct.
-Now if there is some option in the UEFI configuration to boot an "EFI-shell", then this stick might even boot through UEFI through the efi-shell and the startup.nsh.
+These parameters are from adapted from grub - and the backslashes for initrd are correct.<br/>
+Now if there is some option in the UEFI configuration to boot an "EFI-shell", then this stick might even boot through UEFI through the efi-shell and the startup.nsh.<br/>
 Just be very patient when looking at a black screen, EFI framebuffer support is missing, so you won't see anything for a while!
 
 == EFI-based Framebuffer Support (CONFIG_FB_EFI) ==
@@ -151,7 +150,7 @@ flushchanges
 
 = Booting kernel directly =
 
-To directly boot the kernel, UEFI needs to pass the kernel boot parameters.
+To directly boot the kernel, UEFI needs to pass the kernel boot parameters.<br/>
 So these are the options:
   * The UEFI GUI is nice and configuration is somehow sane. All parameters can be entered.
   * The efi-shell solution works but is ugly.
@@ -161,15 +160,15 @@ So these are the options:
   * Try booting through UEFI with another distro, then use efibootmgr.
 
 == The catch: Chicken-Egg Problem ==
-With UEFI, you don't really need GRUB or any bootloader. UEFI can store the boot parameters and boot the kernel directly.
+With UEFI, you don't really need GRUB or any bootloader. UEFI can store the boot parameters and boot the kernel directly.<br/>
 Simply adding new boot options to UEFI with efibootmgr is nice - but only works if the kernel was booted through UEFI.
 
 == Easy Way ==
 *To communicate with UEFI, the kernel must be booted through UEFI*
 
-Now with the above, you already have 2 UEFI capable Pentoo installations.
-One on a 'traditional' usb installation (8GB, unetbootin, /dev/sdb) and one on a hard disk (16GB, /dev/sdc).
-If you're lucky, one of the above boots through UEFI if you select to boot EFI-shell -> startup.nsh in the UEFI config (see above).
+Now with the above, you already have 2 UEFI capable Pentoo installations.<br/>
+One on a 'traditional' usb installation (8GB, unetbootin, /dev/sdb) and one on a hard disk (16GB, /dev/sdc).<br/>
+If you're lucky, one of the above boots through UEFI if you select to boot EFI-shell -> startup.nsh in the UEFI config (see above).<br/>
 Then directly attempt to use efibootmgr.
 
 == efibootmgr ==
@@ -191,7 +190,7 @@ efibootmgr --create --gpt \
 }}}
 _with the last trailing "-"!_
 
-Now there should be a new boot option in UEFI GUI labelled "Pentoo 2012b3".
+Now there should be a new boot option in UEFI GUI labelled "Pentoo 2012b3".<br/>
 Here it's even set as default boot option now.
 
 = TODO: =
