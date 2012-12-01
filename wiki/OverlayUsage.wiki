@@ -29,6 +29,10 @@ eselect profile set pentoo:pentoo/hardened/linux/amd64
 # See the next section for examples
 emerge -DNupv world
 
+# Alternatively, create symlinks for necessarily keywords/use files:
+ln -s /var/lib/layman/pentoo/profiles/pentoo/base/package.accept_keywords/net-analyzer /etc/portage/package.keywords
+ln -s /var/lib/layman/pentoo/profiles/pentoo/base/package.use/dev-ruby /etc/portage/package.use
+
 # Install the entire Pentoo 
 emerge -DNu pentoo
 # or choose a separate package
