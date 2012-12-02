@@ -1,18 +1,23 @@
 #summary UEFI booting with Pentoo
 
+
 = Introduction =
 
 This article covers basic information about UEFI booting and the steps to use boot Pentoo through UEFI.<br/>
-It's currently based on the Pentoo 2012.0 Beta3 Release - we are working on it, this will one day function straight though the installer ;)
+It's currently based on the Pentoo 2012.0 Beta3 Release - we are working on it, this will one day be part of the installer ;)
 
-= Basic Steps =
-The examples cover an installation using 2 USB sticks (8GB and 16GB), I'm sure you can deduce from that ;)<br/>
-This is a brief list of what you need/want for Pentoo (2012 beta3).
+The examples cover two installations using 2 USB sticks (8GB and 16GB) and the Pentoo (2012 beta3) iso.<br/>
+On the 8GB stick, we will install Pentoo using unetbootin and the iso.<br/>
+On the 16GB stick, we will install Pentoo as if it were a normal hard disk.<br/>
+Both will be UEFI bootable in the end.
+
 
 = Preparation =
 
   * Download the [http://dev.pentoo.ch/~zero/isos/ Pentoo 2012.0 Beta3 Release]
-  * Use unetbootin to burn the iso to the 8GB USB stick. Make sure it's partitioned with FAT32.
+  * Use unetbootin to burn the iso to the 8GB USB stick.
+  * Make sure it's partitioned with FAT32 (msdos partition layout).
+
 
 = USB stick (8GB, /dev/sdb) =
 
@@ -30,10 +35,6 @@ Remember to run flushchanges to save changes before any reboot!
 Install the EFI-shell to /dev/sdb1
 {{{
 cd /mnt/cdrom/
-ls
-wget "https://edk2.svn.sourceforge.net/svnroot/edk2/trunk/edk2/ShellBinPkg/UefiShell/X64/Shell.efi" Shellx64.efi
-ls
-rm Shell.efi 
 wget "https://edk2.svn.sourceforge.net/svnroot/edk2/trunk/edk2/ShellBinPkg/UefiShell/X64/Shell.efi"
 mv Shell.efi Shellx64.efi
 }}}
@@ -47,10 +48,10 @@ EOF
 }}}
 These parameters are from adapted from grub - and the backslashes for initrd are correct.<br/>
 Now if there is some option in the UEFI configuration to boot an "EFI-shell", then this stick might even boot through UEFI through the efi-shell and the startup.nsh.<br/>
-Just be very patient when looking at a black screen, EFI framebuffer support is missing, so you won't see anything for a while!
+Just be very patient when looking at a black screen, EFI framebuffer support is missing, so you won't see anything for a while! And will not see what failes, so proceed to ...
 
 == EFI-based Framebuffer Support (CONFIG_FB_EFI) ==
-*Optional*
+*Optional*<br/>
 Boot failures are difficult to see too without *EFI-based Framebuffer Support*, so run:
 {{{
 cd /usr/src/linux
@@ -63,31 +64,38 @@ and enable "EFI-based Framebuffer Support" (CONFIG_FB_EFI) at location:
 
 Copy the new kernel:
 {{{
+mv /mnt/cdrom/boot/pentoo /mnt/cdrom/boot/pentoo.orig
+mv /boot/kernel-genkernel-x86_64-3.5.4-pentoo /boot/kernel-genkernel-x86_64-3.5.4-pentoo.orig
 cp arch/x86_64/boot/bzImage /mnt/cdrom/boot/pentoo
+cp arch/x86_64/boot/bzImage /boot/kernel-genkernel-x86_64-3.5.4-pentoo
 }}}
+
 
 = Hard disk (16GB USB stick, /dev/sdc) =
 
 == Partitioning ==
-Plug in the larger stick (the hard disk).
+Plug in the larger stick (the hard disk).<br/>
+_Chose a sane swap size for a real disk, the one below is just to make the installer happy!_<br/>
 Create GPT partition table:
 {{{
 parted /dev/sdc
 mklabel gpt
 mkpart primary fat32 1 256
 toggle 1 boot
-mkpart primary linux-swap 256 257
+mkpart primary linux-swap(v1) 256 257
 mkpart primary ext4 257 -1
 quit
 }}}
+_Check the filesystems and create them if things go wrong._
 
 == Pentoo-Installer ==
 Run the pentoo-installer, configure everything as usual with these modifications:
   * Chose to manually configure hard disk.
   * When asked to select a disk to partition, immediatly chose "DONE"
-  * Chose /dev/sdc2 as swap, /dev/sda3 as /. Do not format them.
-  * Co NOT assign /boot to /dev/sdc1, it fails because FAT32 can't contain symlinks.
-  * Add this to /etc/fstab: *TODO*
+  * Chose /dev/sdc2 as swap, /dev/sda3 as /. Do not create a filesystem on them.
+  * Do NOT assign /boot to /dev/sdc1, it fails because FAT32 can't contain symlinks.
+  * Add this to /etc/fstab:
+  /dev/sdc1   /boot        vfat    defaults,noatime     1 2
   * On "4. Install Bootloader" choose "None"
 
 == EFI boot partition ==
@@ -113,22 +121,21 @@ EOF
 }}}
 
 == EFI-based Framebuffer Support (CONFIG_FB_EFI) ==
-*Optional*
+*Optional*<br/>
 If you want efi framebuffer support - which you do - then either:
 
 a) Copy the previously generated kernel from the 8GB usb stick:
 {{{
 cp /mnt/cdrom/boot/pentoo /mnt/boot/EFI/Pentoo/genkernel-3.5.4-pentoo
+cp /usr/src/linux/.config /mnt/gentoo/usr/src/linux/.config 
 }}}
-or
+or<br/>
 b) Chroot to new installation, run genkernel to enable EFI framebuffer (CONFIG_FB_EFI, see above).
 {{{
 mount -t proc none /mnt/gentoo/proc
 mount --rbind /sys /mnt/gentoo/sys
 mount --rbind /dev /mnt/gentoo/dev
 chroot /mnt/gentoo /bin/bash
-}}}
-{{{
 env-update
 source /etc/profile
 export PS1="(chroot) $PS1"
@@ -139,8 +146,8 @@ genkernel --splash --no-install --no-clean --menuconfig bzImage
 }}}
 {{{
 exit
-cp /mnt/gentoo/usr/src/linux/arch/x86_64/boot/bzImage /mnt/boot/EFI/Pentoo/genkernel-3.5.4-pentoo
 umount -l /mnt/gentoo/{dev,proc,sys}
+cp /mnt/gentoo/usr/src/linux/arch/x86_64/boot/bzImage /mnt/boot/EFI/Pentoo/genkernel-3.5.4-pentoo
 }}}
 
 Save work if you haven't done by now ;)
@@ -148,23 +155,27 @@ Save work if you haven't done by now ;)
 flushchanges
 }}}
 
+
 = Booting kernel directly =
 
-To directly boot the kernel, UEFI needs to pass the kernel boot parameters.<br/>
+With UEFI, you don't really need GRUB or any bootloader. UEFI can store the boot parameters and boot the kernel directly.<br/>
+You can add a new boot option to UEFI directly, using efibootmgr, but ...
+
+== The catch: Chicken-Egg Problem ==
+*To communicate with UEFI, the kernel must be booted through UEFI*<br/>
+So to use efibootmgr, one must be able to boot though UEFI at least once before!<br/>
+
 So these are the options:
   * The UEFI GUI is nice and configuration is somehow sane. All parameters can be entered.
   * The efi-shell solution works but is ugly.
-  * efibootmgr can write to UEFI - but there's a catch!
+  * efibootmgr can write to UEFI - but there's the catch!
   * Place kernel to fs0:\EFI\Boot\bootx64.efi and hardocde boot params into it (TODO: check how-to)
-  * By default, UEFI boots from fs0:\EFI\Boot\bootx64.efi. Grub2 has a method of building such a bootx64.efi - the path to config being hardcoded (TODO: check this)
+  * GRUB2 is uefi compatible. But to build the bootx64.efi, the kernel must be booted through UEFI - same catch.
   * Try booting through UEFI with another distro, then use efibootmgr.
 
-== The catch: Chicken-Egg Problem ==
-With UEFI, you don't really need GRUB or any bootloader. UEFI can store the boot parameters and boot the kernel directly.<br/>
-Simply adding new boot options to UEFI with efibootmgr is nice - but only works if the kernel was booted through UEFI.
+Again - simply adding new boot options to UEFI with efibootmgr is nice - but only works if the kernel was booted through UEFI.
 
 == Easy Way ==
-*To communicate with UEFI, the kernel must be booted through UEFI*
 
 Now with the above, you already have 2 UEFI capable Pentoo installations.<br/>
 One on a 'traditional' usb installation (8GB, unetbootin, /dev/sdb) and one on a hard disk (16GB, /dev/sdc).<br/>
@@ -172,15 +183,14 @@ If you're lucky, one of the above boots through UEFI if you select to boot EFI-s
 Then directly attempt to use efibootmgr.
 
 == efibootmgr ==
-This assumes booting through UEFI, in this example the hard disk will be on /dev/sdb!
+This assumes booting through UEFI to the hard disk (16GB usb stick), in this example the hard disk will be on /dev/sdb!
 {{{
 modprobe efivars
 efibootmgr -v	#watch the output
 }}}
 Then run this monster:
 {{{
-echo "real_root=/dev/sdb3
-initrd=\EFI\Pentoo\initramfs-genkernel-x86_64-3.5.4-pentoo" | \
+echo "real_root=/dev/sdb3 initrd=\EFI\Pentoo\initramfs-genkernel-x86_64-3.5.4-pentoo" | \
 iconv -f ascii -t ucs2 | \
 efibootmgr --create --gpt \
 --disk /dev/sdb --part 1 \
@@ -193,9 +203,66 @@ _with the last trailing "-"!_
 Now there should be a new boot option in UEFI GUI labelled "Pentoo 2012b3".<br/>
 Here it's even set as default boot option now.
 
+== Grub2 ==
+By default, UEFI boots from fs0:\EFI\Boot\bootx64.efi. Grub2 has a method of building such a bootx64.efi.<br/>
+Grub2 can be used to generate fs0:\EFI\Boot\bootx64.efi and hardocde path to its modules and the boot params/menu.<br/>
+But to run `grub2-install --target=x86_64-efi` and create the efi file ... you must again be booted through UEFI ... ;)
+
+And I've failed at copying a generated bootx64.efi to the other USB stick, seems it must be generated on the device it's being used.<br/>
+(TODO: find out how to circumvent)
+
+The bellow assumes booting through UEFI to 8GB USB stick (/dev/sdb):
+{{{
+echo "sys-boot/grub:2" >> /etc/portage/package.accept_keywords
+echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
+emerge -avt sys-boot/grub:2
+modprobe efivars
+}}}
+
+Install grub2 to /dev/sdb1:
+Generate efi image on hard disk (/dev/sdb1):
+{{{
+# grub2 likes having the boot partition on /boot
+mount /dev/sdb1 /boot
+grub2-install --target=x86_64-efi --efi-directory=/boot/ --removable --modules=part_gpt msdos
+}}}
+
+_The grub.cfg should be created by grub2-mkconfig, for this tutorial we'll write a crude one ourselves._<br/>
+Create a quick grub.cfg
+{{{
+cat > /boot/grub2/grub.cfg <<EOF
+timeout=5
+menuentry 'Pentoo hd0 v0.8' {
+    insmod efi_gop
+    insmod efi_uga
+    insmod msdos
+    root=hd0,1
+    linux /boot/pentoo root=/dev/ram0 init=/linuxrc aufs max_loop=256 dokeymap looptype=squashfs loop=/image.squashfs cdroot video=uvesafb:mtrr:3,ywrap,1024x768-16 usbcore.autosuspend=1 console=tty0
+    initrd /boot/pentoo.igz
+}
+EOF
+umount /boot
+}}}
+
+An installation to hard disk is almost the same, here's a grub.cfg for it (/dev/sdb):
+{{{
+cat > /boot/grub2/grub.cfg <<EOF
+timeout=5
+menuentry 'Pentoo hd0 v0.8' {
+    insmod efi_gop
+    insmod efi_uga
+    insmod part_gpt
+    root=hd0,1
+    linux /EFI/Pentoo/genkernel-3.5.4-pentoo real_root=/dev/sdb3
+    initrd=/EFI/Pentoo/initramfs-genkernel-x86_64-3.5.4-pentoo
+}
+EOF
+}}}
+Please note the part_gpt module instead of msdos.
+
+
 = TODO: =
 
-  * Add info for grub2
   * Add info for ISO generation with xorriso instead of mkisofs.
   * Quick how-to hardcode boot params into kernel
   * How-To use UEFI in qemu/kvm - have beta ebuilds for the tools (edk2)
