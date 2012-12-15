@@ -1,0 +1,70 @@
+#summary UEFI: pentoo-installer guide for UEFI and GPT
+
+= Introduction =
+
+This article covers a Pentoo installation to hard disk using the pentoo-installer.<br/>
+It shows how to install to a GPT partition layout and make the installation UEFI-bootable.
+
+
+= Partitioning =
+
+_Chose a sane swap size for a real disk, the one below is just to make the installer happy!_<br/>
+Create GPT partition table:
+{{{
+parted /dev/sda
+mklabel gpt
+mkpart primary fat32 1 256
+toggle 1 boot
+mkpart primary linux-swap(v1) 256 257
+mkpart primary ext4 257 -1
+quit
+}}}
+_Check the filesystems and create them (with mkswap, mkfs.vfat, mkfs.ext4) if things go wrong._
+
+
+= Pentoo-Installer =
+
+Update the pentoo-installer with:
+{{{
+eix-sync
+emerge -avt pentoo-installer
+}}}
+
+Run the pentoo-installer, configure everything as usual with these modifications:
+  * Chose to manually configure hard disk.
+  * When asked to select a disk to partition, immediatly chose "DONE"
+  * Chose /dev/sda2 as swap, /dev/sda3 as /. Do not create a filesystem on them.
+  * Do NOT assign /boot to /dev/sda1, it fails because FAT32 can't contain symlinks.
+  * Add this to /etc/fstab:
+  /dev/sda1   /boot        vfat    defaults,noatime     1 2
+  * On "4. Install Bootloader" choose "None", it would fail.
+
+
+= EFI boot partition =
+
+Now prepare the EFI boot partition:
+{{{
+mkdir /mnt/boot
+mount /dev/sda1 /mnt/boot
+
+cd /mnt/boot
+mkdir -p EFI/Pentoo
+cp /mnt/gentoo/boot/{initramfs-*,kernel-genkernel-*,System.map-genkernel-*} .
+mv ./{initramfs-*,kernel-genkernel-*} EFI/Pentoo
+
+# TODO: find out which path is used
+cp System.map-genkernel-* EFI/Pentoo/
+
+# my UEFI chokes on long name/path
+# plus it sometimes helps to have .efi as file ending
+pushd EFI/Pentoo
+mv kernel-genkernel-x86_64-3.5.4-pentoo genkernel-3.5.4-pentoo.efi
+popd
+}}}
+
+
+= Booting through UEFI =
+
+The above installation includes no boot loader. UEFI can boot the kernel directly, but to add them with efibootmgr, the kernel needs to be booted through UEFI.<br/>
+Use one of the methods described in [UEFI_3_EfiShell], [UEFI_6_Grub2Image] or [UEFI_7_Grub2Standalone] to achieve this.<br/>
+Then proceed with [UEFI_5_BootKernelDirectly] for instructions on efibootmgr.

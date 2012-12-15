@@ -1,0 +1,61 @@
+#summary UEFI: EFI shell with startup.nsh
+
+= Introduction =
+
+The EFI shell provides a simple shell environment, which can be used to start other EFI applications, like kernels.<br/>
+By default, it starts a file startup.nsh, the below examples will boot the pentoo kernel.
+
+
+= EFI shell =
+
+== EFI shell for USB stick ==
+This startup.nsh is for an installation of Pento to an USB stick with unetbootin.<br/>
+Install the EFI-shell to /dev/sdb1:
+{{{
+cd /mnt/cdrom/
+wget "https://edk2.svn.sourceforge.net/svnroot/edk2/trunk/edk2/ShellBinPkg/UefiShell/X64/Shell.efi"
+mv Shell.efi Shellx64.efi
+}}}
+
+== EFI shell for an installation to hard disk ==
+This example assumes an installation of Pentoo to a hard disk on /dev/sda3 with the pentoo-installer.<br/>
+If this works, you can proceed directly to [UEFI_5_BootKernelDirectly].<br/>
+The Shellx64.efi must be placed at the root of the EFI boot partition (/dev/sda1).
+{{{
+mkdir -p /mnt/boot
+mount /dev/sda1 /mnt/boot
+cd /mnt/boot
+wget "https://edk2.svn.sourceforge.net/svnroot/edk2/trunk/edk2/ShellBinPkg/UefiShell/X64/Shell.efi"
+mv Shell.efi Shellx64.efi
+}}}
+
+
+= startup.nsh =
+
+Without efi-based framebuffer support in the kernel, the screen will be black for a while. See [UEFI-information] or be very patient and hope nothing goes wrong until you see output ...
+
+== startup.nsh for USB stick ==
+This startup.nsh is for an installation of Pento to an USB stick with unetbootin.<br/>
+Create startup.nsh in /dev/sdb1:
+{{{
+cat > /mnt/cdrom/startup.nsh <<EOF
+fs0:\boot\pentoo root=/dev/ram0 init=/linuxrc  nodetect aufs max_loop=256 dokeymap looptype=squashfs loop=/image.squashfs  cdroot vga=791 initrd=\boot\pentoo.igz
+EOF
+}}}
+These parameters are from adapted from grub - and the backslashes for initrd are correct.<br/>
+Now if there is some option in the UEFI configuration to boot an "EFI-shell", then this stick might even boot through UEFI through the efi-shell and the startup.nsh.<br/>
+
+== startup.nsh for an installation to hard disk ==
+This example assumes an installation of Pentoo to a hard disk on /dev/sda3 with the pentoo-installer.<br/>
+The startup.nsh must be placed at the root of the EFI boot partition (/dev/sda1).
+{{{
+mkdir -p /mnt/boot
+mount /dev/sda1 /mnt/boot
+cd /mnt/boot
+# my UEFI chokes on long name/path
+# plus it sometimes helps to have .efi as file ending
+cp kernel-genkernel-x86_64-3.5.4-pentoo genkernel-3.5.4-pentoo.efi
+cat > /mnt/boot/startup.nsh <<EOF
+fs0:\EFI\Pentoo\genkernel-3.5.4-pentoo.efi real_root=/dev/sda3 initrd=\EFI\Pentoo\initramfs-genkernel-x86_64-3.5.4-pentoo
+EOF
+}}}

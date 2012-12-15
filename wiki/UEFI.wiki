@@ -5,31 +5,29 @@
 This article covers basic information about UEFI booting and the steps to use boot Pentoo through UEFI.<br/>
 It's currently based on the Pentoo 2012.0 Beta3 Release - we are working on it, this will one day be part of the installer ;)
 
-_Note: This section is currently under construction!<br/>
-All the information can be found at [http://code.google.com/p/pentoo-uefi/w/list?sort=pagename code.google.com/p/pentoo-uefi]._
+_Note: This section is currently under construction!_
 
 
 = USB Stick Installation =
 
 Install Pentoo to an USB stick using unetbootin and the iso image.<br/>
 The stick should have an msdos partition layout and one fat32 partition with the boot flag.<br/>
-Prepare the stick as in [http://code.google.com/p/pentoo-uefi/wiki/UEFI_2_Preparation UEFI_2_Preparation], the kernel modification is highly recommended.<br/>
-Install a BootX64.efi using either [http://code.google.com/p/pentoo-uefi/wiki/UEFI_6_Grub2Image UEFI_6_Grub2Image] or [http://code.google.com/p/pentoo-uefi/wiki/UEFI_7_Grub2Standalone UEFI_7_Grub2Standalone].<br/>
-Optional: Install the EFI shell as described in [http://code.google.com/p/pentoo-uefi/wiki/UEFI_3_EfiShell UEFI_3_EfiShell].<br/>
+Prepare the stick as in [UEFI_2_Preparation], the kernel modification is highly recommended.<br/>
+Install a BootX64.efi using either [UEFI_6_Grub2Image] or [UEFI_7_Grub2Standalone].<br/>
+Optional: Install the EFI shell as described in [UEFI_3_EfiShell].<br/>
 That's all - _use the provided downloads in the articles!_
 
 
 = Hard Disk Installation =
 
 UEFI booting requires an UEFI boot partition - a fat32 partition with the boot flag as first partition of the disk.<br/>
-Install Pentoo using the pentoo-installer, [http://code.google.com/p/pentoo-uefi/wiki/UEFI_4_PentooInstaller UEFI_4_PentooInstaller] covers an installation to a GPT partition layout.<br/>
-Boot through UEFI *at least one time* using one of the methods in [http://code.google.com/p/pentoo-uefi/wiki/UEFI_3_EfiShell UEFI_3_EfiShell], [http://code.google.com/p/pentoo-uefi/wiki/UEFI_6_Grub2Image UEFI_6_Grub2Image] or [http://code.google.com/p/pentoo-uefi/wiki/UEFI_7_Grub2Standalone UEFI_7_Grub2Standalone].<br/>
-Then see [http://code.google.com/p/pentoo-uefi/wiki/UEFI_5_BootKernelDirectly UEFI_5_BootKernelDirectly] to permanently add the kernel as new UEFI boot option.<br/>
+Install Pentoo using the pentoo-installer, [UEFI_4_PentooInstaller] covers an installation to a GPT partition layout.<br/>
+Boot through UEFI *at least one time* using one of the methods in [UEFI_3_EfiShell], [UEFI_6_Grub2Image] or [UEFI_7_Grub2Standalone].<br/>
+Then see [UEFI_5_BootKernelDirectly] to permanently add the kernel as new UEFI boot option.<br/>
 
 = TODO: =
 
   * Add info for ISO generation with xorriso instead of mkisofs.
   * Quick how-to hardcode boot params into kernel
-  * How-To use UEFI in qemu/kvm - have beta ebuilds for the tools (edk2)
 
 Enjoy ;)

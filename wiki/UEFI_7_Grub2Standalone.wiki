@@ -1,0 +1,56 @@
+#summary UEFI: Standalone BootX64.efi by GRUB2
+
+= Introduction =
+
+GRUB2 can create a standalone UEFI application, with the menu included in the binary.<br/>
+This can be copied around.
+
+
+= Download prepared binary =
+
+A prepared binary is available from:
+[https://pentoo-uefi.googlecode.com/files/grub2.00-r1-standalone.efi grub2.00-r1-standalone.efi]<br/>
+It assumes a Pentoo installation to an USB stick with unetbootin.
+
+To install it, run:
+{{{
+mkdir -p /mnt/cdrom/EFI/BOOT/
+cd /mnt/cdrom/EFI/BOOT/
+wget http://pentoo-uefi.googlecode.com/files/grub2.00-r1-standalone.efi
+mv grub2.00-r1-standalone.efi BOOTX64.EFI
+}}}
+
+
+= Build the binary =
+
+Alternatively, the binary can be built and installed by:
+{{{
+echo "sys-boot/grub:2" >> /etc/portage/package.accept_keywords
+echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
+emerge -avt sys-boot/grub:2
+}}}
+Create a simple grub.cfg
+{{{
+mkdir -p /tmp/grub.temp/boot/grub
+cat > /tmp/grub.temp/boot/grub/grub.cfg <<EOF
+timeout=5
+menuentry 'Pentoo' {
+    insmod efi_gop
+    insmod efi_uga
+    insmod part_msdos
+    root=hd0,1
+    linux /boot/pentoo root=/dev/ram0 init=/linuxrc aufs max_loop=256 dokeymap looptype=squashfs loop=/image.squashfs cdroot video=uvesafb:mtrr:3,ywrap,1024x768-16 usbcore.autosuspend=1 console=tty0
+    initrd /boot/pentoo.igz
+}
+EOF
+}}}
+Create the standalone BootX64.efi:
+_The relative path to "boot/grub/grub.cfg" is important!_
+{{{
+cd /tmp/grub.temp/
+mkdir -p /mnt/cdrom/EFI/BOOT
+grub2-mkstandalone  --directory="/usr/lib/grub/x86_64-efi/" \
+--format="x86_64-efi" --compression="xz" \
+--output=/mnt/cdrom/EFI/BOOT/BOOTX64.EFI \
+boot/grub/grub.cfg
+}}}
