@@ -1,0 +1,112 @@
+#summary UEFI: Creating an UEFI-bootable ISO
+
+= Introduction =
+
+Creating an UEFI-bootable ISO seems to be not so easy.<br/>
+I have failed to create one so far and most other LiveCDs I've looked at are not UEFI-bootable too.<br/>
+This article sums up my current knowledge, maybe some day this will become a complete guide.<br/>
+
+
+= xorriso =
+
+Legacy mkisofs cannot create UEFI-bootable ISOs. Use xorriso (dev-libs/libisoburn) instead.
+
+*Example from SystemRescueCD:*
+{{{
+xorriso -as mkisofs \
+-rock -omit-version-number -disable-deep-relocation -joliet -allow-leading-dots \
+-volid "[VOLID]" \
+-b isolinux/isolinux.bin \
+-c isolinux/boot.cat \
+-no-emul-boot -boot-load-size 4 -boot-info-table \
+-eltorito-alt-boot -e boot/grub/efi.img \
+-no-emul-boot \
+-o ../SystemRescueCD-2.5.0-efi64+biosi586.iso .
+}}}
+
+The parameters "-eltorito-alt-boot" and "-e" should take care of UEFI.
+
+
+= Tools =
+
+== dumpet (app-cdr/dumpet) ==
+Fedoras [https://fedorahosted.org/dumpet/ dumpet] is a tool to dump information about bootable CDs and other similar formats.<br/>
+It is particularly useful because it shows whether an ISO contains additional (UEFI) boot images.<br/>
+The Pentoo overlay has an ebuild for it!
+
+Example:
+{{{
+# dumpet -i systemrescuecd-x86-3.1.2.iso 
+Validation Entry:
+    Header Indicator: 0x01 (Validation Entry)
+    PlatformId: 0x00 (80x86)
+    ID: ""
+    Checksum: 0x55aa
+    Key bytes: 0x55aa
+Boot Catalog Default Entry:
+    Entry is bootable
+    Boot Media emulation type: no emulation
+    Media load segment: 0x0 (0000:7c00)
+    System type: 0 (0x00)
+    Load Sectors: 4 (0x0004)
+    Load LBA: 148673 (0x000244c1)
+Section Header Entry:
+    Header Indicator: 0x91 (Final Section Header Entry)
+    PlatformId: 0xef (EFI)
+    Section Entries: 1
+    ID: ""
+Boot Catalog Section Entry:
+    Entry is bootable
+    Boot Media emulation type: no emulation
+    Media load address: 0 (0x0000)
+    System type: 0 (0x00)
+    Load Sectors: 2880 (0x0b40)
+    Load LBA: 172919 (0x0002a377)
+}}}
+
+
+= Other distros =
+
+== SystemRescueCD ==
+
+=== Booting the ISO ===
+The ISO is somewhat bootable, at least Grub is started. Then it fails ...<br/>
+_TODO: Verify what exactly happens._
+
+=== Creating UEFI-bootable ISO ===
+SRCD seems to create the ISO by the [http://systemrescuecd.git.sourceforge.net/git/gitweb.cgi?p=systemrescuecd/systemrescuecd;a=blob;f=buildscripts/recreate-iso.sh;h=c6649cdaa008910e72f4cc01596f9f7c0474c0bb;hb=HEAD buildscripts/recreate-iso] script.<br/>
+Comments in the script:
+  # create memdisk tar image which contains initial embedded grub.cfg
+  # create bootx64.efi that contains embedded memdisk tar image
+  # create boot/grub/efi.img that contains bootx64.efi (with grub2-mkimage)
+  # create iso image (with xorriso)
+
+== Fedora ==
+
+=== Booting the ISO ===
+The Fedora 17 ISO are actually UEFI-bootable!
+
+=== Creating UEFI-bootable ISO ===
+*TODO: Find out how Fedora creates their ISO.*<br/>
+The ISO contains a folder /EFI/BOOT with these files:
+  * BOOTX64.conf
+  * BOOTX64.efi
+  * grub.conf
+  * splash.xpm.gz
+
+grub.conf and BOOTX64.conf are identical and contain:
+{{{
+default=0
+splashimage=/EFI/BOOT/splash.xpm.gz
+timeout 10
+hiddenmenu
+
+title Fedora-17-x86_64-Live-XFCE.iso
+  findiso
+  kernel /isolinux/vmlinuz0 root=live:LABEL=Fedora-17-x86_64-Live-XFCE.iso rootfstype=auto ro liveimg quiet  rhgb 
+  initrd /isolinux/initrd0.img
+title Verify and Boot Fedora-17-x86_64-Live-XFCE.iso
+  findiso
+  kernel /isolinux/vmlinuz0 root=live:LABEL=Fedora-17-x86_64-Live-XFCE.iso rootfstype=auto ro liveimg quiet  rhgb rd.live.check
+  initrd /isolinux/initrd0.img
+}}}
