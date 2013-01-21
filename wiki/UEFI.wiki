@@ -8,26 +8,566 @@ It's currently based on the Pentoo 2012.0 Beta3 Release - we are working on it, 
 _Note: This section is currently under construction!_
 
 
-= USB Stick Installation =
+<wiki:toc max_depth="1" />
+
+== USB Stick Installation ==
 
 Install Pentoo to an USB stick using unetbootin and the iso image.<br/>
 The stick should have an msdos partition layout and one fat32 partition with the boot flag.<br/>
-Prepare the stick as in [UEFI_2_Preparation], the kernel modification is highly recommended.<br/>
-Install a BootX64.efi using either [UEFI_6_Grub2Image] or [UEFI_7_Grub2Standalone].<br/>
-Optional: Install the EFI shell as described in [UEFI_3_EfiShell].<br/>
-That's all - _use the provided downloads in the articles!_
+Prepare the stick as in [#UEFI_Preparation Preparation], the kernel modification is highly recommended.<br/>
+Install a BootX64.efi using either [#UEFI_EFI_image_by_GRUB2 EFI image by GRUB2] or [#UEFI_Standalone_EFI_image_by_GRUB2 Standalone EFI image by GRUB2].<br/>
+Optional: Install the EFI shell as described in [#UEFI_EFI_shell_with_startup.nsh EFI shell with startup.nsh].<br/>
+That's all - _use the provided downloads in the article!
 
 
-= Hard Disk Installation =
+== Hard Disk Installation ==
 
 UEFI booting requires an UEFI boot partition - a fat32 partition with the boot flag as first partition of the disk.<br/>
-Install Pentoo using the pentoo-installer, [UEFI_4_PentooInstaller] covers an installation to a GPT partition layout.<br/>
-Boot through UEFI *at least one time* using one of the methods in [UEFI_3_EfiShell], [UEFI_6_Grub2Image] or [UEFI_7_Grub2Standalone].<br/>
-Then see [UEFI_5_BootKernelDirectly] to permanently add the kernel as new UEFI boot option.<br/>
+Install Pentoo using the pentoo-installer, [#UEFI_pentoo-installer_guide_for_UEFI_and_GPT pentoo-installer guide for UEFI and GPT] covers an installation to a GPT partition layout.<br/>
+Boot through UEFI *at least one time* using one of the methods in [#UEFI_EFI_shell_with_startup.nsh EFI shell with startup.nsh], [#UEFI_EFI_image_by_GRUB2 EFI image by GRUB2] or [#UEFI_Standalone_EFI_image_by_GRUB2 Standalone EFI image by GRUB2].<br/>
+Then see [#UEFI_Boot_kernel_directly_by_UEFI Boot kernel directly by UEFI] to permanently add the kernel as new UEFI boot option.<br/>
 
-= TODO: =
+== TODO: ==
 
   * Add info for ISO generation with xorriso instead of mkisofs.
   * Quick how-to hardcode boot params into kernel
 
 Enjoy ;)
+
+
+= UEFI Basic information =
+
+== Introduction ==
+
+=== UEFI ===
+[http://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface Unified Extensible Firmware Interface (UEFI)] is meant as a replacement for BIOS in Itanium, x86, and x86_64 PCs. The first variant was called Extensible Firmware Interface (EFI), so that abbreviation is also often used.
+
+Most motherboards since early-to-mid 2011 support it. Most or all provide a compatibility mode with legacy BIOS.
+
+=== GPT partition layout ===
+UEFI supports [http://en.wikipedia.org/wiki/GUID_Partition_Table GPT (GUID Partition Table)]; which is nice - no limitation to 4 primary partitions. It does not even support extended partitions.
+
+
+== Boot Partition ==
+
+The traditional MBR (Master Boot Record, 515 bytes) is replaced by a designated boot-partition. This must have the boot-flag set and must be formatted with FAT16 or FAT32. All boot-loaders are placed in that partition, auto-loading by the EFI firmware should happen from "\EFI\BOOT\BOOTx64.EFI". The boot partition should be the first partiion on a disk.
+
+
+== Booting through UEFI ==
+
+With UEFI, you don't really need GRUB or any bootloader. UEFI can store the boot parameters and boot the kernel directly.<br/>
+You can add a new boot option to UEFI directly, using efibootmgr, but ...
+
+=== The catch: Chicken-Egg Problem ===
+*To communicate with UEFI, the kernel must be booted through UEFI*<br/>
+So to use efibootmgr, one must be able to boot though UEFI at least once before!<br/>
+
+So these are the options:
+  * The UEFI GUI is nice and configuration is somehow sane. All parameters can be entered.
+  * The efi-shell solution works but is ugly.
+  * efibootmgr can write to UEFI - but there's the catch!
+  * GRUB2 is uefi compatible, see the other articles.
+  * Place kernel to fs0:\EFI\Boot\bootx64.efi and hardocde boot params into it (CONFIG_CMDLINE_BOOL).
+  * Try booting through UEFI with another distro, then use efibootmgr.
+
+
+= UEFI Preparation =
+
+== Introduction ==
+
+== Preparation ==
+
+  * Download the [http://dev.pentoo.ch/~zero/isos/ Pentoo 2012.0 Beta3 Release]
+  * Use unetbootin to burn the iso to an USB stick.
+  * It should have a msdos partition layout and a fat32 partition with the boot flag enabled.
+
+== Writable Partition ==
+
+Boot to that stick and run:
+{{{
+chmod a+rx /etc/local.d/99-remount-cd-rw.start
+/etc/local.d/99-remount-cd-rw.start
+flushchanges    # this should work now
+}}}
+Remember to run flushchanges to save changes before any reboot!
+
+== Optional ==
+
+=== EFI-based Framebuffer Support (CONFIG_FB_EFI) ===
+*Optional, but recommended*<br/>
+Boot failures are difficult to see too without *EFI-based Framebuffer Support*, so it helps to have it enabled.
+
+==== Download patched kernel ====
+For quick tests a kernel is available for download at:<br/>
+[http://pentoo-uefi.googlecode.com/files/kernel-genkernel-x86_64-3.5.4-pentoo kernel-genkernel-x86_64-3.5.4-pentoo]<br/>
+This example assumes an installation of Pentoo to an USB stick with unetbootin.
+{{{
+cd
+wget http://pentoo-uefi.googlecode.com/files/kernel-genkernel-x86_64-3.5.4-pentoo
+mv /mnt/cdrom/boot/pentoo /mnt/cdrom/boot/pentoo.orig
+cp kernel-genkernel-x86_64-3.5.4-pentoo /mnt/cdrom/boot/pentoo
+}}}
+_This installs only the kernel and does not touch its config, CONFIG_FB_EFI has to be re-enabled if the kernel is rebuilt!_
+
+==== Build new kernel ====
+These instructions build the same kernel as in the download.
+{{{
+cd /usr/src/linux
+genkernel --splash --no-install --no-clean --menuconfig bzImage
+}}}
+and enable "EFI-based Framebuffer Support" (CONFIG_FB_EFI) at location:<br/>
+-> Device Drivers
+  -> Graphics support
+    -> Support for frame buffer devices (FB [=y])
+
+This example assumes an installation of Pentoo to an USB stick with unetbootin.<br/>
+Copy the new kernel:
+{{{
+mv /mnt/cdrom/boot/pentoo /mnt/cdrom/boot/pentoo.orig
+mv /boot/kernel-genkernel-x86_64-3.5.4-pentoo /boot/kernel-genkernel-x86_64-3.5.4-pentoo.orig
+cp arch/x86_64/boot/bzImage /mnt/cdrom/boot/pentoo
+cp arch/x86_64/boot/bzImage /boot/kernel-genkernel-x86_64-3.5.4-pentoo
+}}}
+
+= UEFI EFI shell with startup.nsh =
+
+== Introduction ==
+
+The EFI shell provides a simple shell environment, which can be used to start other EFI applications, like kernels.<br/>
+By default, it starts a file startup.nsh, the below examples will boot the pentoo kernel.
+
+
+== EFI shell ==
+
+=== EFI shell for USB stick ===
+This startup.nsh is for an installation of Pento to an USB stick with unetbootin.<br/>
+Install the EFI-shell to /dev/sdb1:
+{{{
+cd /mnt/cdrom/
+wget "https://edk2.svn.sourceforge.net/svnroot/edk2/trunk/edk2/ShellBinPkg/UefiShell/X64/Shell.efi"
+mv Shell.efi Shellx64.efi
+}}}
+
+=== EFI shell for an installation to hard disk ===
+This example assumes an installation of Pentoo to a hard disk on /dev/sda3 with the pentoo-installer.<br/>
+If this works, you can proceed directly to [#UEFI_Boot_kernel_directly_by_UEFI Boot kernel directly by UEFI].<br/>
+The Shellx64.efi must be placed at the root of the EFI boot partition (/dev/sda1).
+{{{
+mkdir -p /mnt/boot
+mount /dev/sda1 /mnt/boot
+cd /mnt/boot
+wget "https://edk2.svn.sourceforge.net/svnroot/edk2/trunk/edk2/ShellBinPkg/UefiShell/X64/Shell.efi"
+mv Shell.efi Shellx64.efi
+}}}
+
+
+== startup.nsh ==
+
+Without efi-based framebuffer support in the kernel, the screen will be black for a while. See [UEFI-information] or be very patient and hope nothing goes wrong until you see output ...
+
+=== startup.nsh for USB stick ===
+This startup.nsh is for an installation of Pento to an USB stick with unetbootin.<br/>
+Create startup.nsh in /dev/sdb1:
+{{{
+cat > /mnt/cdrom/startup.nsh <<EOF
+fs0:\boot\pentoo root=/dev/ram0 init=/linuxrc  nodetect aufs max_loop=256 dokeymap looptype=squashfs loop=/image.squashfs  cdroot vga=791 initrd=\boot\pentoo.igz
+EOF
+}}}
+These parameters are from adapted from grub - and the backslashes for initrd are correct.<br/>
+Now if there is some option in the UEFI configuration to boot an "EFI-shell", then this stick might even boot through UEFI through the efi-shell and the startup.nsh.<br/>
+
+=== startup.nsh for an installation to hard disk ===
+This example assumes an installation of Pentoo to a hard disk on /dev/sda3 with the pentoo-installer.<br/>
+The startup.nsh must be placed at the root of the EFI boot partition (/dev/sda1).
+{{{
+mkdir -p /mnt/boot
+mount /dev/sda1 /mnt/boot
+cd /mnt/boot
+# my UEFI chokes on long name/path
+# plus it sometimes helps to have .efi as file ending
+cp kernel-genkernel-x86_64-3.5.4-pentoo genkernel-3.5.4-pentoo.efi
+cat > /mnt/boot/startup.nsh <<EOF
+fs0:\EFI\Pentoo\genkernel-3.5.4-pentoo.efi real_root=/dev/sda3 initrd=\EFI\Pentoo\initramfs-genkernel-x86_64-3.5.4-pentoo
+EOF
+}}}
+
+
+= UEFI pentoo-installer guide for UEFI and GPT =
+
+== Introduction ==
+
+This article covers a Pentoo installation to hard disk using the pentoo-installer.<br/>
+It shows how to install to a GPT partition layout and make the installation UEFI-bootable.
+
+
+== Pentoo-Installer ==
+
+Update the pentoo-installer with:
+{{{
+eix-sync
+emerge -avt pentoo-installer
+}}}
+
+Run the pentoo-installer, configure everything as usual with these modifications:
+  * Chose to manually configure hard disk.
+  * Select "gpt" as Partition Table
+  * Create the following partitions:
+
+|| # || FS || Size || mount point || name ||
+|| /dev/sda1 || vfat || 256M || /boot/efi || UEFI ||
+|| /dev/sda2 || ext2 || 64M || /boot || BOOT ||
+|| /dev/sda3 || swap || 4G ||  || SWAP ||
+|| /dev/sda4 || ext4 || 16G || / || ROOT ||
+
+
+=== Booting GRUB-2 through UEFI ===
+
+  * On "4. Install Bootloader" choose "UEFI-GRUB".
+  * The UEFI boot partition will be /dev/sda1.
+  * The GRUB device path will be (hd0,2) - the default, /dev/sda2 where the kernel resides.
+
+
+=== Booting kernel directly through UEFI ===
+
+UEFI can boot the kernel directly, but to add them with efibootmgr, the kernel needs to be booted through UEFI.<br/>
+Use one of the methods described in [#UEFI_EFI_shell_with_startup.nsh EFI shell with startup.nsh], [#UEFI_EFI_image_by_GRUB2 EFI image by GRUB2] or [#UEFI_Standalone_EFI_image_by_GRUB2  Standalone EFI image by GRUB2] to boot an USB stick through UEFI.<br/>
+
+Then run the pentoo-installer and:
+  * On "4. Install Bootloader" choose "UEFI".
+  * The kernel partition (/boot) will be /dev/sda2 with the above partition layout.
+
+
+= UEFI Boot kernel directly by UEFI =
+
+== Introduction ==
+
+UEFI can boot the kernel directly. efibootmgr provides a convenient way to add the options to UEFI.
+
+== efibootmgr ==
+
+*Simply adding new boot options to UEFI with efibootmgr is nice - but only works if the kernel was booted through UEFI.*<br/>
+
+This assumes booting through UEFI to a Pentoo installation (by pentoo-installer) on a hard disk (/dev/sda3).<br/>
+The EFI boot partition is on /dev/sda1 and the kernel is on that partition.
+{{{
+modprobe efivars
+efibootmgr -v   #watch the output
+}}}
+Then run this monster:
+{{{
+echo "real_root=/dev/sda3 initrd=\initramfs-genkernel-x86_64-3.5.4-pentoo" | \
+iconv -f ascii -t ucs2 | \
+efibootmgr --create --gpt \
+--disk /dev/sda --part 1 \
+--label "Pentoo 2012b3" \
+--loader "\\kernel-genkernel-x86_64-3.5.4-pentoo" \
+--append-binary-args -
+}}}
+_with the last trailing "-"!_<br/>
+
+Now there should be a new boot option in UEFI GUI labelled "Pentoo 2012b3".<br/>
+Here it's even set as default boot option now.
+
+=== Limited length of kernel path ===
+There may be a limit on the length of the path to the kernel. The above "\kernel-genkernel-x86_64-3.5.4-pentoo" is pretty much the maximum length, prepending '\boot\' makes it already to long.<br/>
+So either keep the kernel at the root of the UEFI boot partition or shorten the filename of the kernel - just make it a short path.
+
+
+= UEFI EFI image by GRUB2 =
+
+== Introduction ==
+
+GRUB2 can create a UEFI application, which searches for its menu and modules in at a builtin path.<br/>
+This can be copied around and the menu can be conveniently edited (compared to the [#UEFI_Standalone_EFI_image_by_GRUB2  Standalone EFI image by GRUB2]).
+
+== Download prepared binary ==
+
+A prepared binary is available from:<br/>
+[http://pentoo-uefi.googlecode.com/files/grub-2.00-r1-image.tar.bz2]
+
+Assuming the UEFI boot partition is mounted on /mnt/boot - install it with:
+{{{
+mkdir -p /mnt/boot
+mount /dev/sda1 /mnt/boot/
+cd /mnt/boot
+wget http://pentoo-uefi.googlecode.com/files/grub-2.00-r1-image.tar.bz2
+tar xfvz grub-2.00-r1-image.tar.bz2
+rm grub-2.00-r1-image.tar.bz2
+}}}
+
+=== grub.cfg for USB installation ===
+Assuming an installation by unetobootin, create a crude menu with:
+{{{
+mkdir -p /mnt/cdrom/boot/grub2
+cat > /mnt/cdrom/boot/grub2/grub.cfg <<EOF
+timeout=5
+menuentry 'Pentoo' {
+    insmod efi_gop
+    insmod efi_uga
+    insmod part_msdos
+    root=hd0,1
+    linux /boot/pentoo root=/dev/ram0 init=/linuxrc aufs max_loop=256 dokeymap looptype=squashfs loop=/image.squashfs cdroot video=uvesafb:mtrr:3,ywrap,1024x768-16 usbcore.autosuspend=1 console=tty0
+    initrd /boot/pentoo.igz
+}
+EOF
+}}}
+
+=== grub.cfg for hard disk installation ===
+Assuming a GPT partition layout, create a crude menu with:
+{{{
+mkdir -p /mnt/boot
+mount /dev/sda1 /mnt/boot/
+mkdir -p /mnt/boot/boot/grub2
+cat > /mnt/boot/boot/grub2/grub.cfg <<EOF
+timeout=5
+menuentry 'Pentoo' {
+    insmod efi_gop
+    insmod efi_uga
+    insmod part_gpt
+    root=hd0,1
+    linux /EFI/Pentoo/genkernel-3.5.4-pentoo.efi real_root=/dev/sda3
+    initrd /EFI/Pentoo/initramfs-genkernel-x86_64-3.5.4-pentoo
+}
+EOF
+}}}
+_Please note the part_gpt module instead of msdos._
+
+
+== Build the binary ==
+
+Alternatively to the download, the binary can be built and installed by:
+{{{
+echo "sys-boot/grub:2" >> /etc/portage/package.accept_keywords
+echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
+emerge -avt sys-boot/grub:2
+}}}
+Create the BootX64.efi:
+{{{
+mkdir -p /mnt/boot
+mount /dev/sda1 /mnt/boot/
+mkdir -p /mnt/boot/EFI/BOOT
+grub2-mkimage -p /boot/grub2 -o /mnt/boot/EFI/BOOT/BOOTX64.EFI -O x86_64-efi part_msdos part_gpt fat normal
+}}}
+
+Copy all modules:
+{{{
+mkdir -p /mnt/boot/boot/grub2
+cp -ar /usr/lib/grub/x86_64-efi /mnt/boot/boot/grub2/
+}}}
+
+
+= UEFI Standalone EFI image by GRUB2 =
+
+== Introduction ==
+
+GRUB2 can create a standalone UEFI application, with the menu included in the binary.<br/>
+This can be copied around.
+
+
+== Download prepared binary ==
+
+A prepared binary is available from:
+[https://pentoo-uefi.googlecode.com/files/grub2.00-r1-standalone.efi grub2.00-r1-standalone.efi]<br/>
+It assumes a Pentoo installation to an USB stick with unetbootin.
+
+To install it, run:
+{{{
+mkdir -p /mnt/cdrom/EFI/BOOT/
+cd /mnt/cdrom/EFI/BOOT/
+wget http://pentoo-uefi.googlecode.com/files/grub2.00-r1-standalone.efi
+mv grub2.00-r1-standalone.efi BOOTX64.EFI
+}}}
+
+
+== Build the binary ==
+
+Alternatively, the binary can be built and installed by:
+{{{
+echo "sys-boot/grub:2" >> /etc/portage/package.accept_keywords
+echo 'GRUB_PLATFORMS="efi-64"' >> /etc/portage/make.conf
+emerge -avt sys-boot/grub:2
+}}}
+Create a simple grub.cfg
+{{{
+mkdir -p /tmp/grub.temp/boot/grub
+cat > /tmp/grub.temp/boot/grub/grub.cfg <<EOF
+timeout=5
+menuentry 'Pentoo' {
+    insmod efi_gop
+    insmod efi_uga
+    insmod part_msdos
+    root=hd0,1
+    linux /boot/pentoo root=/dev/ram0 init=/linuxrc aufs max_loop=256 dokeymap looptype=squashfs loop=/image.squashfs cdroot video=uvesafb:mtrr:3,ywrap,1024x768-16 usbcore.autosuspend=1 console=tty0
+    initrd /boot/pentoo.igz
+}
+EOF
+}}}
+Create the standalone BootX64.efi:
+_The relative path to "boot/grub/grub.cfg" is important!_
+{{{
+cd /tmp/grub.temp/
+mkdir -p /mnt/cdrom/EFI/BOOT
+grub2-mkstandalone  --directory="/usr/lib/grub/x86_64-efi/" \
+--format="x86_64-efi" --compression="xz" \
+--output=/mnt/cdrom/EFI/BOOT/BOOTX64.EFI \
+boot/grub/grub.cfg
+}}}
+
+
+= UEFI Creating an UEFI-bootable ISO =
+
+== Introduction ==
+
+Creating an UEFI-bootable ISO seems to be not so easy.<br/>
+I have failed to create one so far and most other LiveCDs I've looked at are not UEFI-bootable too.<br/>
+This article sums up my current knowledge, maybe some day this will become a complete guide.<br/>
+
+
+== xorriso ==
+
+Legacy mkisofs cannot create UEFI-bootable ISOs. Use xorriso (dev-libs/libisoburn) instead.
+
+*Example from SystemRescueCD:*
+{{{
+xorriso -as mkisofs \
+-rock -omit-version-number -disable-deep-relocation -joliet -allow-leading-dots \
+-volid "[VOLID]" \
+-b isolinux/isolinux.bin \
+-c isolinux/boot.cat \
+-no-emul-boot -boot-load-size 4 -boot-info-table \
+-eltorito-alt-boot -e boot/grub/efi.img \
+-no-emul-boot \
+-o ../SystemRescueCD-2.5.0-efi64+biosi586.iso .
+}}}
+
+The parameters "-eltorito-alt-boot" and "-e" should take care of UEFI.
+
+
+== Tools ==
+
+=== dumpet (app-cdr/dumpet) ===
+Fedoras [https://fedorahosted.org/dumpet/ dumpet] is a tool to dump information about bootable CDs and other similar formats.<br/>
+It is particularly useful because it shows whether an ISO contains additional (UEFI) boot images.<br/>
+The Pentoo overlay has an ebuild for it!
+
+Example:
+{{{
+# dumpet -i systemrescuecd-x86-3.1.2.iso 
+Validation Entry:
+    Header Indicator: 0x01 (Validation Entry)
+    PlatformId: 0x00 (80x86)
+    ID: ""
+    Checksum: 0x55aa
+    Key bytes: 0x55aa
+Boot Catalog Default Entry:
+    Entry is bootable
+    Boot Media emulation type: no emulation
+    Media load segment: 0x0 (0000:7c00)
+    System type: 0 (0x00)
+    Load Sectors: 4 (0x0004)
+    Load LBA: 148673 (0x000244c1)
+Section Header Entry:
+    Header Indicator: 0x91 (Final Section Header Entry)
+    PlatformId: 0xef (EFI)
+    Section Entries: 1
+    ID: ""
+Boot Catalog Section Entry:
+    Entry is bootable
+    Boot Media emulation type: no emulation
+    Media load address: 0 (0x0000)
+    System type: 0 (0x00)
+    Load Sectors: 2880 (0x0b40)
+    Load LBA: 172919 (0x0002a377)
+}}}
+
+
+== Other distros ==
+
+=== SystemRescueCD ===
+
+==== Booting the ISO ====
+The ISO is somewhat bootable, at least Grub is started. Then it fails ...<br/>
+_TODO: Verify what exactly happens._
+
+==== Creating UEFI-bootable ISO ====
+SRCD seems to create the ISO by the [http://systemrescuecd.git.sourceforge.net/git/gitweb.cgi?p=systemrescuecd/systemrescuecd;a=blob;f=buildscripts/recreate-iso.sh;h=c6649cdaa008910e72f4cc01596f9f7c0474c0bb;hb=HEAD buildscripts/recreate-iso] script.<br/>
+Comments in the script:
+  # create memdisk tar image which contains initial embedded grub.cfg
+  # create bootx64.efi that contains embedded memdisk tar image
+  # create boot/grub/efi.img that contains bootx64.efi (with grub2-mkimage)
+  # create iso image (with xorriso)
+
+=== Fedora ===
+
+==== Booting the ISO ====
+The Fedora 17 ISO are actually UEFI-bootable!
+
+==== Creating UEFI-bootable ISO ====
+*TODO: Find out how Fedora creates their ISO.*<br/>
+The ISO contains a folder /EFI/BOOT with these files:
+  * BOOTX64.conf
+  * BOOTX64.efi
+  * grub.conf
+  * splash.xpm.gz
+
+grub.conf and BOOTX64.conf are identical and contain:
+{{{
+default=0
+splashimage=/EFI/BOOT/splash.xpm.gz
+timeout 10
+hiddenmenu
+
+title Fedora-17-x86_64-Live-XFCE.iso
+  findiso
+  kernel /isolinux/vmlinuz0 root=live:LABEL=Fedora-17-x86_64-Live-XFCE.iso rootfstype=auto ro liveimg quiet  rhgb 
+  initrd /isolinux/initrd0.img
+title Verify and Boot Fedora-17-x86_64-Live-XFCE.iso
+  findiso
+  kernel /isolinux/vmlinuz0 root=live:LABEL=Fedora-17-x86_64-Live-XFCE.iso rootfstype=auto ro liveimg quiet  rhgb rd.live.check
+  initrd /isolinux/initrd0.img
+}}}
+
+
+= UEFI Tools and ebuilds for UEFI support =
+
+== Introduction ==
+
+UEFI tools are available from [http://sourceforge.net/apps/mediawiki/tianocore]:<br/>
+_The open source components of Intel's implementation of UEFI._<br/>
+
+=== Tools ===
+
+These tools are covered:
+  * EFI shell: Simple shell environment
+  * QEMU-KVM support: OVMF contains a sample UEFI firmware for QEMU and KVM.
+  * Hello World: A sample application for testing.
+
+
+== Sources and Installation ==
+
+The ebuilds are currently in the _wuodan_ overlay. Add it with:
+{{{
+layman -a wuodan
+}}}
+
+*Building of the binaries does currently not work on hardened!*
+
+=== EFI Shell ===
+
+The EFI shell provides a simple shell environment, which can be used to start other EFI applications, like kernels.<br/>
+By default, it starts a file startup.nsh, the below examples will boot the pentoo kernel.<br/>
+
+Available by 3 methods:
+  * Binary build from tianocore, see [#UEFI_EFI_shell_with_startup.nsh EFI shell with startup.nsh].
+  * Binary build by Wuodan, use ebuild _sys-firmware/edk2-bin_ with flag _shell_.
+  * Build it yourself, use ebuild _sys-firmware/edk2_ with flag _shell_.
+
+=== UEFI support by QEMU/KVM ===
+`qemu-kvm` simply needs a new bios module. Get it by one of:
+  * Binary build by Wuodan, use ebuild _sys-firmware/edk2-bin_ with flag _qemu_.
+  * Build it yourself, use ebuild _sys-firmware/edk2_ with flag _qemu_.
+
+=== "Hello World" Sample ===
+Comes handy for testing, especially with the qemu support. Get it by one of:
+  * Binary build by Wuodan, use ebuild _sys-firmware/edk2-bin_ with flag _hello-world_.
+  * Build it yourself, use ebuild _sys-firmware/edk2_ with flag _hello-world_.
