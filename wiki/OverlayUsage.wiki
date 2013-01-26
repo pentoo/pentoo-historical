@@ -45,10 +45,30 @@ To merge the overlay with your current setup smoother, additional changes can be
 {{{
 pentoo/pentoo-wireless -drivers
 }}}
-and disable unrequited global flags in the make.conf file:
+and disable unrequired global flags in the make.conf file:
 {{{
 USE="-gps -caps -livecd -ldap"
 }}}
 See the official [http://www.gentoo.org/doc/en/handbook/ Gentoo handbook] for more details
 = Updating the overlay =
 The updating procedure is the same as described in the [PentooUpdater#On_regular_basis Pentoo Updater] section
+
+= Removing the overlay =
+
+Uninstall whatever was installed
+{{{
+emerge -C pentoo
+# or a separate package
+emerge -C pentoo-wireless
+}}}
+
+If you installed multiple individual packages, use the following command to get the list:
+<code language="sh">cd /var/db/pkg ; for x in */* ; do [[ -f "${x}/repository" ]] && echo ${x} `cat ${x}/repository` ; done | grep pentoo</code>
+
+Clean up the system and remove the overlay from your repository:
+{{{
+emerge --depclean
+eclean-dist
+revdep-rebuild
+layman -d pentoo
+}}}
