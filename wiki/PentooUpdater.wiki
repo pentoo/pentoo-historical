@@ -20,20 +20,7 @@ VIDEO_CARDS="nvidia fbdev vga vesa"
 eselect profile list
 eselect profile set <number>
 
-# Update everything for the first time
-emerge --deep --update --newuse world -vat
-
-# Check live packages for updates and emerge them as necessary.
-smart-live-rebuild
-
-# Check and rebuild broken packages after upgrade
-revdep-rebuild
-
-# Update any needed configuration files
-etc-update
-
-# Regenerate the main menu for XFCE WM
-genmenu.py -x
+Follow the pentoo-updater below
 }}}
 
 == On regular basis ==
@@ -50,6 +37,8 @@ smart-live-rebuild
 perl-cleaner --modules		
 python-updater
 revdep-rebuild
+# Regenerate the main menu for XFCE WM
+genmenu.py -x
 etc-update
 eclean-dist -d
 }}}
