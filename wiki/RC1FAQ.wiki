@@ -1,0 +1,6 @@
+before attempting anything else, please connect to the internet and at least run "emerge --sync"
+
+Q.) I tried to upgrade but I got this error:
+(x11-base/xorg-server-1.13.1::gentoo, ebuild scheduled for merge) conflicts with <x11-base/xorg-server-1.12.99 required by (x11-drivers/xf86-video-neomagic-1.2.7::gentoo, ebuild scheduled for merge)
+
+A.) You can safely edit "/etc/portage/make.conf" and remove neomagic from the VIDEO_CARDS= section.  While you are there, you can remove all the other video cards you don't use.  It is suggested to keep VIDEO_CARDS="vesa vga fbdev" plus whatever your video card is. "emerge -vp xorg-drivers" will show you all the available options.
