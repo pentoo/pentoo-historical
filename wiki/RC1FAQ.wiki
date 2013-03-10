@@ -4,7 +4,7 @@ before attempting anything else, please connect to the internet and at least run
 
 ---
 
-=Q.) I installed with unetbootin and I got a password prompt at boot=
+==Q.) I installed with unetbootin and I got a password prompt at boot==
 
 A.) Unetbootin seems to force start xdm somehow, honestly we aren't even sure how this happens yet.  use ctrl+alt+f1 to get back to console 1 and "/etc/init.d/xdm stop" to kill that random xdm that isn't needed. As noted in the motd you can start x with "startx"
 
