@@ -14,3 +14,11 @@ A.) You can safely edit "/etc/portage/make.conf" and remove neomagic from the VI
 == Q.) I tried to install {nvidia,ati}-drivers but it couldn't download the files. ==
 
 A.) If you can connect to the internet, this is a fine solution.  If you have no network connection you can find the needed files were accidently dumped into / so just move the tar.gz, .zip, and .run files into /usr/portage/distfiles and the install can proceed without network.
+
+== Q.) How to start armitage? ==
+
+A.) Follow the steps below:
+    /etc/init.d/postgresql-9.2 start<br>
+    Username/password to connect: msf/secure (the rest is default)<br>
+    Answer "yes" to start RPC msf server
+
