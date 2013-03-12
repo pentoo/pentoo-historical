@@ -8,6 +8,10 @@ before attempting anything else, please connect to the internet and at least run
 
 A.) Before booting, edit syslinux.cfg on the usb stick and add "nodetect" to the kernel line to prevent this issue.  Unetbootin switches the bootloader and there was a mistake in the converted config file.  This issue has been logged and fixed.
 
+==Q.) I have the 32 bit build any /lib/firmware is empty or I see "no such file or directory" when using my wifi card==
+
+A.) The 32 bit iso is somehow missing the firmware, to get the latest you need to connect to the internet and "emerge -1 linux-firmware".  If you have 64 bit hardware you should be using the 64 bit iso which doesn't have this issue.
+
 == Q.) I tried to upgrade but I got this error: ==
 (x11-base/xorg-server-1.13.1::gentoo, ebuild scheduled for merge) conflicts with <x11-base/xorg-server-1.12.99 required by (x11-drivers/xf86-video-neomagic-1.2.7::gentoo, ebuild scheduled for merge)
 
