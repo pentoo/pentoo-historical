@@ -19,19 +19,30 @@ layman -L
 # Add Pentoo overlay
 layman -a pentoo
 
-# List of available profiles
-eselect profile list
+# Add proper keywords/use flags and other settings. There are 3 options:
 
+# Option 1: Use one of Pentoo profiles
+# List all available profiles
+eselect profile list
 # Select an appropriate Pentoo profile for your current setup
 eselect profile set pentoo:pentoo/hardened/linux/amd64
 
-# Check what has changed and adjust other settings if required
-# See the next section for examples
-emerge -DNupv world
+# Option 2: Use the "overlay" subprofile (light version with no pentoo-system, for example)
+# Remove an old profile
+rm /etc/portage/make.profile
+mkdir -p /etc/portage/make.profile
+# Create the /etc/portage/make.profile/parent file with the following context:
+pentoo:pentoo/hardened/linux/amd64
+pentoo:pentoo/overlay
 
-# Alternatively, create symlinks for necessarily keywords/use files:
+# Option 3: Manual
+# Create symlinks for necessarily keywords/use files:
 ln -s /var/lib/layman/pentoo/profiles/pentoo/base/package.accept_keywords/net-analyzer /etc/portage/package.keywords
 ln -s /var/lib/layman/pentoo/profiles/pentoo/base/package.use/dev-ruby /etc/portage/package.use
+
+# Check changes and adjust other settings if required
+# See the next section for examples
+emerge -DNupv world
 
 # Install the entire Pentoo 
 emerge -DNu pentoo
@@ -43,11 +54,12 @@ emerge -DNu pentoo-wireless
 
 To merge the overlay with your current setup smoother, additional changes can be made in a usual Gentoo way by modifying files in the /etc/portage directory. For example, you can disable additional wireless drivers by adding a file to the  /etc/portage/package.use/ directory with the following content:
 {{{
+pentoo/pentoo -bluetooth
 pentoo/pentoo-wireless -drivers
 }}}
 and disable unrequired global flags in the make.conf file:
 {{{
-USE="-gps -caps -livecd -ldap"
+USE="-bluetooth -gps -caps -livecd -ldap"
 }}}
 See the official [http://www.gentoo.org/doc/en/handbook/ Gentoo handbook] for more details
 = Updating the overlay =
