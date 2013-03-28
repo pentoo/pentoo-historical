@@ -6,9 +6,9 @@ before attempting anything else, please connect to the internet and at least run
 
 ==Q.) I installed with unetbootin and I got a password prompt at boot==
 
-A.) Stop xdm manager:
-alt+ctrl+f1
-/etc/init.d/xdm stop
+A.) Stop xdm manager:<br>
+alt+ctrl+f1<br>
+/etc/init.d/xdm stop<br>
 startx
 
 A.) Before booting, edit syslinux.cfg on the usb stick and add "nodetect" to the kernel line to prevent this issue.  Unetbootin switches the bootloader and there was a mistake in the converted config file.  This issue has been logged and fixed for the next release.  You can copy this file onto your usb if it is easier than editing: [https://pentoo.googlecode.com/svn/livecd/trunk/isoroot/syslinux.cfg syslinux.cfg]
