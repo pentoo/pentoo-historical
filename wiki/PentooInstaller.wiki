@@ -1,0 +1,32 @@
+#summary How to install Pentoo on your storage permanently
+
+= Introduction =
+
+This is DRAFT page. Please expand it.
+
+= Pentoo Installation =
+
+Boot Pentoo LiveUSB<br>
+Run pentoo-installer<br>
+Follow steps in the menu<br>
+Don't forget to assign root password and create regular user
+ Fixme: expand that section
+Reboot
+
+= Cleaning up live configuration =
+
+{{{
+# Update portage tree for the first time
+emerge --sync
+
+# Remove live-related configuration
+rc-update delete fixinittab
+rc-update delete tmpfiles.setup boot
+rc-update delete modules boot
+
+# Re-generate /etc/inittab file
+emerge -1 sys-apps/sysvinit
+}}}
+
+= Updating Pentoo =
+Update the installed copy as described in the [PentooUpdater#On_regular_basis Pentoo Updater] section
