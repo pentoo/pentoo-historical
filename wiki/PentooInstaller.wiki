@@ -6,8 +6,8 @@ This is DRAFT page. Please expand it.
 
 = Pentoo Installation =
 
-Boot Pentoo LiveUSB
-<P>Update pentoo-installer:
+Boot Pentoo LiveUSB<br>
+Update pentoo-installer (optional):
 {{{
 layman -s pentoo
 emerge -1 pentoo-installer
@@ -15,8 +15,12 @@ emerge -1 pentoo-installer
 
 Run pentoo-installer<br>
 Follow steps in the menu<br>
-Don't forget to assign root password and create regular user
-<P>Remove live media and reboot from the installed copy
+Don't forget to assign root password and create a regular user<br>
+Remove live media and reboot from the installed copy<br>
+Login as a regular user and run:
+{{{
+startx
+}}}
 
 = Updating Pentoo =
 Update the installed copy as described in the [PentooUpdater#On_regular_basis Pentoo Updater] section
