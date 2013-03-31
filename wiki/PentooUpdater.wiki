@@ -28,19 +28,19 @@ Follow the pentoo-updater below
 {{{
 # This will become the pentoo-updater script soon
 
-#This syncs the gentoo and pentoo repos like "apt-get update" in debian
+# This syncs the gentoo and pentoo repos like "apt-get update" in debian
 emerge --sync
-#This updates all the normal packages like "apt-get upgrade" in debian
+# This updates all the normal packages like "apt-get upgrade" in debian
 emerge --deep --update --newuse world -vt
-#this optionally merges in changed config files. unchanged files are merged automatically
+# This optionally merges in changed config files. unchanged files are merged automatically
 etc-update
-#this removes old packages which are not needed like "apt-get autoremove" in debian
+# This removes old packages which are not needed like "apt-get autoremove" in debian
 emerge --depclean
-#this rebuilds anything which may have been broken in update
+# This rebuilds anything which may have been broken in update
 emerge @preserved-rebuild
-#this checks all the programs installed from VCS for new revisions and updates if needed
+# This checks all the programs installed from VCS for new revisions and updates if needed
 smart-live-rebuild
-#verifies there is no breakage after updates
+# Verifies there is no breakage after updates
 revdep-rebuild
 # Regenerate the main menu for XFCE WM
 genmenu.py -x
@@ -48,6 +48,10 @@ genmenu.py -x
 etc-update
 #clean up the distfiles dir to remove old/un-needed files
 eclean-dist -d
+# Check /var/log/portage/elog/summary.log file
+# You might need to run extra commands. For example:
+emerge @x11-module-rebuild
+eselect java-vm set system icedtea-bin-7
 }}}
 
 == after python/perl upgrade: ==
