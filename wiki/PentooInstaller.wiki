@@ -13,8 +13,10 @@ Don't forget to assign root password and create regular user
  Fixme: expand that section
 Reboot
 
-= Cleaning up live configuration =
+= Updating Pentoo =
+Update the installed copy as described in the [PentooUpdater#On_regular_basis Pentoo Updater] section
 
+= Cleaning up live configuration =
 {{{
 # Update portage tree for the first time
 emerge --sync
@@ -27,6 +29,3 @@ rc-update delete modules boot
 # Re-generate /etc/inittab file
 emerge -1 sys-apps/sysvinit
 }}}
-
-= Updating Pentoo =
-Update the installed copy as described in the [PentooUpdater#On_regular_basis Pentoo Updater] section
