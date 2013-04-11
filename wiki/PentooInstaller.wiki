@@ -27,11 +27,12 @@ Update the installed copy as described in the [PentooUpdater#On_regular_basis Pe
 
 = Cleaning up live configuration =
 {{{
-# Remove live-related configuration
+# Fix the /etc/inittab file
 rc-update delete fixinittab
-rc-update delete tmpfiles.setup boot
-rc-update delete modules boot
-
-# Re-generate /etc/inittab file
 emerge -1 sys-apps/sysvinit
+
+# Remove live-related configuration 
+rm /etc/gconf /usr/share/livecd
+emerge -1 gnome-base/gconf
+
 }}}
