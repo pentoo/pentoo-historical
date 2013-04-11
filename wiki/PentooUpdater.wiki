@@ -42,7 +42,7 @@ emerge @preserved-rebuild
 smart-live-rebuild
 # Verifies there is no breakage after updates
 revdep-rebuild
-# Regenerate the main menu for XFCE WM
+# Regenerate the main menu for XFCE WM (run it under each regular account)
 genmenu.py -x
 #merge in any new config files
 etc-update
