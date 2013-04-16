@@ -16,16 +16,8 @@ emerge -1 pentoo-installer
 Run pentoo-installer<br>
 Follow steps in the menu<br>
 Don't forget to assign root password and create a regular user<br>
-Remove live media and reboot from the installed copy<br>
-Login as a regular user and run:
-{{{
-startx
-}}}
 
-= Updating Pentoo =
-Update the installed copy as described in the [PentooUpdater#On_regular_basis Pentoo Updater] section
-
-= Cleaning up live configuration =
+Next, clean up live configuration (the installer still need to be improved here):
 {{{
 # Fix the /etc/inittab file
 rc-update delete fixinittab
@@ -34,5 +26,12 @@ emerge -1 sys-apps/sysvinit
 # Remove live-related configuration 
 rm /etc/gconf /usr/share/livecd
 emerge -1 gnome-base/gconf
-
 }}}
+Remove live media and reboot from the installed copy<br>
+Login as a regular user and run:
+{{{
+startx
+}}}
+
+= Updating Pentoo =
+Update the installed copy as described in the [PentooUpdater#On_regular_basis Pentoo Updater] section
