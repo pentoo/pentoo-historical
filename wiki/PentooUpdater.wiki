@@ -15,7 +15,7 @@ ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"
 # You may wish to edit your VIDEO_CARDS line to match your system better.
 # Example for nvidia users:
 VIDEO_CARDS="nvidia fbdev vga vesa"
-# Guest OS users should add virtualbox/vmware flags:
+# Guest OS users should add virtualbox/vmware or qxl flag(s):
 VIDEO_CARDS="virtualbox fbdev vga vesa"
 
 # Modify your profile only if you know what you are doing, default should be fine for most users
