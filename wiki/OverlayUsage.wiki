@@ -27,12 +27,13 @@ eselect profile list
 # Select an appropriate Pentoo profile for your current setup
 eselect profile set pentoo:pentoo/hardened/linux/amd64
 
-# Option 2: Use the "overlay" subprofile (light version with no pentoo-system, for example)
+# Option 2: Use the "overlay" subprofile (gentoo profile + keywords/use files)
 # Remove an old profile
 rm /etc/portage/make.profile
 mkdir -p /etc/portage/make.profile
 # Create the /etc/portage/make.profile/parent file with the following context:
-pentoo:pentoo/hardened/linux/amd64
+gentoo:hardened/linux/amd64                                                                                                     
+gentoo:targets/desktop
 pentoo:pentoo/overlay
 
 # Option 3: Manual
