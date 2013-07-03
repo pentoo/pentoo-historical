@@ -1,3 +1,5 @@
+=RC1.8 has been released and this document is deprecated, please upgrade=
+
 {{{
 before attempting anything else, please connect to the internet and at least run "emerge --sync"
 }}}
