@@ -27,6 +27,8 @@ Follow the pentoo-updater below
 
 == On regular basis ==
 
+Pay extra attention on upgrading [http://www.gentoo.org/doc/en/kernel-upgrade.xml kernel], [http://www.gentoo.org/doc/en/gcc-upgrading.xml gcc]. It is important to upgrade these packages properly before moving to the next step.
+
 {{{
 # This will become the pentoo-updater script soon
 
