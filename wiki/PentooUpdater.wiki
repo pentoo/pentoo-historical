@@ -14,9 +14,9 @@ emerge --sync
 ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"
 # You may wish to edit your VIDEO_CARDS line to match your system better.
 # Example for nvidia users:
-VIDEO_CARDS="nvidia fbdev vga vesa"
+VIDEO_CARDS="fbdev vga vesa nvidia"
 # Guest OS users should add virtualbox/vmware or qxl flag(s):
-VIDEO_CARDS="virtualbox fbdev vga vesa"
+VIDEO_CARDS="fbdev vga vesa virtualbox"
 
 # Modify your profile only if you know what you are doing, default should be fine for most users
 eselect profile list
@@ -46,8 +46,6 @@ emerge @preserved-rebuild
 smart-live-rebuild
 # Verifies there is no breakage after updates
 revdep-rebuild
-# Regenerate the main menu for XFCE WM (run it under each regular account)
-genmenu.py -x
 #merge in any new config files
 etc-update
 #clean up the distfiles dir to remove old/un-needed files
@@ -56,6 +54,11 @@ eclean-dist -d
 # You might need to run extra commands. For example:
 emerge @x11-module-rebuild
 eselect java-vm set system icedtea-bin-7
+
+# Run the following command under each regular user's account
+# Regenerate the main menu for XFCE WM (or "-e" for e17, "-k" for KDE)
+genmenu.py -x
+
 }}}
 
 == after python/perl upgrade: ==
