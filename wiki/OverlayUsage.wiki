@@ -34,6 +34,7 @@ mkdir -p /etc/portage/make.profile
 # Create the /etc/portage/make.profile/parent file with the following context:
 gentoo:hardened/linux/amd64                                                                                                     
 gentoo:targets/desktop
+pentoo:pentoo/arch/amd64
 pentoo:pentoo/overlay
 
 # Option 3: Manual
