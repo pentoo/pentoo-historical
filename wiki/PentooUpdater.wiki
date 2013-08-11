@@ -35,7 +35,7 @@ Pay extra attention on upgrading [http://www.gentoo.org/doc/en/kernel-upgrade.xm
 # This syncs the gentoo and pentoo repos like "apt-get update" in debian
 emerge --sync
 # This updates all the normal packages like "apt-get upgrade" in debian
-emerge --deep --update --newuse world -vt
+emerge --deep --update --newuse --getbinpkg=y world -vt
 # This optionally merges in changed config files. unchanged files are merged automatically
 etc-update
 # This removes old packages which are not needed like "apt-get autoremove" in debian
