@@ -706,8 +706,7 @@ mountpoints() {
 # params: none
 # returns: 1 on error
 do_rsync() {
-    DIALOG --infobox "Copy in progress. This may take a while - you can watch the output in the progress window. (ctrl+alt+f8)" 6 45
-
+    DIALOG --infobox "Copy in progress. This may take a while - you can watch the output in the progress window. (ctrl+alt+f8 / ctrl+alt+f7)" 6 45
     rsync -av /mnt/livecd/* ${DESTDIR} 2>&1 >$LOG
     rsync -av /etc/* ${DESTDIR}/etc/ 2>&1 >>$LOG
     rsync -av /root/* ${DESTDIR}/root/ 2>&1 >>$LOG
@@ -718,7 +717,7 @@ do_rsync() {
         return 1
     fi
     sed -i '/aufs bindist livecd/d' ${DESTDIR}/etc/portage/make.conf
-    ROOT=${DISTDIR} emerge -C app-misc/livecd-tools pentoo/pentoo-livecd
+    ROOT=${DISTDIR} emerge -C app-misc/livecd-tools pentoo/pentoo-livecd 2>&1 >>$LOG
     mknod -m666 ${DESTDIR}/dev/zero c 1 5
     mknod -m666 ${DESTDIR}/dev/null c 1 3
     mknod -m600 ${DESTDIR}/dev/console c 5 1
@@ -1147,18 +1146,25 @@ EOF
         if [ "$CURRENT_SELECTION" = "Return" -o -z "$CURRENT_SELECTION" ]; then       # exit
             break
         elif [ "$CURRENT_SELECTION" = "Root-Password" ]; then            # non-file
-            while true; do
-                chroot ${DESTDIR} passwd root && break
-            done
-		elif [ "$CURRENT_SELECTION" = "add-user" ]; then
-			DIALOG $DEFAULT --inputbox "Enter a username" 17 70 2>$ANSWER
-				_username=$(cat $ANSWER)
-				chroot ${DESTDIR} useradd -m -G users,wheel,audio,cdrom,video,cdrw,plugdev $_username
-				rsync -r --exclude=.svn --exclude=.subversion "${DESTDIR}"/root/.[!.]* "${DESTDIR}"/home/"${_username}"/
-				chroot ${DESTDIR} chown -R ${_username}:${_username} /home/$_username
-			while true; do
-				chroot ${DESTDIR} passwd $_username && break
-			done
+#            while true; do
+#                chroot ${DESTDIR} passwd root && break
+#            done
+		DIALOG $DEFAULT --passwordbox "Enter a password" 17 70 2>$ANSWER
+			_rootpass=$(cat $ANSWER)
+			echo -e "$_rootpass\n$_rootpass" | passwd root
+			$_rootpass=""
+	elif [ "$CURRENT_SELECTION" = "add-user" ]; then
+		DIALOG $DEFAULT --inputbox "Enter a username" 17 70 2>$ANSWER
+			_username=$(cat $ANSWER)
+		DIALOG $DEFAULT --passwordbox "Enter a password" 17 70 2>$ANSWER
+			_userpass=$(cat $ANSWER)
+			chroot ${DESTDIR} useradd -p $_userpass -m -G users,wheel,audio,cdrom,video,cdrw,plugdev,wireshark,kismet,android $_username
+			$_userpass=""
+			rsync -r --exclude=.svn --exclude=.subversion "${DESTDIR}"/root/.[!.]* "${DESTDIR}"/home/"${_username}"/
+			chroot ${DESTDIR} chown -R ${_username}:${_username} /home/$_username
+#		while true; do
+#			chroot ${DESTDIR} passwd $_username && break
+#		done
         else                                                #regular file
             $EDITOR ${DESTDIR}${CURRENT_SELECTION}
         fi
