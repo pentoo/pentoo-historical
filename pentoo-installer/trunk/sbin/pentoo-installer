@@ -1149,19 +1149,21 @@ EOF
 #            while true; do
 #                chroot ${DESTDIR} passwd root && break
 #            done
-		DIALOG $DEFAULT --passwordbox "Enter a password" 17 70 2>$ANSWER
+		DIALOG $DEFAULT --clear --insecure --passwordbox "Enter a password" 17 70 2>$ANSWER
 			_rootpass=$(cat $ANSWER)
-			echo -e "$_rootpass\n$_rootpass" | passwd root
-			$_rootpass=""
+			echo -e "${_rootpass}\n${_rootpass}" | passwd root
+			shred $ANSWER
+			${_rootpass}=""
 	elif [ "$CURRENT_SELECTION" = "add-user" ]; then
 		DIALOG $DEFAULT --inputbox "Enter a username" 17 70 2>$ANSWER
 			_username=$(cat $ANSWER)
 		DIALOG $DEFAULT --passwordbox "Enter a password" 17 70 2>$ANSWER
 			_userpass=$(cat $ANSWER)
-			chroot ${DESTDIR} useradd -p $_userpass -m -G users,wheel,audio,cdrom,video,cdrw,plugdev,wireshark,kismet,android $_username
-			$_userpass=""
+			chroot ${DESTDIR} useradd -p ${_userpass} -m -G users,wheel,audio,cdrom,video,cdrw,plugdev,wireshark,kismet,android ${_username}
+			shred $ANSWER
+			${_userpass}=""
 			rsync -r --exclude=.svn --exclude=.subversion "${DESTDIR}"/root/.[!.]* "${DESTDIR}"/home/"${_username}"/
-			chroot ${DESTDIR} chown -R ${_username}:${_username} /home/$_username
+			chroot ${DESTDIR} chown -R ${_username}:${_username} /home/${_username}
 #		while true; do
 #			chroot ${DESTDIR} passwd $_username && break
 #		done
