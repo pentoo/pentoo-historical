@@ -255,26 +255,26 @@ seteditor() {
              eselect editor set /bin/nano
              source /etc/profile
              chroot $DESTDIR /bin/bash <<EOF
-                 eselect editor set /bin/nano
-                 source /etc/profile
-             EOF
+eselect editor set /bin/nano
+source /etc/profile
+EOF
              ;;
         "2") EDITOR="vi"
 #             sed -i 's#/bin/nano#/usr/bin/vi#' ${DISTDIR}/etc/profile
              eselect editor set /usr/bin/vi
              source /etc/profile
              chroot $DESTDIR /bin/bash <<EOF
-                 eselect editor set /usr/bin/vi
-                 source /etc/profile
-             EOF
+eselect editor set /usr/bin/vi
+source /etc/profile
+EOF
              ;;
         "3") EDITOR="mcedit"
              eselect editor set /usr/bin/mcedit
              source /etc/profile
              chroot $DESTDIR /bin/bash <<EOF
-                 eselect editor set /usr/bin/mcedit
-                 source /etc/profile
-             EOF
+eselect editor set /usr/bin/mcedit
+source /etc/profile
+EOF
              ;;
         *)   EDITOR="nano" ;;
     esac
