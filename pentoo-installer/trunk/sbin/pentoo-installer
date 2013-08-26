@@ -432,8 +432,11 @@ autoprepare()
         DIALOG --msgbox "Available Disks:\n\n$(_getavaildisks)\n" 0 0
         DIALOG --menu "Select the hard drive to use" 14 55 7 $(finddisks _) 2>$ANSWER || return 1
         DISC=$(cat $ANSWER)
-    else
+    elif [ $(echo $DISCS | wc -w) -eq 1 ]; then
         DISC=$DISCS
+    else
+        DIALOG --msgbox "No stuitable storage media found. Please try manual install." 0 0
+        exit 1
     fi
     SET_DEFAULTFS=""
     BOOT_PART_SET=""
