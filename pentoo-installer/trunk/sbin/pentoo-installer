@@ -490,7 +490,7 @@ autoprepare()
             DIALOG --msgbox "${DISC_SIZE} MiB will be used for your / partition." 0 0 && ROOT_PART_SET=1
         done
         while [ "$CHOSEN_FS" = "" ]; do
-            DIALOG --menu "Select a filesystem for /" 13 45 6 $FSOPTS 2>$ANSWER || return 1
+            DIALOG --default-item "ext4" --menu "Select a filesystem for /" 13 45 6 $FSOPTS 2>$ANSWER || return 1
             FSTYPE=$(cat $ANSWER)
             DIALOG --yesno "$FSTYPE will be used for /. Is this OK?" 0 0 && CHOSEN_FS=1
         done
@@ -1233,8 +1233,8 @@ echo -e "${_userpass}\n${_userpass}" | passwd ${_username}
 EOF
 			shred $ANSWER
 			${_userpass}=""
-			rsync -r --exclude=.svn --exclude=.subversion "${DESTDIR}"/root/.[!.]* "${DESTDIR}"/home/"${_username}"/
-			chroot ${DESTDIR} chown -R ${_username}:${_username} /home/${_username}
+			rsync -r --exclude=.svn --exclude=.subversion "${DESTDIR}"/root/.[!.]* "${DESTDIR}"/home/"${_username}"/ >$LOG
+			chroot ${DESTDIR} chown -R ${_username}:${_username} /home/${_username} >$LOG
 #		while true; do
 #			chroot ${DESTDIR} passwd $_username && break
 #		done
@@ -1247,10 +1247,10 @@ EOF
 
     # /etc/locale.gen
     #
-    chroot ${DESTDIR} locale-gen
+    chroot ${DESTDIR} locale-gen >$LOG
 
     # /etc/localtime
-    cp /etc/localtime ${DESDIR}/etc/localtime
+    cp /etc/localtime ${DESDIR}/etc/localtime >$LOG
 
     ## END POSTPROCESSING ##
 
