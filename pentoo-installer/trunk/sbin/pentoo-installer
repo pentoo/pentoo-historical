@@ -9,6 +9,7 @@ TITLE="Pentoo Installation"
 # use the first VT not dedicated to a running console
 LOG="/dev/tty8"
 DESTDIR="/mnt/gentoo"
+SHAREDIR="/usr/share/pentoo"
 EDITOR=
 PARTITIONEDITOR=
 
@@ -735,11 +736,12 @@ do_rsync() {
       | tee $LOG \
       | awk -f /usr/share/pentoo/rsync.awk \
       | sed --unbuffered 's/\([0-9]*\).*/\1/' \
-      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying root..." 6 75
+      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying root... (this will take 30 min or longer, so grab a coffee)" 6 75
     if [ $? -ne 0 ]; then
         DIALOG --msgbox "Failed to rsync /*. See the log output for more information"
         return 1
     fi
+
     rsync -av --progress /etc/* ${DESTDIR}/etc/ 2>&1 \
       | tee $LOG \
       | awk -f /usr/share/pentoo/rsync.awk \
@@ -1312,12 +1314,7 @@ if [ "$RAMSIZE" -le "1500" ]; then
 	exit 1
 fi
 
-DIALOG --msgbox "Welcome to the Pentoo Installation program. The install \
-process is fairly straightforward, and you should run through the options in \
-the order they are presented. If you are unfamiliar with partitioning/making \
-filesystems, you may want to consult some documentation before continuing. \
-You can view all output from commands by viewing your VC8 console: \
-use alt-f8/alt-f1 from a console or ctrl+alt+f8/ctrl+alt+f7 from X server)." 14 65
+DIALOG --textbox "${SHAREDIR}"/welcome.txt 25 75
 
 while true; do
     mainmenu
