@@ -1216,7 +1216,9 @@ EOF
 #            done
 		DIALOG $DEFAULT --clear --insecure --passwordbox "Enter a password" 17 70 2>$ANSWER
 			_rootpass=$(cat $ANSWER)
-			echo -e "${_rootpass}\n${_rootpass}" | passwd root
+			chroot $DESTDIR /bin/bash <<EOF
+echo -e "${_rootpass}\n${_rootpass}" | passwd root
+EOF
 			shred $ANSWER
 			${_rootpass}=""
 	elif [ "$CURRENT_SELECTION" = "add-user" ]; then
@@ -1224,7 +1226,11 @@ EOF
 			_username=$(cat $ANSWER)
 		DIALOG $DEFAULT --clear --insecure --passwordbox "Enter a password" 17 70 2>$ANSWER
 			_userpass=$(cat $ANSWER)
-			chroot ${DESTDIR} useradd -p ${_userpass} -m -G users,wheel,audio,cdrom,video,cdrw,usb,plugdev,wireshark,kismet,android ${_username}
+#run passwd (the second line) just in case if user exists (as in rc1.9)
+			chroot $DESTDIR /bin/bash <<EOF
+useradd -p ${_userpass} -m -G users,wheel,audio,cdrom,video,cdrw,usb,plugdev,wireshark,kismet,android ${_username}
+echo -e "${_userpass}\n${_userpass}" | passwd ${_username}
+EOF
 			shred $ANSWER
 			${_userpass}=""
 			rsync -r --exclude=.svn --exclude=.subversion "${DESTDIR}"/root/.[!.]* "${DESTDIR}"/home/"${_username}"/
