@@ -731,14 +731,52 @@ mountpoints() {
 # params: none
 # returns: 1 on error
 do_rsync() {
-    DIALOG --infobox "Copy in progress. This may take a while - you can watch the output in the progress window. (ctrl+alt+f8 / ctrl+alt+f7)" 6 45
-    rsync -av /mnt/livecd/* ${DESTDIR} 2>&1 >$LOG
-    rsync -av /etc/* ${DESTDIR}/etc/ 2>&1 >>$LOG
-    rsync -av /root/* ${DESTDIR}/root/ 2>&1 >>$LOG
-    rsync -av /usr/portage ${DESTDIR}/usr/ >>$LOG
-    rsync -av /var/lib/layman/pentoo ${DESTDIR}/var/lib/layman/ >>$LOG
+    rsync -av --progress /mnt/livecd/* ${DESTDIR} 2>&1 \
+      | tee $LOG \
+      | awk -f /usr/share/pentoo/rsync.awk \
+      | sed --unbuffered 's/\([0-9]*\).*/\1/' \
+      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying root..." 6 75
     if [ $? -ne 0 ]; then
-        DIALOG --msgbox "Rsync failed (maybe you're out of disk space?). See the log output for more information"
+        DIALOG --msgbox "Failed to rsync /*. See the log output for more information"
+        return 1
+    fi
+    rsync -av --progress /etc/* ${DESTDIR}/etc/ 2>&1 \
+      | tee $LOG \
+      | awk -f /usr/share/pentoo/rsync.awk \
+      | sed --unbuffered 's/\([0-9]*\).*/\1/' \
+      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying etc..." 6 75
+    if [ $? -ne 0 ]; then
+        DIALOG --msgbox "Failed to rsync /etc. See the log output for more information"
+        return 1
+    fi
+
+    rsync -av --progress /root/* ${DESTDIR}/root/ 2>&1 \
+      | tee $LOG \
+      | awk -f /usr/share/pentoo/rsync.awk \
+      | sed --unbuffered 's/\([0-9]*\).*/\1/' \
+      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying home..." 6 75
+    if [ $? -ne 0 ]; then
+        DIALOG --msgbox "Failed to rsync the /root. See the log output for more information"
+        return 1
+    fi
+
+    rsync -av --progress /usr/portage ${DESTDIR}/usr/ \
+      | tee $LOG \
+      | awk -f /usr/share/pentoo/rsync.awk \
+      | sed --unbuffered 's/\([0-9]*\).*/\1/' \
+      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying portage..." 6 75
+    if [ $? -ne 0 ]; then
+        DIALOG --msgbox "Failed to rsync /usr/portage. See the log output for more information"
+        return 1
+    fi
+
+    rsync -av --progress /var/lib/layman/pentoo ${DESTDIR}/var/lib/layman/ \
+      | tee $LOG \
+      | awk -f /usr/share/pentoo/rsync.awk \
+      | sed --unbuffered 's/\([0-9]*\).*/\1/' \
+      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying overlay..." 6 75
+    if [ $? -ne 0 ]; then
+        DIALOG --msgbox "Failed to rsync the /var/lib/layman/pentoo. See the log output for more information"
         return 1
     fi
     sed -i '/aufs bindist livecd/d' ${DESTDIR}/etc/portage/make.conf
@@ -1278,8 +1316,8 @@ DIALOG --msgbox "Welcome to the Pentoo Installation program. The install \
 process is fairly straightforward, and you should run through the options in \
 the order they are presented. If you are unfamiliar with partitioning/making \
 filesystems, you may want to consult some documentation before continuing. \
-You can view all output from commands by viewing your VC8 console (ALT-F8). \
-ALT-F1 will bring you back here." 14 65
+You can view all output from commands by viewing your VC8 console: \
+use alt-f8/alt-f1 from a console or ctrl+alt+f8/ctrl+alt+f7 from X server)." 14 65
 
 while true; do
     mainmenu
