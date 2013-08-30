@@ -13,7 +13,7 @@ emerge --sync
 # Modify /etc/portage/make.conf file for your system:
 ACCEPT_LICENSE="Oracle-BCLA-JavaSE AdobeFlash-10.3"
 # You may wish to edit your VIDEO_CARDS line to match your system better.
-# Example for nvidia users:
+# Example, for nvidia/ati users should add nvdia/fglrx flags
 VIDEO_CARDS="fbdev vga vesa nvidia"
 # Guest OS users should add virtualbox/vmware or qxl flag(s):
 VIDEO_CARDS="fbdev vga vesa virtualbox"
