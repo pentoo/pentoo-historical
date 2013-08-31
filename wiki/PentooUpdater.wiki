@@ -48,8 +48,8 @@ smart-live-rebuild
 revdep-rebuild
 #merge in any new config files
 etc-update
-#clean up the distfiles dir to remove old/un-needed files
-eclean-dist -d
+#clean up the distfiles/packages dirs to remove old/un-needed files
+eclean-dist -d && eclean-pkg -d
 # Check /var/log/portage/elog/summary.log file
 # You might need to run extra commands. For example:
 emerge @x11-module-rebuild
