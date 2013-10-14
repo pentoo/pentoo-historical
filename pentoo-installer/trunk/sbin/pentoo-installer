@@ -467,6 +467,8 @@ autoprepare()
         DISC_SIZE=$(($DISC_SIZE-$BOOT_PART_SIZE))
         while [ "$SWAP_PART_SET" = "" ]; do
             SUGGESTED_SWAP_SIZE=$(awk '/MemTotal/ {printf( "%.0f\n", int ( $2 / 1024 ) + 1)}' /proc/meminfo)
+#the line above is confusing mceditor. Close it: '
+
             DIALOG --inputbox "Enter the size (MiB) of your swap partition.  Minimum value is > 0.\n\nDisk space left: $DISC_SIZE MiB" 10 65 "${SUGGESTED_SWAP_SIZE}" 2>$ANSWER || return 1
             SWAP_PART_SIZE=$(cat $ANSWER)
             if [ "$SWAP_PART_SIZE" = "" -o  "$SWAP_PART_SIZE" -le "0" ]; then
@@ -791,6 +793,35 @@ do_rsync() {
     S_SELECT=1
 }
 
+# set_profile
+# allows to choose a new profile
+# parameters: none
+set_profile() {
+    options=()
+    CUR_PROF_NUM=""
+    CUR_PROF="`eselect profile show | grep pentoo | awk '{match($1,"pentoo/.*",a)}END{print a[0]}'`"
+
+    while read -r line; do
+        #seach for pentoo profiles
+        PROF="`echo $line | awk '{match($2,"pentoo/.*",a)}END{print a[0]}'`"
+        if [[ $PROF == pentoo* ]]; then
+            #detect its profile number
+            PROF_NUM="`echo $line | awk '{match($1,"[0-9]+",a)}END{print a[0]}'`"
+            #generate options menu
+            options+=($PROF_NUM $PROF)
+            #find current profile number
+            if [[ $PROF == $CUR_PROF ]]; then
+                CUR_PROF_NUM="$PROF_NUM"
+            fi
+        fi
+    done < <(eselect profile list)
+
+    cmd=(dialog --keep-tite  --default-item "$CUR_PROF_NUM" --menu "Select profile:" 22 76 16)
+    NEW_PROF_NUM=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+
+    chroot ${DESTDIR} eselect profile set $NEW_PROF_NUM
+}
+
 # auto_fstab()
 # preprocess fstab file
 # comments out old fields and inserts new ones
@@ -804,7 +835,7 @@ auto_fstab()
             sed -i 's/^\/dev/#\/dev/g' $DESTDIR/etc/fstab
             # append entries from new configuration
             sort /tmp/.fstab >>$DESTDIR/etc/fstab
-	    sed -i -e '/aufs/d' $DESTDIR/etc/fstab
+            sed -i -e '/aufs/d' $DESTDIR/etc/fstab
         fi
     fi
 }
@@ -1204,7 +1235,7 @@ EOF
             "/etc/hosts"                "Network Hosts" \
             "/etc/locale.gen"           "Glibc Locales" \
             "Root-Password"             "Set the root password" \
-	    "add-user"			"Add a new user" \
+            "add-user"                  "Add a new user" \
             "Return"        "Return to Main Menu" 2>$ANSWER || CURRENT_SELECTION="Return"
         CURRENT_SELECTION="$(cat $ANSWER)"
 
@@ -1283,23 +1314,26 @@ mainmenu()
         --menu "Use the UP and DOWN arrows to navigate menus.  Use TAB to switch between buttons and ENTER to select." 16 55 8 \
         "0" "Set Clock" \
         "1" "Prepare Hard Drive" \
-	"2" "Copy the Distribution" \
-        "3" "Configure System" \
-        "4" "Install Bootloader" \
-        "5" "Exit Install" 2>$ANSWER
+        "2" "Copy the Distribution" \
+        "3" "Select Profile" \
+        "4" "Configure System" \
+        "5" "Install Bootloader" \
+        "6" "Exit Install" 2>$ANSWER
     CURRENT_SELECTION="$(cat $ANSWER)"
     case $(cat $ANSWER) in
         "0")
             set_clock ;;
         "1")
             prepare_harddrive ;;
-	"2")
-	    do_rsync ;;
+        "2")
+            do_rsync ;;
         "3")
-            configure_system ;;
+            set_profile ;;
         "4")
-            install_bootloader ;;
+            configure_system ;;
         "5")
+            install_bootloader ;;
+        "6")
             echo ""
             echo "If the install finished successfully, you can now type 'reboot'"
             echo "to restart the system."
