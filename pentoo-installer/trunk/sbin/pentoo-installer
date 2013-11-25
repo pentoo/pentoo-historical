@@ -32,7 +32,7 @@ S_MKFSAUTO=0    # auto fs part/formatting TODO: kill this
 S_CONFIG=0      # configuration editing
 S_GRUB=0        # TODO: kill this - if using grub
 S_BOOT=""       # bootloader installed (set to loader name instead of 1)
-
+S_FDE=0         # Full disk encryption, need key in /boot
 
 # main menu selection tracker
 CURRENT_SELECTION=""
@@ -45,6 +45,55 @@ CURRENT_SELECTION=""
 DIALOG() {
     dialog --backtitle "$TITLE" --aspect 15 "$@"
     return $?
+}
+
+# gen_key()
+# Generate a key, optionnaly encrypt it with gpg
+# $1 use gpg or not
+# $2 gpg key to store
+#
+gen_key()
+{
+    if [ ${1} = "yes" ]; then
+        DIALOG --msgbox "We will now generate a GPG-encrypted luks key for `basename ${2}`" 0 0
+        head -c60 /dev/urandom | base64 | head -n1 | tr -d '\n' > "${2}"
+        gpg --symmetric --cipher-algo aes256 --armor "${2}"
+    else
+        head -c60 /dev/urandom | base64 | head -n1 | tr -d '\n' > "${2}"
+    fi
+}
+
+# luks_fmt()
+# format a luks partition. Cipher and hash chosen arbitrarily
+# $1 use GPG
+# $2 device to luksformat
+# $3 key
+#
+luks_fmt()
+{
+    if [ ${1} = "yes" ]; then
+        DIALOG --msgbox "Please enter the GPG key for `basename ${3/.asc/}`" 0 0
+        gpg --decrypt "${3}" | cryptsetup -h sha512 -c aes-xts-plain64 -s 512 luksFormat --align-payload=8192 "${2}"
+    else
+        cat "${3}" | cryptsetup -h sha512 -c aes-xts-plain64 -s 512 luksFormat --align-payload=8192 "${2}"
+    fi
+}
+
+# luks_open()
+# open a luks partition
+# $1 use GPG
+# $2 device to luksformat
+# $3 gpg key
+# $4 name of new device
+#
+luks_open()
+{
+    if [ ${1} = "yes" ]; then
+        DIALOG --msgbox "Please enter the GPG key for `basename ${3/.asc/}` (last time :-)" 0 0
+        gpg --decrypt "${3}" | cryptsetup luksOpen "${2}" "${4}"
+    else
+        cat "${3}" | cryptsetup luksOpen "${2}" "${4}"
+    fi
 }
 
 # chroot_mount()
@@ -330,8 +379,38 @@ _mkfs() {
     local _fstype=$3
     local _dest=$4
     local _mountpoint=$5
+    case ${_fstype} in
+        *-luks)
+                if [ ${_mountpoint} = "/" ]; then
+                    _luksname="root"
+                    S_FDE=1
+                    local _lukskey=/tmp/${_luksname}
+                    gen_key yes ${_lukskey} && _lukskey=${_lukskey}.asc
+                    luks_fmt yes ${_device} ${_lukskey} && luks_open yes ${_device} ${_lukskey} ${_luksname} && _device=/dev/mapper/${_luksname} && _fstype=${_fstype/-luks/}
+                else
+                    local _luksname=`basename $5`
+                    local _lukskey=/tmp/${_luksname}
+                    DIALOG --defaultno --yesno "Do you want to use GPG encrypted key for this partition ($_mountpoint) ?" 0 0 && DOGPG="YES"
+                    if [ ${DOGPG} = "YES" ]; then
+                        gen_key yes ${_lukskey} && _lukskey=${_lukskey}.asc
+                        echo -e "target=${_luksname}\nsource='${_device}'\nkey='/etc/keys/`basename ${_lukskey}`:gpg'\n" >>/tmp/.dmcrypt
+                        luks_fmt yes ${_device} ${_lukskey} && luks_open yes ${_device} ${_lukskey} ${_luksname} && _device=/dev/mapper/${_luksname} && _fstype=${_fstype/-luks/}
+                    else
+                        gen_key no ${_lukskey}
+                        echo -e "target=${_luksname}\nsource='${_device}'\nkey='/etc/keys/`basename ${_lukskey}`'\n" >>/tmp/.dmcrypt
+                        luks_fmt no ${_device} ${_lukskey} && luks_open no ${_device} ${_lukskey} ${_luksname} && _device=/dev/mapper/${_luksname} && _fstype=${_fstype/-luks/}
+                    fi
+                fi
+                ret=$?
+                if [ $ret != 0 ]; then
+                    DIALOG --msgbox "Error creating luks filesystem ${_fstype} on ${_device}" 0 0
+                    return 1
+                fi
+                ;;
+    esac
+
     echo "$@" >> $LOG
-    # we have two main cases: "swap" and everything else.
+    # we have two main cases: "swap/crypt-swap" and everything else.
     if [ "${_fstype}" = "swap" ]; then
         swapoff ${_device} >/dev/null 2>&1
         if [ "${_domk}" = "yes" ]; then
@@ -340,6 +419,21 @@ _mkfs() {
                 DIALOG --msgbox "Error creating swap: mkswap ${_device}" 0 0
                 return 1
             fi
+        fi
+        swapon ${_device} >>$LOG 2>&1
+        if [ $? != 0 ]; then
+            DIALOG --msgbox "Error activating swap: swapon ${_device}" 0 0
+            return 1
+        fi
+    elif [ "${_fstype}" = "crypt-swap" ]; then
+        swapoff ${_device} >/dev/null 2>&1
+        if [ "${_domk}" = "yes" ]; then
+            cryptsetup create -c aes-xts-plain64:sha512 -s 512 -d /dev/urandom swap ${_device} >>$LOG 2>&1 && echo -e "swap=swap\nsource='${_device}'\n" >>/tmp/.dmcrypt && _device="/dev/mapper/swap" && mkswap ${_device} >>$LOG 2>&1 && _fstype="swap"
+            if [ $? != 0 ]; then
+                DIALOG --msgbox "Error creating swap: mkswap ${_device}" 0 0
+                return 1
+            fi
+            
         fi
         swapon ${_device} >>$LOG 2>&1
         if [ $? != 0 ]; then
@@ -447,8 +541,8 @@ autoprepare()
     # disk size in MiB
     DISC_SIZE=$(($(_getdisccapacity $DISC) / 2**20))
     while [ "$SET_DEFAULTFS" = "" ]; do
-        FSOPTS="ext2 ext2 ext3 ext3 ext4 ext4"
-        [ "$(which mkreiserfs 2>/dev/null)" ] && FSOPTS="$FSOPTS reiserfs Reiser3"
+        FSOPTS="ext2 ext2 ext3 ext3 ext3-luks ext3-luks ext4 ext4 ext4-luks ext4-luks"
+        [ "$(which mkreiserfs 2>/dev/null)" ] && FSOPTS="$FSOPTS reiserfs Reiser3 reiserfs-luks Reiser3-luks"
         [ "$(which mkfs.xfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS xfs XFS"
         [ "$(which mkfs.jfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS jfs JFS"
         while [ "$BOOT_PART_SET" = "" ]; do
@@ -533,6 +627,7 @@ autoprepare()
     fi
 
     rm -f /tmp/.fstab
+    rm -f /tmp/.dmcrypt
 
     _umountall
 
@@ -638,11 +733,12 @@ mountpoints() {
     fi
     while [ "$PARTFINISH" != "DONE" ]; do
         : >/tmp/.fstab
+        : >/tmp/.dmcrypt
         : >/tmp/.parts
 
         # Determine which filesystems are available
-        FSOPTS="ext2 ext2 ext3 ext3 ext4 ext4"
-        [ "$(which mkreiserfs 2>/dev/null)" ] && FSOPTS="$FSOPTS reiserfs Reiser3"
+        FSOPTS="ext2 ext2 ext3 ext3 ext3-luks ext3-luks ext4 ext4 ext4-luks ext4-luks"
+        [ "$(which mkreiserfs 2>/dev/null)" ] && FSOPTS="$FSOPTS reiserfs Reiser3 reiserfs-luks Reiser3-luks"
         [ "$(which mkfs.xfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS xfs XFS"
         [ "$(which mkfs.jfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS jfs JFS"
         [ "$(which mkfs.vfat 2>/dev/null)" ]  && FSOPTS="$FSOPTS vfat VFAT"
@@ -656,7 +752,12 @@ mountpoints() {
         if [ "$PART" != "NONE" ]; then
             DOMKFS="no"
             DIALOG --yesno "Would you like to create a filesystem on $PART?\n\n(This will overwrite existing data!)" 0 0 && DOMKFS="yes"
-            echo "$PART:swap:swap:$DOMKFS" >>/tmp/.parts
+            DIALOG --yesno "Would you like to encrypt the swap partition?" 0 0 && CRYPTSWAP="yes"
+            if [ "$CRYPTSWAP" = "yes" ]; then
+                echo "$PART:crypt-swap:swap:$DOMKFS" >>/tmp/.parts
+            else
+                echo "$PART:swap:swap:$DOMKFS" >>/tmp/.parts
+            fi
         fi
 
         DIALOG --menu "Select the partition to mount as /" 21 50 13 $PARTS 2>$ANSWER || return 1
@@ -858,6 +959,28 @@ auto_fstab()
     fi
 }
 
+# auto_dmcrypt()
+# copy dmcrypt and keys to partitions
+#
+auto_dmcrypt()
+{
+    if [ -f /tmp/.dmcrypt ]; then
+        cat /tmp/.dmcrypt >> $DESTDIR/etc/conf.d/dmcrypt
+        mkdir -p ${DESTDIR}/etc/keys
+        for x in `cat /tmp/.dmcrypt | grep -e 'key=' | sed -e 's/:gpg//' -e's/.$//'`
+        do
+            cp /tmp/`basename ${x}` ${DESTDIR}/etc/keys/
+        done
+        chroot ${DESTDIR} /bin/bash <<EOF
+rc-update add dmcrypt boot
+EOF
+
+    fi
+    if [ ${S_FDE} = 1 ]; then
+        cp /tmp/root.asc ${DESTDIR}/boot/key.gpg
+    fi
+}
+
 # douefigrub()
 # writes kernel to UEFI as new boot option
 # parameters:
@@ -1046,18 +1169,34 @@ dogrub() {
             # remove default entries
             sed -i 's/^#splashimage/splashimage/' $grubmenu
             sed -i '/^#/d' $grubmenu
-	    # parse kernel cmdline (only video mode for now)
-	    for _var in $(cat /proc/cmdline)
-	    do
-			case $_var in
-				video=*)
-				eval $(echo $_var)
-				;;
-			esac
-		done
-	    # get kernel version
-	    local _kernver=$(getkernelversion)
-            cat >>$grubmenu <<EOF
+	        # parse kernel cmdline (only video mode for now)
+	        for _var in $(cat /proc/cmdline)
+	        do
+			    case $_var in
+				    video=*)
+				    eval $(echo $_var)
+				    ;;
+			    esac
+		    done
+	        # get kernel version
+	        local _kernver=$(getkernelversion)
+            if [ ${S_FDE}=1 ]; then
+                cat >>$grubmenu <<EOF
+
+# (0) Pentoo
+title  Pentoo
+root   $grubdev
+kernel $subdir/kernel-genkernel${_kernver} root=/dev/ram0 real_root=/dev/mapper/root dogpg crypt_root=${_rootpart} root_key=/key.gpg root_keydev=${bootdev} ${_cmdline} video=${video} console=tty1 ro
+initrd $subdir/initramfs-genkernel${_kernver}
+
+# (2) Windows
+#title Windows
+#rootnoverify (hd0,0)
+#makeactive
+#chainloader +1
+EOF
+            else
+                cat >>$grubmenu <<EOF
 
 # (0) Pentoo
 title  Pentoo
@@ -1071,6 +1210,7 @@ initrd $subdir/initramfs-genkernel${_kernver}
 #makeactive
 #chainloader +1
 EOF
+            fi
         fi
     fi
 
@@ -1236,6 +1376,7 @@ EOF
     # any automatic configuration should go here
     DIALOG --infobox "Writing base configuration..." 6 40
     auto_fstab
+    auto_dmcrypt
 
     [ "$EDITOR" ] || seteditor
 
@@ -1302,7 +1443,7 @@ EOF
     cp /etc/localtime ${DESDIR}/etc/localtime >$LOG
 
     ## END POSTPROCESSING ##
-
+    sync
     S_CONFIG=1
 }
 
