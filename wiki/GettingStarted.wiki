@@ -1,0 +1,75 @@
+#summary A quick guide to getting started with Pentoo project.
+
+= Getting Started =
+
+*Pentoo is a security-focused livecd based on Gentoo*
+
+It's basically a gentoo install with lots of customized tools, customized kernel, and much more...
+
+This guide provides information on:
+
+<wiki:toc max_depth="3" />
+
+
+== Features ==
+
+Here is a non-exhaustive list of the features currently included :
+
+ * Hardened Kernel with aufs patches
+ * Backported Wifi stack from latest stable kernel release
+ * Module loading support ala slax
+ * Changes saving on usb stick
+ * XFCE4 wm
+ * Cuda/OPENCL cracking support with development tools
+ * System updates if you got it finally installed
+Put simply, Pentoo is Gentoo with the pentoo overlay. This overlay is available in layman so all you have to do is layman -L and layman -a pentoo.
+
+We have a pentoo/pentoo meta ebuild and multiple pentoo profiles, which will install all the pentoo tools based on USE flags.
+
+== Who is behind it ==
+
+The Pentoo dev team consist of a few core developers and a many random acts of kindness from others. Of course, we are all big Gentoo fans
+
+All devs can be reached on <nickname at pentoo.ch>
+
+*Grimmlin*
+
+Pentoo founder and lead developer, dictator for life.
+ * package maintainer
+ * devoted family man
+ * temporarily refocused
+
+*Zero_Chaos*
+
+El Presidente Numero Uno. Current lead of Pentoo, second to the great  Grimmlin
+ * kernel/wifi stack maintainer
+ * Release coordinator
+ * package maintainer
+
+*Anton Bolshakov (blshkv)*
+
+Active researcher and practicing penetation tester
+ * Zero's second in command
+ * package maintainer
+ * upstream pusher
+ * all things QA
+ * fixes all ZC's stupid mistakes
+ * makes things prettier
+
+*Stefan Kuhn (Wuodan)*
+
+Came out of nowhere and proved his worth overnight
+ * fixes hardened build errors before breakfast
+ * release QA
+ * squeeky wheel
+ * grease
+
+*Jensp*
+
+Founder of Chaox-ng, now back from the dark side to [GP]entoo AKA the  one man army
+ * package maintainer
+ * package code patching
+ * architecture porting
+ * all things QA
+ * eternal student
+ * temporarily refocused
