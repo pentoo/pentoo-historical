@@ -1,3 +1,4 @@
+  * [GettingStarted Getting Started]
   * [DistroRules Distro Rules]
   * Installation
     * [PentooInstaller Intallation to Disc]
