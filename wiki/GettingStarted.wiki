@@ -4,7 +4,7 @@
 
 *Pentoo is a security-focused livecd based on Gentoo*
 
-It's basically a gentoo install with lots of customized tools, customized kernel, and much more...
+it's basically a Gentoo, a Linux-based operating system and a meta-distribution, which means that it is built automatically from source code and is customized with the functionality that you want to have and without the unnecessary features that you want to avoid, with lots of customized tools, customized kernel, and much more...
 
 This guide provides information on:
 
@@ -25,6 +25,10 @@ Here is a non-exhaustive list of the features currently included :
 Put simply, Pentoo is Gentoo with the pentoo overlay. This overlay is available in layman so all you have to do is layman -L and layman -a pentoo.
 
 We have a pentoo/pentoo meta ebuild and multiple pentoo profiles, which will install all the pentoo tools based on USE flags.
+
+== Download ==
+
+DownloadPentoo page.
 
 == Who is behind it ==
 
