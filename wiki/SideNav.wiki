@@ -1,5 +1,6 @@
   * [GettingStarted Getting Started]
   * [DistroRules Distro Rules]
+  * [DownloadPentoo Download]
   * Installation
     * [PentooInstaller Intallation to Disc]
     * [OverlayUsage Installation from Overlay]
