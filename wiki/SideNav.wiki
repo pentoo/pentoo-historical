@@ -1,8 +1,10 @@
   * [GettingStarted Getting Started]
-  * [DistroRules Distro Rules]
   * [DownloadPentoo Download]
   * Installation
     * [PentooInstaller Intallation to Disc]
     * [OverlayUsage Installation from Overlay]
     * [PentooUpdater Howto Update]
     * [UEFI UEFI Booting]
+  * Join this project
+    * [DistroRules Distro Rules]
+    * [TODO To-do list]
