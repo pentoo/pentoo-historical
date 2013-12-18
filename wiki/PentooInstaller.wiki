@@ -10,6 +10,8 @@ Boot Pentoo LiveUSB<br>
 Update pentoo-installer (optional):
 {{{
 layman -s pentoo
+mkdir /usr/portage/distfiles/svn-src
+chown portage:portage /usr/portage/distfiles/svn-src
 emerge -1 pentoo-installer
 }}}
 
