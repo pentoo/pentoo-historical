@@ -63,6 +63,6 @@ genmenu.py -x
 
 == after python/perl upgrade: ==
 {{{
-perl-cleaner --modules
+perl-cleaner --reallyall
 python-updater
 }}}
