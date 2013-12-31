@@ -30,6 +30,14 @@ We have a pentoo/pentoo meta ebuild and multiple pentoo profiles, which will ins
 
 DownloadPentoo page.
 
+== Installation ==
+
+Pentoo is a security-focused livecd, is a complete bootable  installation including operating system which runs in a computer's memory, rather than loading from a hard disk drive. The functionality of a livecd is also available with a bootable live USB flash drive, or even an external USB drive.
+
+The Pentoo dev-team also provides methods of installation on a local hard drive:
+ * Pentoo can be installed directly from the livecd using our installer PentooInstaller
+ * Pentoo can be installed using overlay OverlayUsage
+
 == Who is behind it ==
 
 The Pentoo dev team consist of a few core developers and a many random acts of kindness from others. Of course, we are all big Gentoo fans
@@ -70,7 +78,7 @@ Came out of nowhere and proved his worth overnight
 
 *Jensp*
 
-Founder of Chaox-ng, now back from the dark side to [GP]entoo AKA the  one man army
+Founder of Chaox-ng, now back from the dark side to [G/P]entoo AKA the  one man army
  * package maintainer
  * package code patching
  * architecture porting
