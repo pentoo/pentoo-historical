@@ -38,6 +38,10 @@ The Pentoo dev-team also provides methods of installation on a local hard drive:
  * Pentoo can be installed directly from the livecd using our installer PentooInstaller
  * Pentoo can be installed using overlay OverlayUsage
 
+== Update ==
+
+PentooUpdater page.
+
 == Who is behind it ==
 
 The Pentoo dev team consist of a few core developers and a many random acts of kindness from others. Of course, we are all big Gentoo fans
