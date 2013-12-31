@@ -9,6 +9,8 @@ THIS IS EXPERIMENTAL SOFTWARE. USE AT YOUR OWN RISK. PENTOO.CH CAN NOT BE HELD L
 
 *By downloading the iso, you fully agree with the above disclaimer.*
 
+Discussion and support available on irc.freenode.net in *#pentoo*
+
 *Tip:* torrents are available on every mirror.
 
  * [http://www.pentoo.ch/isos/ Download from Pentoo.ch ]
