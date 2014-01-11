@@ -231,7 +231,7 @@ with intention to keep it alive and to update.
   * http://samurai.inguardians.com/
   * http://www.owasp.org/index.php/Category:OWASP_Live_CD_Project
   * https://pentoo.ch/
-  * https://code.google.com/p/pentoo/
+  * https://pentoo.googlecode.com/
   * http://www.hackfromacave.com/articles_and_adventures/katana_v2_release.html
   * http://www.piotrbania.com/all/kon-boot/
   * http://www.linuxfromscratch.org/
