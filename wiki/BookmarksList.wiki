@@ -103,6 +103,7 @@ with intention to keep it alive and to update.
 ----
 = Methodologies: =
 
+  * http://pentest-standard.org/
   * http://www.vulnerabilityassessment.co.uk/Penetration%20Test.html
   * http://www.pentest-standard.org/index.php/Main_Page
   * http://projects.webappsec.org/w/page/13246978/Threat-Classification
@@ -225,6 +226,7 @@ with intention to keep it alive and to update.
 ----
 = Distros: =
 
+  * http://www.kali.org/
   * http://www.backtrack-linux.org/
   * http://www.matriux.com/
   * http://samurai.inguardians.com/
