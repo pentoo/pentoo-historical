@@ -94,11 +94,10 @@ with intention to keep it alive and to update.
 
   == Video: ==
 
+    * http://www.youtube.com/user/CCCen
     * http://www.hackernews.com/
     * http://www.securitytube.net/
     * http://www.irongeek.com/i.php?page=videos/aide-winter-2011
-    * http://avondale.good.net/dl/bd/
-    * http://achtbaan.nikhef.nl/27c3-stream/releases/mkv/
     * http://www.youtube.com/user/ChRiStIaAn008
     * http://www.youtube.com/user/HackingCons
 ----
