@@ -1,6 +1,7 @@
   * [GettingStarted Getting Started]
   * [DownloadPentoo Download]
   * Installation
+    * [Requirements System Requirements]
     * [PentooInstaller Intallation to Disc]
     * [OverlayUsage Installation from Overlay]
     * [UEFI UEFI Booting]
