@@ -33,6 +33,8 @@ Pretty much just having a computer will let you run Pentoo. lol. But seriously, 
         * a DDC capable Monitor
         * mouse and keyboard 
 
+*Prerequisites and System Requirements for running with Pentoo overlay*
+
     * Overlay:
         * i686 or ARM Processor
         * at least 512 MiB of RAM (2 GiB suggested)
