@@ -301,6 +301,10 @@ If you'd like to get into exploit dev, these are really the guides and docs that
   * http://visi.kenshoto.com/
   * http://www.radare.org/y/
   * http://www.offensivecomputing.net/
+  * http://www.malwaredomainlist.com/
+  * http://malzilla.sourceforge.net/
+  * http://wepawet.iseclab.org/
+  * https://zeustracker.abuse.ch/
 ----
 = Passwords and Hashes: =
 
