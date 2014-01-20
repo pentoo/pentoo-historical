@@ -4,7 +4,7 @@
 
 *Pentoo is a security-focused livecd based on Gentoo*
 
-(...)it's basically a Gentoo, a highly customizable Linux-based operating system and a meta-distribution. Using excellent development techniques, we have created a pre-configured security-focused or so called penetration testing LiveCD distribution that is built automatically from source code and is customized with the functionality that you want to have and without the unnecessary features that you want to avoid, with lots of customized tools, customized kernel, and much more. Pentoo Linux features an overlay and [Pentoo profiles]. "Overlays" are package trees for Portage. They contain additional ebuilds for Gentoo. Portage profiles specify default values for global and per-package USE flags and most variables of the /etc/portage/make.conf and define a set of system packages. Also it masks unstable package versions and USE flags. These techniques allow us to maintain capabilities of building a Linux-based operating system which inheriting all the Pentoo LiveCD goods.
+(...)it's basically a Gentoo, a highly customizable Linux-based operating system and a meta-distribution. Using excellent development techniques, we have created a pre-configured security-focused or so called penetration testing LiveCD distribution that is built automatically from source code and is customized with the functionality that you want to have and without the unnecessary features that you want to avoid, with lots of customized tools, customized kernel, and much more. Pentoo Linux features an overlay and [Pentoo profiles]. "Overlays" are package trees for Portage. They contain additional ebuilds for Gentoo. Portage profiles specify default values for global and per-package USE flags and most variables of the /etc/portage/make.conf and define a set of system packages. Also it masks unstable package versions and USE flags. These techniques allow us to maintain capabilities of building a Linux-based operating system which inheriting all the Pentoo LiveCD goods and is a rolling release distribution which is essentially version-less once installed.
 
 This guide provides information on:
 
@@ -24,13 +24,42 @@ Here is a non-exhaustive list of the features currently included :
  * System updates if you got it finally installed
 
 
-===Pentoo profiles===
+===Pentoo profiles and overlay===
 Put simply, Pentoo is Gentoo with the pentoo overlay. This overlay is available in layman so all you have to do is 
 {{{
  layman -L and layman -a pentoo.
 }}}
-We have a pentoo/pentoo meta ebuild and multiple pentoo profiles, which will install all the pentoo tools based on USE flags.
+Among other ebuilds we have a pentoo/pentoo meta ebuild too. A meta ebuild is a ebuild that doesn't install files by itself, but instead it's used to install a group of other ebuilds with one command. It accomplishes this by having all this other ebuilds as dependencies.
 
+{{{
+pentoo/pentoo
+pentoo/pentoo-analyzer
+pentoo/pentoo-bluetooth
+pentoo/pentoo-cinnamon
+pentoo/pentoo-cracking
+pentoo/pentoo-database
+pentoo/pentoo-exploit
+pentoo/pentoo-footprint
+pentoo/pentoo-forensics
+pentoo/pentoo-forging
+pentoo/pentoo-fuzzers
+pentoo/pentoo-gnome
+pentoo/pentoo-installer
+pentoo/pentoo-livecd
+pentoo/pentoo-misc
+pentoo/pentoo-mitm
+pentoo/pentoo-mobile
+pentoo/pentoo-proxies
+pentoo/pentoo-radio
+pentoo/pentoo-rce
+pentoo/pentoo-scanner
+pentoo/pentoo-system
+pentoo/pentoo-voip
+pentoo/pentoo-wireless
+
+}}}
+
+We have multiple pentoo profiles, which will install all the pentoo tools based on USE flags.
 
 {{{
 amd64           pentoo/default/linux/amd64			stable
@@ -52,8 +81,7 @@ arm             pentoo/hardened/linux/arm/armv7a/bleeding_edge	dev
 arm             pentoo/default/linux/arm/armv6j			stable
 arm             pentoo/default/linux/arm/armv6j/bleeding_edge	dev
 }}}
-
-
+More info: OverlayUsage page.
 == Download ==
 
 DownloadPentoo page.
