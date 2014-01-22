@@ -35,9 +35,11 @@ mkdir -p /etc/portage/make.profile
 gentoo:hardened/linux/amd64                                                                                                     
 gentoo:targets/desktop
 pentoo:pentoo/overlay
+# switch to that profile
+env-update && source /etc/profile 
 
 # Option 3: Manual
-# Create symlinks for necessarily keywords/use files:
+# Create symlinks for necessary keywords/use files:
 ln -s /var/lib/layman/pentoo/profiles/pentoo/base/package.accept_keywords/net-analyzer /etc/portage/package.keywords
 ln -s /var/lib/layman/pentoo/profiles/pentoo/base/package.use/dev-ruby /etc/portage/package.use
 
