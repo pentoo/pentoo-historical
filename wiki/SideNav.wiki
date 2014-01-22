@@ -6,6 +6,7 @@
     * [OverlayUsage Installation from Overlay]
     * [UEFI UEFI Booting]
   * [PentooUpdater Howto Update]
+  * [FAQ FAQ]
   * Join this project
     * [DistroRules Distro Rules]
     * [TODO To-do list]
