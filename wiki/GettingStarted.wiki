@@ -127,60 +127,17 @@ PentooUpdater page.
 
 == Who is behind it ==
 
-The Pentoo dev team consist of a few core developers and a many random acts of kindness from others. Of course, we are all big Gentoo fans
-
-All devs can be reached on <nickname at pentoo.ch>
-
-*Grimmlin*
-
-Pentoo founder and lead developer, dictator for life.
- * package maintainer
- * devoted family man
- * temporarily refocused
-
-*Zero_Chaos*
-
-El Presidente Numero Uno. Current lead of Pentoo, second to the great  Grimmlin
- * kernel/wifi stack maintainer
- * Release coordinator
- * package maintainer
-
-*Anton Bolshakov (blshkv)*
-
-Active researcher and practicing penetation tester
- * Zero's second in command
- * package maintainer
- * upstream pusher
- * all things QA
- * fixes all ZC's stupid mistakes
- * makes things prettier
-
-*Stefan Kuhn (Wuodan)*
-
-Came out of nowhere and proved his worth overnight
- * fixes hardened build errors before breakfast
- * release QA
- * squeeky wheel
- * grease
-
-*Jensp*
-
-Founder of Chaox-ng, now back from the dark side to [G/P]entoo AKA the  one man army
- * package maintainer
- * package code patching
- * architecture porting
- * all things QA
- * eternal student
- * temporarily refocused
+[https://code.google.com/p/pentoo/people/list Project People] page.
 
 ==References==
 
- * Official about website http://www.pentoo.ch/about/
- * Official website http://pentoo.ch/
- * Overlay usage http://code.google.com/p/pentoo/wiki/OverlayUsage
- * Installation video http://www.youtube.com/watch?v=TZA6Z1eZHKE
- * Official blog http://pentoo.blogspot.com/
- * Shmoocon 2010 Firetalks Presentation: Pentoo http://www.youtube.com/watch?v=1xJWPc68AaA
- * BSides Delaware 2013 Presentation: Pentoo http://www.irongeek.com/i.php?page=videos/bsidesde2013/pentoo-zero-chaos
- * Report Bugs https://code.google.com/p/pentoo/issues/list
- * Wikipedia https://en.wikipedia.org/wiki/Pentoo
+ * [http://www.pentoo.ch/about/ Official about website]
+ * [http://pentoo.ch/ Official website]
+ * [http://code.google.com/p/pentoo/wiki/OverlayUsage Overlay usage]
+ * [http://www.youtube.com/watch?v=TZA6Z1eZHKE Installation video]
+ * [http://pentoo.blogspot.com/ Official blog]
+ * [http://www.youtube.com/watch?v=1xJWPc68AaA Shmoocon 2010 Firetalks Presentation: Pentoo]
+ * [http://www.irongeek.com/i.php?page=videos/bsidesde2013/pentoo-zero-chaos BSides Delaware 2013 Presentation: Pentoo]
+ * [https://code.google.com/p/pentoo/issues/list Report Bugs]
+ * [https://en.wikipedia.org/wiki/Pentoo Wikipedia]
+ * [https://twitter.com/pentoo_linux Twitter @pentoo_linux]
