@@ -105,6 +105,8 @@ Date  	        Release
  * 2009/12/04	Pentoo 2009.0
  * 2012/07/30	Pentoo 2012.0
  * 2013/03/09	Pentoo 2013.0 RC1.1
+ * ...
+ * 2014/01/18   Pentoo 2013.0 RC1.99 http://pentoo.blogspot.co.uk/2014/01/shmoocon-10-and-other-things-which.html
 }}}
 
 == Download ==
