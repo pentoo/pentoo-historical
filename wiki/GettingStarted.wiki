@@ -181,3 +181,4 @@ Founder of Chaox-ng, now back from the dark side to [G/P]entoo AKA the  one man 
  * Shmoocon 2010 Firetalks Presentation: Pentoo http://www.youtube.com/watch?v=1xJWPc68AaA
  * BSides Delaware 2013 Presentation: Pentoo http://www.irongeek.com/i.php?page=videos/bsidesde2013/pentoo-zero-chaos
  * Report Bugs https://code.google.com/p/pentoo/issues/list
+ * Wikipedia https://en.wikipedia.org/wiki/Pentoo
