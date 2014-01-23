@@ -1,10 +1,9 @@
 #summary A quick guide to getting started with Pentoo project.
 
-= Getting Started =
+= Pentoo =
 
-*Pentoo is a security-focused livecd based on Gentoo*
+Pentoo is a Live CD and Live USB designed for penetration testing and security assessment. Based on Gentoo Linux, Pentoo is provided both as 32 and 64 bit installable livecd. Pentoo is also available as an overlay for an existing Gentoo installation. It features packet injection patched wifi drivers, GPGPU cracking software, and lots of tools for penetration testing and security assessment. The Pentoo kernel includes grsecurity and PAX hardening and extra patches - with binaries compiled from a hardened toolchain with the latest nightly versions of some tools available.
 
-(...)it's basically a Gentoo, a highly customizable Linux-based operating system and a meta-distribution. Using excellent development techniques, we have created a pre-configured security-focused or so called penetration testing LiveCD distribution that is built automatically from source code and is customized with the functionality that you want to have and without the unnecessary features that you want to avoid, with lots of customized tools, customized kernel, and much more. Pentoo Linux features an overlay and [Pentoo profiles]. "Overlays" are package trees for Portage. They contain additional ebuilds for Gentoo. Portage profiles specify default values for global and per-package USE flags and most variables of the /etc/portage/make.conf and define a set of system packages. Also it masks unstable package versions and USE flags. These techniques allow us to maintain capabilities of building a Linux-based operating system which inheriting all the Pentoo LiveCD goods and is a rolling release distribution which is essentially version-less once installed.
 
 This guide provides information on:
 
@@ -15,22 +14,24 @@ This guide provides information on:
 
 Here is a non-exhaustive list of the features currently included :
 
- * Hardened Kernel with aufs patches
+ * Available in 32-bit and 64-bit versions, the latter having a significant speed increase from 32bit
+ * Includes the required environment to crack passwords using GPGPU with openCL and CUDA configured 'out of the box'
+ * Built on hardened linux, including a hardened kernel (with extra patches) and toolchain
  * Backported Wifi stack from latest stable kernel release
+ * Uses a pentoo overlay, which allows tools to be built on top of a standard gentoo build
  * Module loading support ala slax
  * Changes saving on usb stick
  * XFCE4 wm
- * Cuda/OPENCL cracking support with development tools
+ * Support for full disk encryption with LUKs if installed on HDD
+ * Automated installation
  * System updates if you got it finally installed
 
 
-===Pentoo profiles and overlay===
-Put simply, Pentoo is Gentoo with the pentoo overlay. This overlay is available in layman so all you have to do is 
-{{{
- layman -L and layman -a pentoo.
-}}}
-Among other ebuilds we have a pentoo/pentoo meta ebuild too. A meta ebuild is a ebuild that doesn't install files by itself, but instead it's used to install a group of other ebuilds with one command. It accomplishes this by having all this other ebuilds as dependencies.
+(...)it's basically a highly customizable Linux-based operating system and a meta-distribution. Using excellent development techniques, we have created a pre-configured security-focused or so called penetration testing LiveCD distribution that is built automatically from source code and is customized with the functionality that you want to have and without the unnecessary features that you want to avoid, with lots of customized tools, customized kernel, and much more. 
 
+===Tools===
+
+Tools are installed with versioned ebuilds and open-ended ebuilds, making it possible to pull in the latest subversions and still have installs tracked by package management. The following tool categories are included:
 {{{
 pentoo/pentoo
 pentoo/pentoo-analyzer
@@ -59,6 +60,16 @@ pentoo/pentoo-wireless
 
 }}}
 
+===Pentoo profiles and overlay===
+The Pentoo Linux features an overlay and profiles. "Overlays" are package trees for Portage. They contain additional ebuilds for Gentoo. Portage profiles specify default values for global and per-package USE flags and most variables of the /etc/portage/make.conf and define a set of system packages. Also it masks unstable package versions and USE flags. These techniques allow us to maintain capabilities of building a Linux-based operating system which inheriting all the Pentoo LiveCD goods and is a rolling release distribution which is essentially version-less once installed.
+Put simply, Pentoo is Gentoo with the pentoo overlay. This overlay is available in layman so all you have to do is 
+{{{
+ layman -L and layman -a pentoo.
+}}}
+Among other ebuilds we have a pentoo/pentoo meta ebuild too. A meta ebuild is a ebuild that doesn't install files by itself, but instead it's used to install a group of other ebuilds with one command. It accomplishes this by having all this other ebuilds as dependencies.
+
+
+
 We have multiple pentoo profiles, which will install all the pentoo tools based on USE flags.
 
 {{{
@@ -82,6 +93,19 @@ arm             pentoo/default/linux/arm/armv6j			stable
 arm             pentoo/default/linux/arm/armv6j/bleeding_edge	dev
 }}}
 More info: OverlayUsage page.
+
+==Releases==
+Pentoo uses rolling releases with periodic ISO snapshots of the latest committed updates.
+{{{
+Date  	        Release
+ * 2005/06/22	Pentoo 2005.1
+ * 2006/02/02	Pentoo 2006.0
+ * 2006/07/05	Pentoo 2006.1
+ * 2009/12/04	Pentoo 2009.0
+ * 2012/07/30	Pentoo 2012.0
+ * 2013/03/09	Pentoo 2013.0 RC1.1
+}}}
+
 == Download ==
 
 DownloadPentoo page.
@@ -145,3 +169,5 @@ Founder of Chaox-ng, now back from the dark side to [G/P]entoo AKA the  one man 
  * all things QA
  * eternal student
  * temporarily refocused
+
+==References==
