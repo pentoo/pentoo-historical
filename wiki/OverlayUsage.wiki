@@ -10,8 +10,8 @@ Pentoo Linux can be used as an overlay bringing a full set of tools and settings
 # Update the portage to the latest version
 emerge --sync
 
-# Make sure that layman with the "subversion" flag is installed
-USE="subversion" emerge app-portage/layman
+# Make sure that layman and subversion are installed
+emerge app-portage/layman subversion 
 
 # Update list of overlays
 layman -L
