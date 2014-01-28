@@ -1,7 +1,9 @@
 #summary FAQ page
+
+=Frequently Asked Questions - Pentoo=
 <wiki:toc max_depth="4" />
 
-= Compilation errors =
+== Compilation errors ==
 
 === Unable to compile a kernel module ===
 {{{
