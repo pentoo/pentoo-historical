@@ -1,1 +1,35 @@
 #summary FAQ page
+
+===I'm actually getting that same build error...===
+{{{
+* ERROR: sys-kernel/spl-0.6.2-r3::gentoo failed (configure phase):
+*   econf failed
+* 
+* Call stack:
+*          ebuild.sh, line   93:  Called src_configure
+*        environment, line 4288:  Called autotools-utils_src_configure
+*        environment, line  721:  Called econf '--docdir=/usr/share/doc/spl-0.6.2-r3' '--bindir=/bin' '--sbindir=/sbin' '--with-config=all' '--with-linux=/usr/src/linux' '--with-linux-obj=/lib/modules/3.9.9-pentoo/build' '--disable-debug' '--disable-debug-log'
+*   phase-helpers.sh, line  584:  Called die
+* The specific snippet of code:
+*   			die "econf failed"
+* 
+* If you need support, post the output of `emerge --info '=sys-kernel/spl-0.6.2-r3::gentoo'`,
+* the complete build log and the output of `emerge -pqv '=sys-kernel/spl-0.6.2-r3::gentoo'`.
+* The complete build log is located at '/var/tmp/portage/sys-kernel/spl-0.6.2-r3/temp/build.log'.
+* The ebuild environment file is located at '/var/tmp/portage/sys-kernel/spl-0.6.2-r3/temp/environment'.
+* Working directory: '/var/tmp/portage/sys-kernel/spl-0.6.2-r3/work/spl-spl-0.6.2'
+* S: '/var/tmp/portage/sys-kernel/spl-0.6.2-r3/work/spl-spl-0.6.2'
+}}}
+
+then do the same thing:
+{{{
+    omega ~ # ls -l /usr/src/linux
+    lrwxrwxrwx 1 root root 12 Dec 25 07:50 /usr/src/linux -> /usr/src/linux-3.9.9-pentoo
+    omega ~ # cd /usr/src/linux
+}}}
+assuming /usr/src/linux links to the 3.9.9-pentoo sources,
+{{{
+    omega linux # zcat /proc/config.gz > .config
+    omega linux # make prepare
+    omega linux # make modules_prepare
+}}}
