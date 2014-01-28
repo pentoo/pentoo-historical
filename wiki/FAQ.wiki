@@ -3,9 +3,20 @@
 =Frequently Asked Questions - Pentoo=
 <wiki:toc max_depth="4" />
 
-== Compilation errors ==
+== Installation ==
 
-=== Unable to compile a kernel module ===
+===Pentoo Linux Hard Disk Install===
+More info: [https://code.google.com/p/pentoo/wiki/PentooInstaller Installation to disc] page.
+===Dual Boot Pentoo Linux with Windows===
+===Pentoo Linux Live USB Install===
+===Pentoo Linux Encrypted Disk Install===
+===Pentoo Linux Overlay Install===
+More info: OverlayUsage page.
+==Troubleshooting a Pentoo Installation==
+
+=== Compilation errors ===
+
+==== Unable to compile a kernel module ====
 {{{
 * ERROR: sys-kernel/spl-0.6.2-r3::gentoo failed (configure phase):
 *   econf failed
@@ -39,7 +50,7 @@ assuming /usr/src/linux links to the 3.9.9-pentoo sources,
     omega linux # make modules_prepare
 }}}
 
-=== Unable to resolve blocks ===
+==== Unable to resolve blocks ====
 Uninstall it manually. For example:
 {{{
 emerge -C dev-lang/vala
