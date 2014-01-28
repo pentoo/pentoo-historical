@@ -1,5 +1,8 @@
 #summary FAQ page
 
+=Frequently Asked Questions - Pentoo=
+<wiki:toc max_depth="4" />
+
 ===I'm actually getting that same build error...===
 {{{
 * ERROR: sys-kernel/spl-0.6.2-r3::gentoo failed (configure phase):
