@@ -6,10 +6,13 @@
 == Installation ==
 
 ===Pentoo Linux Hard Disk Install===
-More info: [https://code.google.com/p/pentoo/wiki/PentooInstaller Installation to disc] page.
+This feature is supported by the official Pentoo-installer.
+ * More info: [https://code.google.com/p/pentoo/wiki/PentooInstaller Installation to disc] page.
 ===Dual Boot Pentoo Linux with Windows===
 ===Pentoo Linux Live USB Install===
 ===Pentoo Linux Encrypted Disk Install===
+How to go about it? Grimmlin took care to make our life easier and now this feature is available from the pentoo-installer.
+ * r5245 pentoo-installer: Added LUKS with pgp-encrypted keys support
 ===Pentoo Linux Overlay Install===
 More info: OverlayUsage page.
 ==Troubleshooting a Pentoo Installation==
