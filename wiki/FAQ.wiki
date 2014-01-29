@@ -15,8 +15,42 @@ How to go about it? Grimmlin took care to make our life easier and now this feat
  * r5245 pentoo-installer: Added LUKS with pgp-encrypted keys support
 ===Pentoo Linux Overlay Install===
 More info: OverlayUsage page.
-==Troubleshooting a Pentoo Installation==
 
+== Customization ==
+=== Can I install XXX instead of YYY? ===
+Yes, there are number of packages which can replaced. For example:
+{{{
+emerge -C wicd
+emerge -1 networkmanager
+}}}
+
+{{{
+emerge -C chromium
+emerge -1 google-chrome
+}}}
+
+=== Can I uninstall XXX? Pentoo pulls it by default ===
+There are number of USE flags which can be disabled. For example:
+{{{
+pentoo/pentoo kde -gnome -radio qemu
+pentoo/pentoo-mobile -ios
+pentoo/pentoo-wireless -drivers
+pentoo/pentoo-system -drivers -windows-compat
+pentoo/pentoo-misc -accessibility -atm -qt4 -gtk -X -office
+app-exploits/packetstormexploits -2009 -2010 -2011 -2012
+
+www-servers/lighttpd -mysql -php
+net-analyzer/wireshark -ares -btbb -gcrypt -geoip -kerberos -portaudio -smi libadns
+net-wireless/kismet -plugin-btscan -plugin-spectools
+
+net-misc/networkmanager -modemmanager
+
+}}}
+
+Use eix or examine each ebuild for more details
+
+
+==Troubleshooting a Pentoo Installation==
 === Compilation errors ===
 
 ==== Unable to compile a kernel module ====
