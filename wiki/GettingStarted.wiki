@@ -136,6 +136,7 @@ PentooUpdater page.
  * [http://code.google.com/p/pentoo/wiki/OverlayUsage Overlay usage]
  * [http://www.youtube.com/watch?v=TZA6Z1eZHKE Installation video]
  * [http://pentoo.blogspot.com/ Official blog]
+ * [http://www.securitydistro.com/security-interviews/interview-with-pentoo-writer-michael-zanetta Interview with Pentoo writer Michael Zanetta]
  * [http://www.youtube.com/watch?v=1xJWPc68AaA Shmoocon 2010 Firetalks Presentation: Pentoo]
  * [http://www.irongeek.com/i.php?page=videos/bsidesde2013/pentoo-zero-chaos BSides Delaware 2013 Presentation: Pentoo]
  * [https://code.google.com/p/pentoo/issues/list Report Bugs]
