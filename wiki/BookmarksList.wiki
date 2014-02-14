@@ -223,6 +223,7 @@ with intention to keep it alive and to update.
     * http://www.sans.org/security-resources/sec560/misc_tools_sheet_v1.pdf
     * http://rmccurdy.com/scripts/Metasploit%20meterpreter%20cheat%20sheet%20reference.html
     * http://h.ackack.net/cheat-sheets/netcat
+    * http://www.elevenpaths.com/lab_evil_foca.html
 ----
 = Distros: =
 
@@ -369,6 +370,7 @@ If you'd like to get into exploit dev, these are really the guides and docs that
 ----
 = Tools: =
   == OSINT: ==
+    * https://dnsscan.shadowserver.org
     * http://www.edge-security.com/theHarvester.php
     * http://www.mavetju.org/unix/dnstracer-man.php
     * http://www.paterva.com/web5/
@@ -377,6 +379,8 @@ If you'd like to get into exploit dev, these are really the guides and docs that
       * http://lcamtuf.coredump.cx/strikeout/
       * http://www.sno.phy.queensu.ca/~phil/exiftool/
       * http://www.edge-security.com/metagoofil.php
+      * http://www.elevenpaths.com/lab_foca.html
+      * http://www.informatica64.com/foca/
       * http://www.darkoperator.com/blog/2009/4/24/metadata-enumeration-with-foca.html
 
   == Google Hacking: ==
