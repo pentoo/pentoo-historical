@@ -87,8 +87,10 @@ assuming /usr/src/linux links to the 3.9.9-pentoo sources,
     omega linux # make modules_prepare
 }}}
 
+=== Upgrading ===
 ==== Unable to resolve blocks ====
-Uninstall it manually. For example:
+Uninstall all blocks manually. For example:
 {{{
 emerge -C dev-lang/vala
+emerge -C dev-libs/ecore
 }}}
