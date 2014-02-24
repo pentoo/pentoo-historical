@@ -433,7 +433,7 @@ _mkfs() {
                 DIALOG --msgbox "Error creating swap: mkswap ${_device}" 0 0
                 return 1
             fi
-            
+
         fi
         swapon ${_device} >>$LOG 2>&1
         if [ $? != 0 ]; then
@@ -855,7 +855,7 @@ do_rsync() {
         return 1
     fi
 
-    rsync -av --progress /root/* ${DESTDIR}/root/ 2>&1 \
+    rsync -av --progress --exclude=/root/.bashrc /root/* ${DESTDIR}/root/ 2>&1 \
       | tee $LOG \
       | awk -f /usr/share/pentoo/rsync.awk \
       | sed --unbuffered 's/\([0-9]*\).*/\1/' \
