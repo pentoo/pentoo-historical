@@ -1,4 +1,4 @@
-#a simple Python script that allow to obtain detailed information about a Twitter user activity
+#summary simple Python script that allow to obtain detailed information about a Twitter user activity
 
 = Introduction =
 
