@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#a simple Python script that allow to obtain detailed information about a Twitter user activity
 
 = Introduction =
 
