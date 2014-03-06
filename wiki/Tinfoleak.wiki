@@ -1,5 +1,7 @@
 #summary simple Python script that allow to obtain detailed information about a Twitter user activity
 
+*Tip:* Tinfoleak is one of the proposed applications but not yet added officially to the list of livecd applications, information to help during testing
+
 = Introduction =
 
 Tinfoleak is a simple Python script that allow to obtain detailed information about a Twitter user activity
