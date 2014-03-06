@@ -11,6 +11,6 @@
     * [DistroRules Distro Rules]
     * [TODO To-do list]
   * Workshop and Tutorials
-    * [BookmarksList Bookmarks]
     * Tools
+      * [BookmarksList Bookmarks]
       * [Tinfoleak Tinfoleak]
