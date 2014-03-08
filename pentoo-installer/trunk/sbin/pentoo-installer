@@ -1122,7 +1122,7 @@ dobootloader() {
                 eval $(echo $_var) ;;
         esac
     done
-    bootparams+=" video=${video} console=tty1 ro"
+    bootparams+=" video=${video} console=tty0 usbcore.autosuspend=1 net.ifnames=0 ro"
     case "${bootmode}" in
         uefigrub)
             douefigrub "${kernelpath}" "${initrdpath}" "${bootparams}" \
