@@ -1180,7 +1180,7 @@ dogrub() {
 		    done
 	        # get kernel version
 	        local _kernver=$(getkernelversion)
-            if [ ${S_FDE}=1 ]; then
+            if [ ${S_FDE} = 1 ]; then
                 cat >>$grubmenu <<EOF
 
 # (0) Pentoo
