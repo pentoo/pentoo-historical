@@ -114,6 +114,7 @@ chroot_mount()
 #
 chroot_umount()
 {
+    sleep 1
     umount $DESTDIR/proc
     umount $DESTDIR/sys
     umount $DESTDIR/dev
@@ -296,6 +297,7 @@ printk()
 # sets EDITOR global variable
 #
 seteditor() {
+    chroot_mount
     DIALOG --menu "Select a Text Editor to Use" 10 35 3 \
         "1" "nano (easier)" \
         "2" "vi" \
@@ -328,6 +330,7 @@ EOF
              ;;
         *)   EDITOR="nano" ;;
     esac
+    chroot_umount
 }
 
 # setpartitionlabel()
@@ -829,19 +832,70 @@ mountpoints() {
     S_MKFS=1
 }
 
+# run_unsquashfs()
+# runs unsquashfs on the target system, displays output
+# $1 : source
+# $2 : dest
+# $3 : msg
+# taken from manjaro
+run_unsquashfs()
+{
+    # all unsquashfs output goes to /tmp/unsquashfs.log, which we tail
+    # into a dialog
+    ( \
+        touch /tmp/setup-unsquashfs-running
+        echo "unsquashing $(basename $1)..." > /tmp/unsquashfs.log; \
+        echo >> /tmp/unsquashfs.log; \
+        unsquashfs -f -d $2 $1 >>/tmp/unsquashfs.log 2>&1
+        echo $? > /tmp/.unsquashfs-retcode
+        echo >> /tmp/unsquashfs.log
+        rm -f /tmp/setup-unsquashfs-running
+    ) &
+
+( \
+c="0"
+while [ $c -ne 100 ]
+    do
+        sleep 1
+        value=`cat /tmp/unsquashfs.log | grep -Eo " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -1`
+        sleep 1
+        c=$value
+        echo $c
+        echo "###"
+        echo "$c %"
+        echo "###"
+done
+) |
+DIALOG --gauge "${3}" 6 75 0
+
+    # alert the user to fatal errors
+    if [ $(cat /tmp/.unsquashfs-retcode) -ne 0 ]; then
+        killall unsquashfs
+        DIALOG --title "Error unsquashing" --exit-label \
+        "OK" --textbox "/tmp/unsquashfs.log" 18 70
+        return 1
+    fi
+
+    # save unsquashfs.log
+    mv "/tmp/unsquashfs.log" "/tmp/unsquashfs-$(basename $1).log"
+}
+
+
 # do_rsync()
 # does the rsync
 #
 # params: none
 # returns: 1 on error
 do_rsync() {
-    rsync -av --progress /mnt/livecd/* ${DESTDIR} 2>&1 \
-      | tee $LOG \
-      | awk -f /usr/share/pentoo/rsync.awk \
-      | sed --unbuffered 's/\([0-9]*\).*/\1/' \
-      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying root... (this will take 30 min or longer, so grab a coffee)" 6 75
+    run_unsquashfs /mnt/cdrom/image.squashfs ${DESTDIR} "Uncompressing base system"
     if [ $? -ne 0 ]; then
-        DIALOG --msgbox "Failed to rsync /*. See the log output for more information"
+        DIALOG --msgbox "Failed to install base system"
+        return 1
+    fi
+
+    run_unsquashfs /mnt/cdrom/modules/portage-*.lzm ${DESTDIR} "Uncompressing portage repository"
+    if [ $? -ne 0 ]; then
+        DIALOG --msgbox "Failed to install portage"
         return 1
     fi
 
@@ -849,7 +903,7 @@ do_rsync() {
       | tee $LOG \
       | awk -f /usr/share/pentoo/rsync.awk \
       | sed --unbuffered 's/\([0-9]*\).*/\1/' \
-      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying etc..." 6 75
+      | dialog --title "Copying /etc/ folders." --gauge "Copying etc..." 6 75
     if [ $? -ne 0 ]; then
         DIALOG --msgbox "Failed to rsync /etc. See the log output for more information"
         return 1
@@ -859,19 +913,9 @@ do_rsync() {
       | tee $LOG \
       | awk -f /usr/share/pentoo/rsync.awk \
       | sed --unbuffered 's/\([0-9]*\).*/\1/' \
-      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying home..." 6 75
+      | dialog --title "Copying /root/ folders." --gauge "Copying home..." 6 75
     if [ $? -ne 0 ]; then
         DIALOG --msgbox "Failed to rsync the /root. See the log output for more information"
-        return 1
-    fi
-
-    rsync -av --progress /usr/portage ${DESTDIR}/usr/ \
-      | tee $LOG \
-      | awk -f /usr/share/pentoo/rsync.awk \
-      | sed --unbuffered 's/\([0-9]*\).*/\1/' \
-      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying portage..." 6 75
-    if [ $? -ne 0 ]; then
-        DIALOG --msgbox "Failed to rsync /usr/portage. See the log output for more information"
         return 1
     fi
 
@@ -879,13 +923,15 @@ do_rsync() {
       | tee $LOG \
       | awk -f /usr/share/pentoo/rsync.awk \
       | sed --unbuffered 's/\([0-9]*\).*/\1/' \
-      | dialog --title "Targets: root, etc, home, portage and overlay folders." --gauge "Copying overlay..." 6 75
+      | dialog --title "Copying overlay folders." --gauge "Copying overlay..." 6 75
     if [ $? -ne 0 ]; then
         DIALOG --msgbox "Failed to rsync the /var/lib/layman/pentoo. See the log output for more information"
         return 1
     fi
     sed -i '/aufs bindist livecd/d' ${DESTDIR}/etc/portage/make.conf
-    ROOT=${DISTDIR} emerge -C app-misc/livecd-tools pentoo/pentoo-livecd 2>&1 >>$LOG
+    chroot_mount
+    chroot ${DESTDIR} "emerge -C app-misc/livecd-tools pentoo/pentoo-livecd"
+    chroot_umount
     mknod -m666 ${DESTDIR}/dev/zero c 1 5
     mknod -m666 ${DESTDIR}/dev/null c 1 3
     mknod -m600 ${DESTDIR}/dev/console c 5 1
@@ -898,6 +944,7 @@ do_rsync() {
 # allows to choose a new profile in the DESTDIR env
 # parameters: none
 set_profile() {
+    chroot_mount
     options=()
     CUR_PROF_TYPE=""
     CUR_PROF_NUM=""
@@ -939,6 +986,7 @@ set_profile() {
     NEW_PROF_NUM=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
     chroot ${DESTDIR} eselect profile set $NEW_PROF_NUM
+    chroot_umount
 }
 
 # auto_fstab()
@@ -964,6 +1012,7 @@ auto_fstab()
 #
 auto_dmcrypt()
 {
+    chroot_mount
     if [ -f /tmp/.dmcrypt ]; then
         cat /tmp/.dmcrypt >> $DESTDIR/etc/conf.d/dmcrypt
         mkdir -p ${DESTDIR}/etc/keys
@@ -979,6 +1028,7 @@ EOF
     if [ ${S_FDE} = 1 ]; then
         cp /tmp/root.asc ${DESTDIR}/boot/key.gpg
     fi
+    chroot_umount
 }
 
 # douefigrub()
@@ -1367,7 +1417,6 @@ mv /etc/inittab.old /etc/inittab
 mv /etc/init.d/halt.sh.orig /etc/init.d/halt.sh
 EOF
     # don't need chroot anymore
-    chroot_umount
 
     # ensure the disk is synced
     sync
@@ -1438,7 +1487,7 @@ EOF
     # /etc/locale.gen
     #
     chroot ${DESTDIR} locale-gen >$LOG
-
+    chroot_umount
     # /etc/localtime
     cp /etc/localtime ${DESDIR}/etc/localtime >$LOG
 
