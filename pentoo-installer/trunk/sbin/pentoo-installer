@@ -887,6 +887,11 @@ DIALOG --gauge "${3}" 6 75 0
 # params: none
 # returns: 1 on error
 do_rsync() {
+    mountpoint -q "${DESTDIR}"
+    if [ $? -ne 0 ]; then
+        DIALOG --msgbox "${DESTDIR} is not mounted, please re-run step 1" 0 0
+        return 1
+    fi
     run_unsquashfs /mnt/cdrom/image.squashfs ${DESTDIR} "Uncompressing base system"
     if [ $? -ne 0 ]; then
         DIALOG --msgbox "Failed to install base system"
