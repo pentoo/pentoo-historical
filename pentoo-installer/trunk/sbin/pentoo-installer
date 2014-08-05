@@ -543,6 +543,8 @@ autoprepare()
     CHOSEN_FS=""
     # disk size in MiB
     DISC_SIZE=$(($(_getdisccapacity $DISC) / 2**20))
+    isnumber='^[0-9]+$'
+
     while [ "$SET_DEFAULTFS" = "" ]; do
         FSOPTS="ext2 ext2 ext3 ext3 ext3-luks ext3-luks ext4 ext4 ext4-luks ext4-luks"
         [ "$(which mkreiserfs 2>/dev/null)" ] && FSOPTS="$FSOPTS reiserfs Reiser3 reiserfs-luks Reiser3-luks"
@@ -551,7 +553,7 @@ autoprepare()
         while [ "$BOOT_PART_SET" = "" ]; do
             DIALOG --inputbox "Enter the size (MiB) of your /boot partition.  Minimum value is 16.\n\nDisk space left: $DISC_SIZE MiB" 10 65 "64" 2>$ANSWER || return 1
             BOOT_PART_SIZE="$(cat $ANSWER)"
-            if [ "$BOOT_PART_SIZE" = "" ]; then
+            if ! [[ ${BOOT_PART_SIZE} =~ ${isnumber} ]]; then
                 DIALOG --msgbox "ERROR: You have entered an invalid size, please enter again." 0 0
             else
                 if [ "$BOOT_PART_SIZE" -ge "$DISC_SIZE" -o "$BOOT_PART_SIZE" -lt "16" -o "$SBOOT_PART_SIZE" = "$DISC_SIZE" ]; then
@@ -568,7 +570,7 @@ autoprepare()
 
             DIALOG --inputbox "Enter the size (MiB) of your swap partition.  Minimum value is > 0.\n\nDisk space left: $DISC_SIZE MiB" 10 65 "${SUGGESTED_SWAP_SIZE}" 2>$ANSWER || return 1
             SWAP_PART_SIZE=$(cat $ANSWER)
-            if [ "$SWAP_PART_SIZE" = "" -o  "$SWAP_PART_SIZE" -le "0" ]; then
+            if ! [[ ${SWAP_PART_SIZE} =~ ${isnumber} ]] ; then
                 DIALOG --msgbox "ERROR: You have entered an invalid size, please enter again." 0 0
             else
                 if [ "$SWAP_PART_SIZE" -ge "$DISC_SIZE" ]; then
