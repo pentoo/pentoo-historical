@@ -460,9 +460,9 @@ _mkfs() {
                 xfs)      mkfs.xfs -f ${_device} >>$LOG 2>&1; ret=$? ;;
                 jfs)      yes | mkfs.jfs ${_device} >>$LOG 2>&1; ret=$? ;;
                 reiserfs) yes | mkreiserfs ${_device} >>$LOG 2>&1; ret=$? ;;
-                ext2)     mke2fs "${_device}" >>$LOG 2>&1; ret=$? ;;
-                ext3)     mke2fs -j ${_device} >>$LOG 2>&1; ret=$? ;;
-                ext4)     mke2fs -t ext4 ${_device} >$LOG 2>&1; ret=$? ;;
+                ext2)     mke2fs "${_device}" -F >>$LOG 2>&1; ret=$? ;;
+                ext3)     mke2fs -j ${_device} -F >>$LOG 2>&1; ret=$? ;;
+                ext4)     mke2fs -t ext4 ${_device} -F >>$LOG 2>&1; ret=$? ;;
                 vfat)     mkfs.vfat ${_device} >>$LOG 2>&1; ret=$? ;;
                 # don't handle anything else here, we will error later
             esac
