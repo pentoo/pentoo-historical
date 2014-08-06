@@ -929,15 +929,6 @@ do_rsync() {
         return 1
     fi
 
-    rsync -av --progress /var/lib/layman/pentoo ${DESTDIR}/var/lib/layman/ \
-      | tee $LOG \
-      | awk -f /usr/share/pentoo/rsync.awk \
-      | sed --unbuffered 's/\([0-9]*\).*/\1/' \
-      | dialog --title "Copying overlay folders." --gauge "Copying overlay..." 6 75
-    if [ $? -ne 0 ]; then
-        DIALOG --msgbox "Failed to rsync the /var/lib/layman/pentoo. See the log output for more information"
-        return 1
-    fi
     sed -i '/aufs bindist livecd/d' ${DESTDIR}/etc/portage/make.conf
     chroot_mount
     chroot ${DESTDIR} "emerge -C app-misc/livecd-tools pentoo/pentoo-livecd"
