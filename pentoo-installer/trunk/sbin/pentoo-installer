@@ -900,11 +900,14 @@ do_rsync() {
         return 1
     fi
 
-    run_unsquashfs /mnt/cdrom/modules/portage-*.lzm ${DESTDIR} "Uncompressing portage repository"
-    if [ $? -ne 0 ]; then
-        DIALOG --msgbox "Failed to install portage"
-        return 1
-    fi
+    for module in $(ls /mnt/cdrom/modules/*.lzm)
+    do
+        run_unsquashfs "/mnt/cdrom/modules/${module}" "${DESTDIR}" "Uncompressing ${module%.lzm}"
+        if [ $? -ne 0 ]; then
+            DIALOG --msgbox "Failed to install portage"
+            return 1
+        fi
+    done
 
     rsync -av --progress /etc/* ${DESTDIR}/etc/ 2>&1 \
       | tee $LOG \
