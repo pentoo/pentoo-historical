@@ -902,7 +902,7 @@ do_rsync() {
 
     for module in $(ls /mnt/cdrom/modules/*.lzm)
     do
-        run_unsquashfs "/mnt/cdrom/modules/${module}" "${DESTDIR}" "Uncompressing ${module%.lzm}"
+        run_unsquashfs "${module}" "${DESTDIR}" "Uncompressing ${module%.lzm}"
         if [ $? -ne 0 ]; then
             DIALOG --msgbox "Failed to install portage"
             return 1
@@ -931,7 +931,7 @@ do_rsync() {
 
     sed -i '/aufs bindist livecd/d' ${DESTDIR}/etc/portage/make.conf
     chroot_mount
-    chroot ${DESTDIR} "emerge -C app-misc/livecd-tools pentoo/pentoo-livecd"
+    chroot ${DESTDIR} emerge -C app-misc/livecd-tools pentoo/pentoo-livecd
     chroot_umount
     mknod -m666 ${DESTDIR}/dev/zero c 1 5
     mknod -m666 ${DESTDIR}/dev/null c 1 3
