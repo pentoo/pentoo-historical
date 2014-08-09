@@ -27,6 +27,7 @@ Discussion and support available on irc.freenode.net in *#pentoo*
 
 
 [http://mirror.switch.ch/ https://www.switch.ch/export/system/modules/ch.SWITCH.ocms.www/resources/images/logo.png]
-
+ * Switch provides one mirror in Switzerland for Europe.
 
 [http://inerail.net/ http://inerail.net/images/inerail_logo_black_small.png]
+ * Inerail provides one server on the east coast AND the west coast of the US for North America.
