@@ -12,6 +12,7 @@ DESTDIR="/mnt/gentoo"
 SHAREDIR="/usr/share/pentoo"
 EDITOR=
 PARTITIONEDITOR=
+isnumber='^[0-9]+$'
 
 # clock
 HARDWARECLOCK=
@@ -543,7 +544,6 @@ autoprepare()
     CHOSEN_FS=""
     # disk size in MiB
     DISC_SIZE=$(($(_getdisccapacity $DISC) / 2**20))
-    isnumber='^[0-9]+$'
 
     while [ "$SET_DEFAULTFS" = "" ]; do
         FSOPTS="ext2 ext2 ext3 ext3 ext3-luks ext3-luks ext4 ext4 ext4-luks ext4-luks"
@@ -858,17 +858,24 @@ run_unsquashfs()
     ) &
 
 ( \
-c="0"
-while [ $c -ne 100 ]
+c=0
+while [ ${c} -ne 100 ]
     do
-        sleep 1
-        value=`cat /tmp/unsquashfs.log | grep -Eo " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -1`
-        sleep 1
-        c=$value
-        echo $c
-        echo "###"
-        echo "$c %"
-        echo "###"
+        sleep 0.5
+        value=$(cat /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
+        sleep 0.5
+        if [[ ${value} =~ ${isnumber} ]]; then
+            c=$value
+            echo $c
+            echo "###"
+            echo "$c %"
+            echo "###"
+        else
+            killall unsquashfs
+            DIALOG --title "Error unsquashing" --exit-label \
+            "OK" --textbox "/tmp/unsquashfs.log" 18 70
+            echo "Bad value: ${value}" >> /tmp/unsquashfs.log
+        fi
 done
 ) |
 DIALOG --gauge "${3}" 6 75 0
@@ -882,7 +889,6 @@ DIALOG --gauge "${3}" 6 75 0
         return 1
     fi
     #make sure the retcode is a number
-    isnumber='^[0-9]+$'
     if [[ $(cat /tmp/.unsquashfs-redcode) =~ ${isnumber} ]]; then
         killall unsquashfs
         DIALOG --title "Error unsquashing" --exit-label \
