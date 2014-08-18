@@ -858,6 +858,9 @@ run_unsquashfs()
     ) &
 
 ( \
+#This code is bad, just plain bad.  If we get more people complaining about errors
+#the correct solution will be to ignore failures and just keep checking for /tmp/setup-unsquashfs-running
+#then say we are done when it's gone
 c=0
 failcount=0
 while [ ${c} -ne 100 ]
