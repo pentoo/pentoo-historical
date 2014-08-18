@@ -862,7 +862,7 @@ run_unsquashfs()
 #the correct solution will be to ignore failures and just keep checking for /tmp/setup-unsquashfs-running
 #then say we are done when it's gone
 c=0
-failcount=0
+#failcount=0
 while [ ${c} -ne 100 ]
     do
         sleep 1
@@ -876,13 +876,21 @@ while [ ${c} -ne 100 ]
             echo "${c} %"
             echo "###"
         else
-            if [ ${failcount} -lt 29 ]; then
-                let failcount=${failcount}+1
+            #if [ ${failcount} -lt 29 ]; then
+            #    let failcount=${failcount}+1
+            #else
+            #    killall unsquashfs
+            #    DIALOG --title "Error unsquashing" --exit-label \
+            #    "OK" --textbox "/tmp/unsquashfs.log" 18 70
+            #    echo "Bad value: \"${value}\"" >> /tmp/unsquashfs.log
+            #    break
+            #fi
+            if [ -e /tmp/setup-unsquashfs-running ]; then
+                echo "###"
+                echo "Frozen at ${c} %"
+                echo "###"
             else
-                killall unsquashfs
-                DIALOG --title "Error unsquashing" --exit-label \
-                "OK" --textbox "/tmp/unsquashfs.log" 18 70
-                echo 'Bad value: \"${value}\"' >> /tmp/unsquashfs.log
+                c=100
                 break
             fi
         fi
