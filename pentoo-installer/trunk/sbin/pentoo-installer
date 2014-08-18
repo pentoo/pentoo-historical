@@ -859,22 +859,29 @@ run_unsquashfs()
 
 ( \
 c=0
+failcount=0
 while [ ${c} -ne 100 ]
     do
         sleep 0.5
-        value=$(cat /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
+        #value=$(cat /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
+        value=$(tail -n1 /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g")
         sleep 0.5
         if [[ ${value} =~ ${isnumber} ]]; then
-            c=$value
-            echo $c
+            c=${value}
+            echo ${c}
             echo "###"
-            echo "$c %"
+            echo "${c} %"
             echo "###"
         else
-            killall unsquashfs
-            DIALOG --title "Error unsquashing" --exit-label \
-            "OK" --textbox "/tmp/unsquashfs.log" 18 70
-            echo "Bad value: ${value}" >> /tmp/unsquashfs.log
+            if [ ${failcount} -lt 9 ]; then
+                failcount++
+            else
+                killall unsquashfs
+                DIALOG --title "Error unsquashing" --exit-label \
+                "OK" --textbox "/tmp/unsquashfs.log" 18 70
+                echo "Bad value: ${value}" >> /tmp/unsquashfs.log
+                break
+            fi
         fi
 done
 ) |
