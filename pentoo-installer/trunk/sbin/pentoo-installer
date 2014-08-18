@@ -863,12 +863,14 @@ run_unsquashfs()
 #then say we are done when it's gone
 c=0
 #failcount=0
-while [ ${c} -ne 100 ]
+#hoping the progress indicator hits 100% is racey, we could accidently read from earlier in the file,
+#or just have stderr cover the progress indicator
+#while [ ${c} -ne 100 ]
+while [ -e /tmp/setup-unsquashfs-running ]
     do
-        sleep 0.5
+        sleep 1
         #value=$(cat /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
-        value=$(tail -n15 /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
-        sleep 0.5
+        value=$(tail -n10 /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
         if [[ ${value} =~ ${isnumber} ]]; then
             c=${value}
             echo ${c}
@@ -885,13 +887,13 @@ while [ ${c} -ne 100 ]
             #    echo "Bad value: \"${value}\"" >> /tmp/unsquashfs.log
             #    break
             #fi
-            if [ -e /tmp/setup-unsquashfs-running ]; then
-                echo "###"
-                echo "Progress Indicator Frozen at ${c} % (but no errors seen)"
-                echo "###"
-            else
-                c=100
-            fi
+            #if [ -e /tmp/setup-unsquashfs-running ]; then
+            echo "###"
+            echo "Progress Indicator Frozen at ${c} % (but no errors seen)"
+            echo "###"
+            #else
+            #    c=100
+            #fi
         fi
 done
 ) |
@@ -899,7 +901,7 @@ DIALOG --gauge "${3}" 6 75 0
 
     while [ -e /tmp/setup-unsquashfs-running ];
     do
-        echo "Won the race, night night"
+        echo "Won the race, night night (This should have been impossible)"
         sleep 1
     done
     if ! [ -f /tmp/.unsquashfs-retcode ]; then
