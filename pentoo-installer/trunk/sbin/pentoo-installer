@@ -931,7 +931,7 @@ do_rsync() {
     fi
     run_unsquashfs /mnt/cdrom/image.squashfs ${DESTDIR} "Uncompressing base system"
     if [ $? -ne 0 ]; then
-        DIALOG --msgbox "Failed to install base system"
+        DIALOG --msgbox "Failed to install base system" 0 0
         return 1
     fi
 
@@ -939,7 +939,7 @@ do_rsync() {
     do
         run_unsquashfs "${module}" "${DESTDIR}" "Uncompressing ${module%.lzm}"
         if [ $? -ne 0 ]; then
-            DIALOG --msgbox "Failed to install portage"
+            DIALOG --msgbox "Failed to install portage" 0 0
             return 1
         fi
     done
@@ -950,7 +950,7 @@ do_rsync() {
       | sed --unbuffered 's/\([0-9]*\).*/\1/' \
       | dialog --title "Copying /etc/ folders." --gauge "Copying etc..." 6 75
     if [ $? -ne 0 ]; then
-        DIALOG --msgbox "Failed to rsync /etc. See the log output for more information"
+        DIALOG --msgbox "Failed to rsync /etc. See the log output for more information" 0 0
         return 1
     fi
 
@@ -960,7 +960,7 @@ do_rsync() {
       | sed --unbuffered 's/\([0-9]*\).*/\1/' \
       | dialog --title "Copying /root/ folders." --gauge "Copying home..." 6 75
     if [ $? -ne 0 ]; then
-        DIALOG --msgbox "Failed to rsync the /root. See the log output for more information"
+        DIALOG --msgbox "Failed to rsync the /root. See the log output for more information" 0 0
         return 1
     fi
 
