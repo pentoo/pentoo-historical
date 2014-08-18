@@ -865,10 +865,10 @@ c=0
 #failcount=0
 while [ ${c} -ne 100 ]
     do
-        sleep 1
+        sleep 0.5
         #value=$(cat /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
-        value=$(tail -n5 /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
-        sleep 1
+        value=$(tail -n15 /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
+        sleep 0.5
         if [[ ${value} =~ ${isnumber} ]]; then
             c=${value}
             echo ${c}
@@ -887,11 +887,10 @@ while [ ${c} -ne 100 ]
             #fi
             if [ -e /tmp/setup-unsquashfs-running ]; then
                 echo "###"
-                echo "Frozen at ${c} %"
+                echo "Progress Indicator Frozen at ${c} % (but no errors seen)"
                 echo "###"
             else
                 c=100
-                break
             fi
         fi
 done
@@ -902,21 +901,21 @@ DIALOG --gauge "${3}" 6 75 0
     #make sure we have a retcode
     if [ -n "$(cat /tmp/.unsquashfs-retcode)" ]; then
         killall unsquashfs
-        DIALOG --title "Error unsquashing" --exit-label \
+        DIALOG --title "Error unsquashing, no return code" --exit-label \
         "OK" --textbox "/tmp/unsquashfs.log" 18 70
         return 1
     fi
     #make sure the retcode is a number
-    if [[ $(cat /tmp/.unsquashfs-redcode) =~ ${isnumber} ]]; then
+    if ! [[ $(cat /tmp/.unsquashfs-redcode) =~ ${isnumber} ]]; then
         killall unsquashfs
-        DIALOG --title "Error unsquashing" --exit-label \
+        DIALOG --title "Error unsquashing, code \"$(cat /tmp/.unsquashfs-retcode)\"" --exit-label \
         "OK" --textbox "/tmp/unsquashfs.log" 18 70
         return 1
     fi
     #make sure the retcode is 0
     if [ $(cat /tmp/.unsquashfs-retcode) -ne 0 ]; then
         killall unsquashfs
-        DIALOG --title "Error unsquashing" --exit-label \
+        DIALOG --title "Error unsquashing, code \"$(cat /tmp/.unsquashfs-retcode)\"" --exit-label \
         "OK" --textbox "/tmp/unsquashfs.log" 18 70
         return 1
     fi
