@@ -846,6 +846,9 @@ run_unsquashfs()
     # into a dialog
     ( \
         touch /tmp/setup-unsquashfs-running
+	#set the return code to failure so if things do not work we catch the failure
+	#sometimes it's bombing without a return code at all :-(
+	echo 1 > /tmp/.unsquashfs-retcode
         echo "unsquashing $(basename $1)..." > /tmp/unsquashfs.log; \
         echo >> /tmp/unsquashfs.log; \
         unsquashfs -f -d $2 $1 >>/tmp/unsquashfs.log 2>&1
@@ -871,6 +874,22 @@ done
 DIALOG --gauge "${3}" 6 75 0
 
     # alert the user to fatal errors
+    #make sure we have a retcode
+    if [ -n "$(cat /tmp/.unsquashfs-retcode)" ]; then
+        killall unsquashfs
+        DIALOG --title "Error unsquashing" --exit-label \
+        "OK" --textbox "/tmp/unsquashfs.log" 18 70
+        return 1
+    fi
+    #make sure the retcode is a number
+    isnumber='^[0-9]+$'
+    if [[ $(cat /tmp/.unsquashfs-redcode) =~ ${isnumber} ]]; then
+        killall unsquashfs
+        DIALOG --title "Error unsquashing" --exit-label \
+        "OK" --textbox "/tmp/unsquashfs.log" 18 70
+        return 1
+    fi
+    #make sure the retcode is 0
     if [ $(cat /tmp/.unsquashfs-retcode) -ne 0 ]; then
         killall unsquashfs
         DIALOG --title "Error unsquashing" --exit-label \
