@@ -897,6 +897,11 @@ done
 ) |
 DIALOG --gauge "${3}" 6 75 0
 
+    while [ -e /tmp/setup-unsquashfs-running ];
+    do
+        echo "Won the race, night night"
+        sleep 1
+    done
     # alert the user to fatal errors
     #make sure we have a retcode
     if [ -n "$(cat /tmp/.unsquashfs-retcode)" ]; then
