@@ -844,10 +844,10 @@ run_unsquashfs()
 {
     # all unsquashfs output goes to /tmp/unsquashfs.log, which we tail
     # into a dialog
+    #set the return code to failure so if things do not work we catch the failure
+    #sometimes it's bombing without a return code at all :-(
     ( \
         touch /tmp/setup-unsquashfs-running
-	#set the return code to failure so if things do not work we catch the failure
-	#sometimes it's bombing without a return code at all :-(
 	echo 1 > /tmp/.unsquashfs-retcode
         echo "unsquashing $(basename $1)..." > /tmp/unsquashfs.log; \
         echo >> /tmp/unsquashfs.log; \
@@ -862,10 +862,10 @@ c=0
 failcount=0
 while [ ${c} -ne 100 ]
     do
-        sleep 0.5
+        sleep 1
         #value=$(cat /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
-        value=$(tail -n1 /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g")
-        sleep 0.5
+        value=$(tail -n5 /tmp/unsquashfs.log | grep -Eo --color=never " [0-9]*%" | sed -e "s|[^0-9]||g" | tail -n1)
+        sleep 1
         if [[ ${value} =~ ${isnumber} ]]; then
             c=${value}
             echo ${c}
@@ -873,13 +873,13 @@ while [ ${c} -ne 100 ]
             echo "${c} %"
             echo "###"
         else
-            if [ ${failcount} -lt 9 ]; then
+            if [ ${failcount} -lt 29 ]; then
                 let failcount=${failcount}+1
             else
                 killall unsquashfs
                 DIALOG --title "Error unsquashing" --exit-label \
                 "OK" --textbox "/tmp/unsquashfs.log" 18 70
-                echo "Bad value: ${value}" >> /tmp/unsquashfs.log
+                echo 'Bad value: \"${value}\"' >> /tmp/unsquashfs.log
                 break
             fi
         fi
