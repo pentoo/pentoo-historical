@@ -874,7 +874,7 @@ while [ ${c} -ne 100 ]
             echo "###"
         else
             if [ ${failcount} -lt 9 ]; then
-                failcount++
+                let failcount=${failcount}+1
             else
                 killall unsquashfs
                 DIALOG --title "Error unsquashing" --exit-label \
