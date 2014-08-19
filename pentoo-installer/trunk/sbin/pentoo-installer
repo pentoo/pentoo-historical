@@ -1268,7 +1268,7 @@ dogrub() {
 # (0) Pentoo
 title  Pentoo
 root   $grubdev
-kernel $subdir/kernel-genkernel${_kernver} root=/dev/ram0 real_root=/dev/mapper/root dogpg crypt_root=${_rootpart} root_key=/key.gpg root_keydev=${bootdev} ${_cmdline} video=${video} console=tty1 ro
+kernel $subdir/kernel-genkernel${_kernver} root=/dev/ram0 real_root=/dev/mapper/root dogpg crypt_root=${_rootpart} root_key=/key.gpg root_keydev=${bootdev} ${_cmdline} video=${video} console=tty1 net.ifnames=0 ro
 initrd $subdir/initramfs-genkernel${_kernver}
 
 # (2) Windows
@@ -1283,7 +1283,7 @@ EOF
 # (0) Pentoo
 title  Pentoo
 root   $grubdev
-kernel $subdir/kernel-genkernel${_kernver} root=/dev/ram0 real_root=${_rootpart} ${_cmdline} video=${video} console=tty1 ro
+kernel $subdir/kernel-genkernel${_kernver} root=/dev/ram0 real_root=${_rootpart} ${_cmdline} video=${video} console=tty1 net.ifnames=0 ro
 initrd $subdir/initramfs-genkernel${_kernver}
 
 # (2) Windows
