@@ -846,9 +846,9 @@ run_unsquashfs()
     # into a dialog
     #set the return code to failure so if things do not work we catch the failure
     #sometimes it's bombing without a return code at all :-(
+    touch /tmp/setup-unsquashfs-running
+    echo 1 > /tmp/.unsquashfs-retcode
     ( \
-        touch /tmp/setup-unsquashfs-running
-	echo 1 > /tmp/.unsquashfs-retcode
         echo "unsquashing $(basename $1)..." > /tmp/unsquashfs.log; \
         echo >> /tmp/unsquashfs.log; \
         unsquashfs -f -d $2 $1 >>/tmp/unsquashfs.log 2>&1
