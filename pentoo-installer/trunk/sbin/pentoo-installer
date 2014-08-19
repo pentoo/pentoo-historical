@@ -905,18 +905,18 @@ DIALOG --gauge "${3}" 6 75 0
         sleep 1
     done
     if ! [ -f /tmp/.unsquashfs-retcode ]; then
-        echo "This shouldn't be possible, /tmp/.unsquashfs-redcode is missing"
+        echo "This shouldn't be possible, /tmp/.unsquashfs-retcode is missing"
     fi
     # alert the user to fatal errors
     #make sure we have a retcode
-    if [ -n "$(cat /tmp/.unsquashfs-retcode)" ]; then
+    if [ -z "$(cat /tmp/.unsquashfs-retcode)" ]; then
         killall unsquashfs
         DIALOG --title "Error unsquashing, no return code" --exit-label \
         "OK" --textbox "/tmp/unsquashfs.log" 18 70
         return 1
     fi
     #make sure the retcode is a number
-    if ! [[ $(cat /tmp/.unsquashfs-redcode) =~ ${isnumber} ]]; then
+    if ! [[ $(cat /tmp/.unsquashfs-retcode) =~ ${isnumber} ]]; then
         killall unsquashfs
         DIALOG --title "Error unsquashing, code \"$(cat /tmp/.unsquashfs-retcode)\"" --exit-label \
         "OK" --textbox "/tmp/unsquashfs.log" 18 70
