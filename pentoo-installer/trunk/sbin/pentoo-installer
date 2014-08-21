@@ -551,12 +551,12 @@ autoprepare()
         [ "$(which mkfs.xfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS xfs XFS"
         [ "$(which mkfs.jfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS jfs JFS"
         while [ "$BOOT_PART_SET" = "" ]; do
-            DIALOG --inputbox "Enter the size (MiB) of your /boot partition.  Minimum value is 16.\n\nDisk space left: $DISC_SIZE MiB" 10 65 "64" 2>$ANSWER || return 1
+            DIALOG --inputbox "Enter the size (MiB) of your /boot partition.  Minimum value is 32.\n\nDisk space left: $DISC_SIZE MiB" 10 65 "128" 2>$ANSWER || return 1
             BOOT_PART_SIZE="$(cat $ANSWER)"
             if ! [[ ${BOOT_PART_SIZE} =~ ${isnumber} ]]; then
                 DIALOG --msgbox "ERROR: You have entered an invalid size, please enter again." 0 0
             else
-                if [ "$BOOT_PART_SIZE" -ge "$DISC_SIZE" -o "$BOOT_PART_SIZE" -lt "16" -o "$SBOOT_PART_SIZE" = "$DISC_SIZE" ]; then
+                if [ "$BOOT_PART_SIZE" -ge "$DISC_SIZE" -o "$BOOT_PART_SIZE" -lt "32" -o "$SBOOT_PART_SIZE" = "$DISC_SIZE" ]; then
                     DIALOG --msgbox "ERROR: You have entered a too large size, please enter again." 0 0
                 else
                     BOOT_PART_SET=1
@@ -582,8 +582,8 @@ autoprepare()
         done
         DISC_SIZE=$(($DISC_SIZE-$SWAP_PART_SIZE))
         while [ "$ROOT_PART_SET" = "" ]; do
-            if [ "${DISC_SIZE}" -lt "8200" ]; then
-                DIALOG --msgbox "Pentoo requires at least 8.2GB for / and you don't have that much left, aborting install." 0 0
+            if [ "${DISC_SIZE}" -lt "12000" ]; then
+                DIALOG --msgbox "Pentoo requires at least 12GB for / and you don't have that much left, aborting install." 0 0
                 exit 1
             elif [ "${DISC_SIZE}" -lt "24000" ]; then
                 DIALOG --msgbox "Pentoo *suggests* using at least 24GB for your / partition but you don't have that much left. You have been warned." 0 0
