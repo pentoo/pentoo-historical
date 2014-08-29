@@ -1445,6 +1445,7 @@ rc-update del autoconfig default
 rc-update del firmware boot
 rc-update del fixinittab default
 rc-update add keymaps default
+rc-update add fcron default
 mv /etc/inittab.old /etc/inittab
 mv /etc/init.d/halt.sh.orig /etc/init.d/halt.sh
 EOF
