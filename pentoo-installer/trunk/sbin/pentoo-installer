@@ -40,7 +40,7 @@ CURRENT_SELECTION=""
 
 #let's support Xdialog for the fun of it
 if [ -x "$(command -v Xdialog 2>&1)" ]; then
-    if [ -z $DISPLAY ]; then
+    if [ -n "${DISPLAY}" ]; then
         whichdialog=dialog
     else
         whichdialog=Xdialog
