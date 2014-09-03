@@ -38,13 +38,25 @@ S_FDE=0         # Full disk encryption, need key in /boot
 # main menu selection tracker
 CURRENT_SELECTION=""
 
+#let's support Xdialog for the fun of it
+if [ -x "$(command -v Xdialog 2>&1)" ]; then
+    if [ -z $DISPLAY ]; then
+        whichdialog=dialog
+    else
+        whichdialog=Xdialog
+    fi
+else
+    whichdialog=dialog
+fi
+#yes, we purposely don't handle dialog being missed, deps handle it
+
 # DIALOG()
 # an el-cheapo dialog wrapper
 #
 # parameters: see dialog(1)
 # returns: whatever dialog did
 DIALOG() {
-    dialog --backtitle "$TITLE" --aspect 15 "$@"
+    ${whichdialog} --backtitle "$TITLE" --aspect 15 "$@"
     return $?
 }
 
