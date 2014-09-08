@@ -952,24 +952,52 @@ do_rsync() {
         fi
     done
 
-    rsync -av --progress /etc/* ${DESTDIR}/etc/ 2>&1 \
-      | tee $LOG \
-      | awk -f /usr/share/pentoo/rsync.awk \
-      | sed --unbuffered 's/\([0-9]*\).*/\1/' \
-      | dialog --title "Copying /etc/ folders." --gauge "Copying etc..." 6 75
-    if [ $? -ne 0 ]; then
-        DIALOG --msgbox "Failed to rsync /etc. See the log output for more information" 0 0
-        return 1
-    fi
+    DIALOG --defaultno --yesno "Would you like to sync unsaved changes to your new install?  All modules are automatically \
+	synced, but saying yes to this question will also sync changes made during this session which have not been saved \
+        with flushchanges or makemo. Say no, and only a small set of essentials will be synced; say yes, and everything will be \
+        synced, but it may take much longer." 0 0 \
+	&& SYNC_ALL=1
 
-    rsync -av --progress --exclude=/root/.bashrc /root/* ${DESTDIR}/root/ 2>&1 \
-      | tee $LOG \
-      | awk -f /usr/share/pentoo/rsync.awk \
-      | sed --unbuffered 's/\([0-9]*\).*/\1/' \
-      | dialog --title "Copying /root/ folders." --gauge "Copying home..." 6 75
-    if [ $? -ne 0 ]; then
-        DIALOG --msgbox "Failed to rsync the /root. See the log output for more information" 0 0
-        return 1
+    if [ "${SYNC_ALL}" = "1" ]; then
+        rsync -av --progress /* ${DESTDIR}/ 2>&1 \
+          | tee $LOG \
+          | awk -f /usr/share/pentoo/rsync.awk \
+          | sed --unbuffered 's/\([0-9]*\).*/\1/' \
+          | dialog --title "Rsyncing / to new install" --gauge "Syncing /..." 6 75
+        if [ $? -ne 0 ]; then
+            DIALOG --msgbox "Failed to rsync /. See the log output for more information" 0 0
+            return 1
+        fi
+    else
+        rsync -av --progress /etc/* ${DESTDIR}/etc/ 2>&1 \
+          | tee $LOG \
+          | awk -f /usr/share/pentoo/rsync.awk \
+          | sed --unbuffered 's/\([0-9]*\).*/\1/' \
+          | dialog --title "Copying /etc/ folders." --gauge "Copying etc..." 6 75
+        if [ $? -ne 0 ]; then
+            DIALOG --msgbox "Failed to rsync /etc. See the log output for more information" 0 0
+            return 1
+        fi
+
+        rsync -av --progress --exclude=/root/.bashrc /root/* ${DESTDIR}/root/ 2>&1 \
+          | tee $LOG \
+          | awk -f /usr/share/pentoo/rsync.awk \
+          | sed --unbuffered 's/\([0-9]*\).*/\1/' \
+          | dialog --title "Copying /root/ folders." --gauge "Copying home..." 6 75
+        if [ $? -ne 0 ]; then
+            DIALOG --msgbox "Failed to rsync the /root. See the log output for more information" 0 0
+            return 1
+        fi
+
+        rsync -av --progress /lib/modules/$(uname -r)/* ${DESTDIR}/lib/modules/$(uname -r)/ 2>&1 \
+          | tee $LOG \
+          | awk -f /usr/share/pentoo/rsync.awk \
+          | sed --unbuffered 's/\([0-9]*\).*/\1/' \
+          | dialog --title "Rsyncing kernel modules" --gauge "Rsyncing /lib/modules/$(uname -r)..." 6 75
+        if [ $? -ne 0 ]; then
+            DIALOG --msgbox "Failed to rsync /lib/modules/$(uname -r)/. See the log output for more information" 0 0
+            return 1
+        fi
     fi
 
     sed -i '/aufs bindist livecd/d' ${DESTDIR}/etc/portage/make.conf
