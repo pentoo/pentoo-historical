@@ -959,7 +959,7 @@ do_rsync() {
 	&& SYNC_ALL=1
 
     if [ "${SYNC_ALL}" = "1" ]; then
-        rsync -av --progress /* ${DESTDIR}/ 2>&1 \
+        rsync -av --progress --exclude=/mnt --exclude=/proc --exclude=/dev --exclude=/sys --exclude=/run /* ${DESTDIR}/ 2>&1 \
           | tee $LOG \
           | awk -f /usr/share/pentoo/rsync.awk \
           | sed --unbuffered 's/\([0-9]*\).*/\1/' \
