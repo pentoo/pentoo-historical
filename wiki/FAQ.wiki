@@ -49,7 +49,20 @@ net-misc/networkmanager -modemmanager
 
 Use eix or examine each ebuild for more details
 
-
+=== Restrict Thunar from showing encrypted partitions ===
+For some reason, Thunar will sometimes show encrypted partitions as removable devices. To restrict thunar from showing encrypted partitions:
+{{{
+nano /etc/udev/rules.d/99-hide-disks.rules 
+}}}
+and add:
+{{{
+KERNEL=="sda3", ENV{UDISKS_IGNORE}="1"
+}}}
+where sda3 is an encrypted partition meant to hide.
+Then use this command (as root) to trigger a refresh:
+{{{
+udevadm trigger
+}}}
 ==Troubleshooting a Pentoo Installation==
 === Compilation errors ===
 
@@ -61,16 +74,16 @@ Use eix or examine each ebuild for more details
 
 then do the same thing:
 {{{
-    omega ~ # ls -l /usr/src/linux
-    lrwxrwxrwx 1 root root 12 Dec 25 07:50 /usr/src/linux -> /usr/src/linux-3.9.9-pentoo
-    omega ~ # cd /usr/src/linux
+ls -l /usr/src/linux
+lrwxrwxrwx 1 root root 12 Dec 25 07:50 /usr/src/linux -> /usr/src/linux-3.9.9-pentoo
+cd /usr/src/linux
 }}}
 assuming /usr/src/linux links to the 3.9.9-pentoo sources,
 {{{
-    omega linux # zcat /proc/config.gz > .config
-    omega linux # make clean && make clean
-    omega linux # make prepare
-    omega linux # make modules_prepare
+zcat /proc/config.gz > .config
+make clean && make clean
+make prepare
+make modules_prepare
 }}}
 
 === Upgrading ===
