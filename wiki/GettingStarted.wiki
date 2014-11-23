@@ -110,6 +110,7 @@ Date  	        Release
  * ...
  * 2014/08/07   Pentoo 2014.0 RC3
  * 2014/09/23   Pentoo 2014.0 RC3.5
+ * 2014/11/15   Pentoo 2014.0 RC3.6
 }}}
 
 == Download ==
