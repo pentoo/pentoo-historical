@@ -1070,13 +1070,8 @@ auto_fstab()
 {
     if [ "$S_MKFS" = "1" -o "$S_MKFSAUTO" = "1" ]; then
         if [ -f /tmp/.fstab ]; then
-            # comment out stray /dev entries
-            # sed -i 's/^\/dev/#\/dev/g' $DESTDIR/etc/fstab
             # comment out anything not commented out
             sed -r -i 's/^[^#]/#&/' "${DESTDIR}/etc/fstab"
-            # add new shm entry
-            echo 'shm			/dev/shm	tmpfs		nodev,nosuid,noexec	0 0' \
-                >>${DESTDIR}/etc/fstab
             # append entries from new configuration
             sort /tmp/.fstab >>$DESTDIR/etc/fstab
             sed -i -e '/aufs/d' $DESTDIR/etc/fstab
