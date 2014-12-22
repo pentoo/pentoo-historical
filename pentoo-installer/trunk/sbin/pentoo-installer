@@ -1005,7 +1005,7 @@ do_rsync() {
 
     sed -i '/aufs bindist livecd/d' ${DESTDIR}/etc/portage/make.conf
     chroot_mount
-    chroot ${DESTDIR} emerge -C app-misc/livecd-tools pentoo/pentoo-livecd
+    chroot ${DESTDIR} emerge -C app-misc/livecd-tools pentoo/pentoo-livecd pentoo/pentoo-installer
     chroot_umount
     mknod -m666 ${DESTDIR}/dev/zero c 1 5
     mknod -m666 ${DESTDIR}/dev/null c 1 3
