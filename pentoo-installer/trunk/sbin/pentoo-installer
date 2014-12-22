@@ -459,7 +459,7 @@ _mkfs() {
     else
         # make sure the fstype is one we can handle
         local knownfs=0
-        for fs in xfs jfs reiserfs ext2 ext3 ext4 vfat; do
+        for fs in btrfs xfs jfs reiserfs ext2 ext3 ext4 vfat; do
             [ "${_fstype}" = "${fs}" ] && knownfs=1 && break
         done
         if [ $knownfs -eq 0 ]; then
@@ -470,6 +470,7 @@ _mkfs() {
         if [ "${_domk}" = "yes" ]; then
             local ret
             case ${_fstype} in
+                btrfs)    mkfs.btrfs -f ${_device} >>$LOG 2>&1; ret=$? ;;
                 xfs)      mkfs.xfs -f ${_device} >>$LOG 2>&1; ret=$? ;;
                 jfs)      yes | mkfs.jfs ${_device} >>$LOG 2>&1; ret=$? ;;
                 reiserfs) yes | mkreiserfs ${_device} >>$LOG 2>&1; ret=$? ;;
@@ -560,6 +561,7 @@ autoprepare()
     while [ "$SET_DEFAULTFS" = "" ]; do
         FSOPTS="ext2 ext2 ext3 ext3 ext3-luks ext3-luks ext4 ext4 ext4-luks ext4-luks"
         [ "$(which mkreiserfs 2>/dev/null)" ] && FSOPTS="$FSOPTS reiserfs Reiser3 reiserfs-luks Reiser3-luks"
+        [ "$(which mkfs.btrfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS btrfs BTRFS"
         [ "$(which mkfs.xfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS xfs XFS"
         [ "$(which mkfs.jfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS jfs JFS"
         while [ "$BOOT_PART_SET" = "" ]; do
@@ -756,6 +758,7 @@ mountpoints() {
         # Determine which filesystems are available
         FSOPTS="ext2 ext2 ext3 ext3 ext3-luks ext3-luks ext4 ext4 ext4-luks ext4-luks"
         [ "$(which mkreiserfs 2>/dev/null)" ] && FSOPTS="$FSOPTS reiserfs Reiser3 reiserfs-luks Reiser3-luks"
+        [ "$(which mkfs.btrfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS btrfs BTRFS"
         [ "$(which mkfs.xfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS xfs XFS"
         [ "$(which mkfs.jfs 2>/dev/null)" ]   && FSOPTS="$FSOPTS jfs JFS"
         [ "$(which mkfs.vfat 2>/dev/null)" ]  && FSOPTS="$FSOPTS vfat VFAT"
