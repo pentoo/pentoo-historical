@@ -1464,7 +1464,7 @@ prepare_harddrive()
         fi
         DIALOG $DEFAULT --menu "Prepare Hard Drive" 12 60 5 \
             "1" "Auto-Prepare (erases the ENTIRE hard drive)" \
-            "2" "Manually Partition Hard Drives" \
+            "2" "Manually Partition Hard Drives (WARNING: /etc/fstab will be broken, do not pick this option)" \
             "4" "Return to Main Menu" 2>$ANSWER
         CURRENT_SELECTION="$(cat $ANSWER)"
         case $(cat $ANSWER) in
