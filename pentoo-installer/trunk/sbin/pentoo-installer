@@ -9,7 +9,7 @@ TITLE="Pentoo Installation"
 # use the first VT not dedicated to a running console
 LOG="/dev/tty8"
 DESTDIR="/mnt/gentoo"
-SHAREDIR="/usr/share/pentoo"
+readonly SHAREDIR="$(dirname ${0})/../share/pentoo-installer"
 EDITOR=
 PARTITIONEDITOR=
 isnumber='^[0-9]+$'
