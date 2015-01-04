@@ -5,13 +5,14 @@
 ## start by exiting if the user doesn't have enough RAM for the install to work
 
 ANSWER="/tmp/.setup"
-readonly SHAREDIR="$(dirname ${0})/../share/pentoo-installer"
+TITLE="Pentoo Installation"
+# use the first VT not dedicated to a running console
+LOG="/dev/tty8"
+DESTDIR="/mnt/gentoo"
+SHAREDIR="/usr/share/pentoo"
 EDITOR=
 PARTITIONEDITOR=
 isnumber='^[0-9]+$'
-
-# source common variables, functions and error handling
-source "${SHAREDIR}"/common.sh || exit $?
 
 # clock
 HARDWARECLOCK=
@@ -1634,13 +1635,11 @@ mainmenu()
 
 RAMSIZE=$(awk '/MemTotal/ {printf( "%.0f\n", int ( $2 / 1024 ) + 1)}' /proc/meminfo)
 if [ "$RAMSIZE" -le "1500" ]; then
-	show_dialog --msgbox "The Pentoo Installer requires a minimum of 1.5GB of RAM to run. Failing safe." 0 0
+	DIALOG --msgbox "The Pentoo Installer requires a minimum of 1.5GB of RAM to run. Failing safe." 0 0
 	exit 1
 fi
 
-# display welcome txt depending on used dialog
-WHICHDIALOG="$(get_dialog)"
-show_dialog --textbox "${SHAREDIR}/welcome.${WHICHDIALOG}.txt" 0 0 || exit $?
+DIALOG --textbox "${SHAREDIR}"/welcome.txt 25 75
 
 while true; do
     mainmenu
