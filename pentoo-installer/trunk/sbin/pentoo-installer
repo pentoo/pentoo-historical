@@ -1493,6 +1493,18 @@ rc-update add fcron default
 mv /etc/inittab.old /etc/inittab
 mv /etc/init.d/halt.sh.orig /etc/init.d/halt.sh
 EOF
+	
+	# hotfix for issue #330: fcron missing /var/spool/fcron
+	# see: https://code.google.com/p/pentoo/issues/detail?id=330
+    chroot $DESTDIR /bin/bash <<EOF
+if [ -e /etc/init.d/fcron ] && [ ! -e /var/spool/fcron ]; then
+	mkdir /var/spool/fcron
+	chown fcron:fcron /var/spool/fcron
+	chmod 6770 /var/spool/fcron
+	touch /var/spool/fcron/.keep_sys-process_fcron-0
+fi
+EOF
+
     # don't need chroot anymore
 
     # ensure the disk is synced
