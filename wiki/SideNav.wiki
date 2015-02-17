@@ -1,6 +1,7 @@
   * [GettingStarted Getting Started]
   * [DownloadPentoo Download]
   * Installation
+    * [WhichVersion Which version do I want]
     * [SystemRequirements System Requirements]
     * [PentooInstaller Intallation to Disc]
     * [OverlayUsage Installation from Overlay]
