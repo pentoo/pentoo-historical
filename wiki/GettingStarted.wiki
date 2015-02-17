@@ -59,6 +59,8 @@ pentoo/pentoo-voip
 pentoo/pentoo-wireless
 
 }}}
+===Which version do I want===
+More info: WhichVersion page.
 
 ===Pentoo profiles and overlay===
 The Pentoo Linux features an overlay and profiles. "Overlays" are package trees for Portage. They contain additional ebuilds for Gentoo. Portage profiles specify default values for global and per-package USE flags and most variables of the /etc/portage/make.conf and define a set of system packages. Also it masks unstable package versions and USE flags. These techniques allow us to maintain capabilities of building a Linux-based operating system which inheriting all the Pentoo LiveCD goods and is a rolling release distribution which is essentially version-less once installed.
