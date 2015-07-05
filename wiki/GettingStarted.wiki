@@ -137,6 +137,8 @@ PentooUpdater page.
 
 [https://code.google.com/p/pentoo/people/list Project People] page.
 
+<wiki:video width=853 height=505 url="https://www.youtube.com/watch?v=c3bpN9eHe5o"/>
+
 ==References==
 
  * [http://www.pentoo.ch/about/ Official about website]
