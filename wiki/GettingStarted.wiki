@@ -1,9 +1,10 @@
 #summary A quick guide to getting started with Pentoo project.
 
-= Pentoo =
+= Pentoo intro=
 
 Pentoo is a Live CD and Live USB designed for penetration testing and security assessment. Based on Gentoo Linux, Pentoo is provided both as 32 and 64 bit installable livecd. Pentoo is also available as an overlay for an existing Gentoo installation. It features packet injection patched wifi drivers, GPGPU cracking software, and lots of tools for penetration testing and security assessment. The Pentoo kernel includes grsecurity and PAX hardening and extra patches - with binaries compiled from a hardened toolchain with the latest nightly versions of some tools available.
 
+<wiki:video width=853 height=505 url="https://www.youtube.com/watch?v=MGtIUdzADn4"/>
 
 This guide provides information on:
 
