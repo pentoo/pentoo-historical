@@ -51,6 +51,7 @@ pentoo/pentoo-livecd
 pentoo/pentoo-misc
 pentoo/pentoo-mitm
 pentoo/pentoo-mobile
+pentoo/pentoo-nfc
 pentoo/pentoo-proxies
 pentoo/pentoo-radio
 pentoo/pentoo-rce
