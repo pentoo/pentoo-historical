@@ -116,6 +116,7 @@ Date  	        Release
  * 2014/09/23   Pentoo 2014.0 RC3.5
  * 2014/11/15   Pentoo 2014.0 RC3.6
  * 2015/01/04   Pentoo 2015.0 RC3.7 http://pentoo.blogspot.com/2015/01/xmas-new-year-pentoo-release-shmoocon-11.html
+ * 2015/08/04   Pentoo 2015.0 RC3.8 http://pentoo.blogspot.co.uk/2015/08/is-it-def-con-23-already.html
 }}}
 
 == Download ==
