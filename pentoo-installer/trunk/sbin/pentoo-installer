@@ -39,15 +39,16 @@ S_FDE=0         # Full disk encryption, need key in /boot
 CURRENT_SELECTION=""
 
 #let's support Xdialog for the fun of it
-if [ -x "$(command -v Xdialog 2>&1)" ]; then
-    if [ -z "${DISPLAY}" ]; then
-        whichdialog=dialog
-    else
-        whichdialog=Xdialog
-    fi
-else
+#Xdialog seems randomly craptastic, drop it for now
+#if [ -x "$(command -v Xdialog 2>&1)" ]; then
+#    if [ -z "${DISPLAY}" ]; then
+#        whichdialog=dialog
+#    else
+#        whichdialog=Xdialog
+#    fi
+#else
     whichdialog=dialog
-fi
+#fi
 #yes, we purposely don't handle dialog being missed, deps handle it
 
 # DIALOG()
