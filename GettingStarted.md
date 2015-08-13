@@ -1,0 +1,153 @@
+# Pentoo intro #
+
+Pentoo is a Live CD and Live USB designed for penetration testing and security assessment. Based on Gentoo Linux, Pentoo is provided both as 32 and 64 bit installable livecd. Pentoo is also available as an overlay for an existing Gentoo installation. It features packet injection patched wifi drivers, GPGPU cracking software, and lots of tools for penetration testing and security assessment. The Pentoo kernel includes grsecurity and PAX hardening and extra patches - with binaries compiled from a hardened toolchain with the latest nightly versions of some tools available.
+
+<a href='http://www.youtube.com/watch?feature=player_embedded&v=MGtIUdzADn4' target='_blank'><img src='http://img.youtube.com/vi/MGtIUdzADn4/0.jpg' width='853' height=505 /></a>
+
+This guide provides information on:
+
+
+
+
+## Features ##
+
+Here is a non-exhaustive list of the features currently included :
+
+  * Available in 32-bit and 64-bit versions, the latter having a significant speed increase from 32bit
+  * Includes the required environment to crack passwords using GPGPU with openCL and CUDA configured 'out of the box'
+  * Built on hardened linux, including a hardened kernel (with extra patches) and toolchain
+  * Backported Wifi stack from latest stable kernel release
+  * Uses a pentoo overlay, which allows tools to be built on top of a standard gentoo build
+  * Module loading support ala slax
+  * Changes saving on usb stick
+  * XFCE4 wm
+  * Support for full disk encryption with LUKs if installed on HDD
+  * Automated installation
+  * System updates if you got it finally installed
+
+
+(...)it's basically a highly customizable Linux-based operating system and a meta-distribution. Using excellent development techniques, we have created a pre-configured security-focused or so called penetration testing LiveCD distribution that is built automatically from source code and is customized with the functionality that you want to have and without the unnecessary features that you want to avoid, with lots of customized tools, customized kernel, and much more.
+
+### Tools ###
+
+Tools are installed with versioned ebuilds and open-ended ebuilds, making it possible to pull in the latest subversions and still have installs tracked by package management. The following tool categories are included:
+```
+pentoo/pentoo
+pentoo/pentoo-analyzer
+pentoo/pentoo-bluetooth
+pentoo/pentoo-cinnamon
+pentoo/pentoo-cracking
+pentoo/pentoo-database
+pentoo/pentoo-exploit
+pentoo/pentoo-footprint
+pentoo/pentoo-forensics
+pentoo/pentoo-forging
+pentoo/pentoo-fuzzers
+pentoo/pentoo-gnome
+pentoo/pentoo-installer
+pentoo/pentoo-livecd
+pentoo/pentoo-misc
+pentoo/pentoo-mitm
+pentoo/pentoo-mobile
+pentoo/pentoo-nfc
+pentoo/pentoo-proxies
+pentoo/pentoo-radio
+pentoo/pentoo-rce
+pentoo/pentoo-scanner
+pentoo/pentoo-system
+pentoo/pentoo-voip
+pentoo/pentoo-wireless
+
+```
+### Which version do I want ###
+More info: WhichVersion page.
+
+### Pentoo profiles and overlay ###
+The Pentoo Linux features an overlay and profiles. "Overlays" are package trees for Portage. They contain additional ebuilds for Gentoo. Portage profiles specify default values for global and per-package USE flags and most variables of the /etc/portage/make.conf and define a set of system packages. Also it masks unstable package versions and USE flags. These techniques allow us to maintain capabilities of building a Linux-based operating system which inheriting all the Pentoo LiveCD goods and is a rolling release distribution which is essentially version-less once installed.
+Put simply, Pentoo is Gentoo with the pentoo overlay. This overlay is available in layman so all you have to do is
+```
+ layman -L 
+ layman -a pentoo
+```
+Among other ebuilds we have a pentoo/pentoo meta ebuild too. A meta ebuild is an ebuild that doesn't install files by itself, but instead it's used to install a group of other ebuilds with one command. It accomplishes this by having all this other ebuilds as dependencies.
+
+
+
+We have multiple pentoo profiles, which will install all the pentoo tools based on USE flags.
+
+```
+amd64           pentoo/default/linux/amd64			stable
+amd64           pentoo/default/linux/amd64/bleeding_edge	dev
+amd64           pentoo/hardened/linux/amd64			stable
+amd64           pentoo/hardened/linux/amd64/binary		dev
+amd64           pentoo/hardened/linux/amd64/bleeding_edge	dev
+
+x86             pentoo/default/linux/x86			stable
+x86             pentoo/default/linux/x86/bleeding_edge		dev
+x86             pentoo/hardened/linux/x86			stable
+x86             pentoo/hardened/linux/x86/binary		dev
+x86             pentoo/hardened/linux/x86/bleeding_edge		dev
+
+arm             pentoo/default/linux/arm/armv7a			stable
+arm             pentoo/default/linux/arm/armv7a/bleeding_edge	dev
+arm             pentoo/hardened/linux/arm/armv7a		stable
+arm             pentoo/hardened/linux/arm/armv7a/bleeding_edge	dev
+arm             pentoo/default/linux/arm/armv6j			stable
+arm             pentoo/default/linux/arm/armv6j/bleeding_edge	dev
+```
+More info: OverlayUsage page.
+
+## Releases ##
+Pentoo uses rolling releases with periodic ISO snapshots of the latest committed updates.
+```
+Date  	        Release
+ * 2005/06/22	Pentoo 2005.1
+ * 2006/02/02	Pentoo 2006.0
+ * 2006/07/05	Pentoo 2006.1
+ * 2009/12/04	Pentoo 2009.0
+ * 2012/07/30	Pentoo 2012.0
+ * 2013/03/09	Pentoo 2013.0 RC1.1
+ * ...
+ * 2014/01/18   Pentoo 2013.0 RC1.99 http://pentoo.blogspot.com/2014/01/shmoocon-10-and-other-things-which.html
+ * ...
+ * 2014/08/07   Pentoo 2014.0 RC3
+ * 2014/09/23   Pentoo 2014.0 RC3.5
+ * 2014/11/15   Pentoo 2014.0 RC3.6
+ * 2015/01/04   Pentoo 2015.0 RC3.7 http://pentoo.blogspot.com/2015/01/xmas-new-year-pentoo-release-shmoocon-11.html
+ * 2015/08/04   Pentoo 2015.0 RC3.8 http://pentoo.blogspot.co.uk/2015/08/is-it-def-con-23-already.html
+```
+
+## Download ##
+
+DownloadPentoo page.
+
+## Installation ##
+
+Pentoo is a security-focused livecd, is a complete bootable  installation including operating system which runs in a computer's memory, rather than loading from a hard disk drive. The functionality of a livecd is also available with a bootable live USB flash drive, or even an external USB drive.
+
+The Pentoo dev-team also provides methods of installation on a local hard drive:
+  * Pentoo can be installed directly from the livecd using our installer PentooInstaller
+  * Pentoo can be installed using overlay OverlayUsage
+
+## Update ##
+
+PentooUpdater page.
+
+## Who is behind it ##
+
+[Project People](https://code.google.com/p/pentoo/people/list) page.
+
+<a href='http://www.youtube.com/watch?feature=player_embedded&v=c3bpN9eHe5o' target='_blank'><img src='http://img.youtube.com/vi/c3bpN9eHe5o/0.jpg' width='853' height=505 /></a>
+
+## References ##
+
+  * [Official about website](http://www.pentoo.ch/about/)
+  * [Official website](http://pentoo.ch/)
+  * [Overlay usage](http://code.google.com/p/pentoo/wiki/OverlayUsage)
+  * [Installation video](http://www.youtube.com/watch?v=TZA6Z1eZHKE)
+  * [Official blog](http://pentoo.blogspot.com/)
+  * [Shmoocon 2010 Firetalks Presentation: Pentoo](http://www.youtube.com/watch?v=1xJWPc68AaA)
+  * [BSides Delaware 2013 Presentation: Pentoo](http://www.irongeek.com/i.php?page=videos/bsidesde2013/pentoo-zero-chaos)
+  * [Report Bugs](https://code.google.com/p/pentoo/issues/list)
+  * [Wikipedia](https://en.wikipedia.org/wiki/Pentoo)
+  * [Twitter @pentoo\_linux](https://twitter.com/pentoo_linux)

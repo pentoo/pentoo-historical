@@ -1,0 +1,37 @@
+# RC1.8 has been released and this document is deprecated, please upgrade #
+
+```
+before attempting anything else, please connect to the internet and at least run "emerge --sync"
+```
+
+---
+
+## Q.) I installed with unetbootin and I got a password prompt at boot ##
+
+A.) Before booting, edit syslinux.cfg on the usb stick and add "nodetect" to the kernel line to prevent this issue.  Unetbootin switches the bootloader and there was a mistake in the converted config file.  This issue has been logged and fixed for the next release.  You can copy this file onto your usb if it is easier than editing: [syslinux.cfg](https://pentoo.googlecode.com/svn/livecd/trunk/isoroot/syslinux.cfg)
+
+## Q.) I have the 32 bit build any /lib/firmware is empty or I see "no such file or directory" when using my wifi card ##
+
+A.) The 32 bit iso is somehow missing the firmware, to get the latest you need to connect to the internet and "emerge -1 linux-firmware".  If you have 64 bit hardware you should be using the 64 bit iso which doesn't have this issue.
+
+## Q.) I tried to upgrade but I got this error: ##
+(x11-base/xorg-server-1.13.1::gentoo, ebuild scheduled for merge) conflicts with <x11-base/xorg-server-1.12.99 required by (x11-drivers/xf86-video-neomagic-1.2.7::gentoo, ebuild scheduled for merge)
+
+A.) You can safely edit "/etc/portage/make.conf" and remove neomagic from the VIDEO\_CARDS= section.  While you are there, you can remove all the other video cards you don't use.  It is suggested to keep VIDEO\_CARDS="vesa vga fbdev" plus whatever your video card is. "emerge -vp xorg-drivers" will show you all the available options.
+
+---
+
+## Q.) I tried to install {nvidia,ati}-drivers but it couldn't download the files. ##
+
+A.) If you can connect to the internet, this is a fine solution.  If you have no network connection you can find the needed files were accidently dumped into / so just move the tar.gz, .zip, and .run files into /usr/portage/distfiles and the install can proceed without network.
+
+## Q.) I tried to run a program ZZZ from the menu but it failed ##
+
+A.) The work is in progress, but some menu might be still broken and the list of tools is not complete. Try to update genmenu and file a bug report if wouldn't fix it. Run it from a command line for now.
+
+## Q.) How to start armitage? ##
+
+A.) Follow the steps below:
+> /etc/init.d/postgresql-9.2 start<br>
+<blockquote>Username/password to connect: msf/secure (the rest is default)<br>
+Answer "yes" to start RPC msf server
